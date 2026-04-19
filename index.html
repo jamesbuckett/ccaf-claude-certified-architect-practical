@@ -1252,6 +1252,106 @@ footer.site-foot {
 .faq-body a { color: var(--text); }
 
 /* ============================================================
+   TWISTY EXPANDER — for <details class="sub sub-twisty"> and
+   inline <details class="trace-inline"> (T08 Part A/B)
+   ============================================================ */
+details.sub-twisty { padding-top: 0; }
+details.sub-twisty > summary.sub-head {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  margin-bottom: 0;
+  transition: background 120ms, color 120ms;
+}
+details.sub-twisty > summary.sub-head::-webkit-details-marker { display: none; }
+details.sub-twisty > summary.sub-head::after {
+  content: "";
+  margin-left: auto;
+  width: 9px; height: 9px;
+  border-right: 2px solid var(--text-faint);
+  border-bottom: 2px solid var(--text-faint);
+  transform: rotate(-45deg);
+  transition: transform 200ms ease, border-color 120ms;
+  flex-shrink: 0;
+  margin-right: var(--s-1);
+}
+details.sub-twisty[open] > summary.sub-head::after {
+  transform: rotate(45deg);
+  border-color: var(--accent);
+}
+details.sub-twisty > summary.sub-head:hover { color: var(--accent); }
+details.sub-twisty > summary.sub-head:hover::after { border-color: var(--accent); }
+details.sub-twisty > summary.sub-head:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius);
+}
+details.sub-twisty[open] > summary.sub-head {
+  margin-bottom: var(--s-4);
+}
+
+/* Inline trace card (T08 Part A/B) — smaller, accent-striped */
+details.trace-inline {
+  margin: var(--s-5) 0;
+  padding: 0 var(--s-5);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+details.trace-inline > summary {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-4) 0;
+  transition: color 120ms;
+}
+details.trace-inline > summary::-webkit-details-marker { display: none; }
+details.trace-inline > summary svg {
+  width: 16px; height: 16px;
+  stroke: var(--text-dim);
+  flex-shrink: 0;
+}
+details.trace-inline > summary h4 {
+  margin: 0;
+  flex: 1;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0;
+}
+details.trace-inline > summary::after {
+  content: "";
+  width: 9px; height: 9px;
+  border-right: 2px solid var(--text-faint);
+  border-bottom: 2px solid var(--text-faint);
+  transform: rotate(-45deg);
+  transition: transform 200ms ease, border-color 120ms;
+  flex-shrink: 0;
+}
+details.trace-inline[open] > summary::after {
+  transform: rotate(45deg);
+  border-color: var(--accent);
+}
+details.trace-inline > summary:hover { color: var(--accent); }
+details.trace-inline > summary:hover::after,
+details.trace-inline > summary:hover svg { border-color: var(--accent); stroke: var(--accent); }
+details.trace-inline[open] > summary { border-bottom: 1px solid var(--border-soft); }
+details.trace-inline > :not(summary) { padding-top: var(--s-3); }
+details.trace-inline > :last-child { padding-bottom: var(--s-4); }
+
+/* Ensure summaries print expanded */
+@media print {
+  details.sub-twisty, details.trace-inline { page-break-inside: avoid; }
+  details.sub-twisty > summary.sub-head::after,
+  details.trace-inline > summary::after { display: none !important; }
+}
+
+/* ============================================================
    GLOSSARY
    ============================================================ */
 .glossary-head {
@@ -1915,12 +2015,12 @@ else:
       </div>
     </div>
 
-    <div class="sub">
-      <div class="sub-head">
+    <details class="sub sub-twisty">
+      <summary class="sub-head">
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
         <h3>Code trace — what happens when you run it</h3>
         <span class="sub-pill">≈ 5 min read</span>
-      </div>
+      </summary>
       <p>Before you run the script, walk through it in your head. The user asks <em>"Compare the weather in Paris and Tokyo right now."</em> A single <code class="inline">get_weather</code> tool is available. The model cannot answer without calling it — twice, once per city — and this is how the three-turn conversation unfolds.</p>
 
       <h4 style="margin-top: var(--s-5); margin-bottom: var(--s-2)">Before the loop</h4>
@@ -1988,7 +2088,7 @@ content     = [ TextBlock(text='Paris is currently 14 °C while Tokyo
         </div>
         <p>The agentic loop is a three-state machine — <strong>think</strong> (the <code class="inline">create()</code> call), <strong>act</strong> (your <code class="inline">run_tool</code>), <strong>observe</strong> (appending a <code class="inline">tool_result</code> back into <code class="inline">messages</code>) — that terminates on <code class="inline">stop_reason == "end_turn"</code>, an iteration cap, or an error. Every line in <code class="inline">loop.py</code> exists to implement one of those three states.</p>
       </div>
-    </div>
+    </details>
 
     <div class="sub">
       <div class="sub-head">
@@ -2201,12 +2301,12 @@ if __name__ == "__main__":
       </div>
     </div>
 
-    <div class="sub">
-      <div class="sub-head">
+    <details class="sub sub-twisty">
+      <summary class="sub-head">
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
         <h3>Code trace — what happens when you run it</h3>
         <span class="sub-pill">≈ 4 min read</span>
-      </div>
+      </summary>
       <p><code class="inline">orchestrate()</code> fires <strong>four independent <code class="inline">create()</code> calls</strong> — three sub-agent spawns, then one synthesis at the hub. None of the sub-agents share a conversation with each other or with the orchestrator. That isolation is the entire pattern.</p>
 
       <h4 style="margin-top: var(--s-5); margin-bottom: var(--s-2)">Before any API call</h4>
@@ -2240,7 +2340,7 @@ if __name__ == "__main__":
         </div>
         <p>Hub-and-spoke = <strong>N isolated conversations</strong> plus <strong>one synthesis conversation</strong>. Workers never talk to each other; the hub only ever receives summaries. Every deviation from that shape — leaking transcripts, adding worker-to-worker edges — is an anti-pattern from Domain 1.</p>
       </div>
-    </div>
+    </details>
 
     <div class="sub">
       <div class="sub-head">
@@ -2454,12 +2554,12 @@ if __name__ == "__main__":
       </div>
     </div>
 
-    <div class="sub">
-      <div class="sub-head">
+    <details class="sub sub-twisty">
+      <summary class="sub-head">
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
         <h3>Code trace — the three initiator paths</h3>
         <span class="sub-pill">≈ 5 min read</span>
-      </div>
+      </summary>
       <p>Unlike earlier tutorials there is no single linear flow here. <code class="inline">server.py</code> registers <strong>three primitives that are invoked by three different initiators</strong>. Each one follows a completely different path through the system — that's the whole lesson.</p>
 
       <h4 style="margin-top: var(--s-5); margin-bottom: var(--s-2)">Before any user interaction</h4>
@@ -2494,7 +2594,7 @@ if __name__ == "__main__":
         </div>
         <p><strong>Tool = model decides. Resource = app decides. Prompt = user decides.</strong> Every MCP design choice reduces to: <em>who should be in control of firing this?</em> The exam trap (and this tutorial's build-and-break) is putting a thing under the wrong initiator.</p>
       </div>
-    </div>
+    </details>
 
     <div class="sub">
       <div class="sub-head">
@@ -2691,12 +2791,12 @@ run(PRECISE, test_prompts, "PRECISE tool description")</pre>
       </div>
     </div>
 
-    <div class="sub">
-      <div class="sub-head">
+    <details class="sub sub-twisty">
+      <summary class="sub-head">
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
         <h3>Code trace — what the comparison measures</h3>
         <span class="sub-pill">≈ 3 min read</span>
-      </div>
+      </summary>
       <p>This script is a two-batch experiment. It fires <strong>the same four prompts</strong> against two tool catalogues — one deliberately vague, one deliberately precise — and records which prompt triggers a tool call. Eight API calls total. The single variable is the tool's <em>description</em>.</p>
 
       <h4 style="margin-top: var(--s-5); margin-bottom: var(--s-2)">Before either batch</h4>
@@ -2738,7 +2838,7 @@ run(PRECISE, test_prompts, "PRECISE tool description")</pre>
         </div>
         <p>Write tool descriptions the way you'd write instructions for a new hire. Five elements: <strong>domain</strong>, <strong>parameters with descriptions</strong>, <strong>when to use</strong>, <strong>when NOT to use</strong>, <strong>return shape</strong>. Skip any of them and the model fills the gap with a guess.</p>
       </div>
-    </div>
+    </details>
 
     <div class="sub">
       <div class="sub-head">
@@ -2895,12 +2995,12 @@ cat &gt; ~/hierarchy-demo/src/payments/CLAUDE.md &lt;&lt;'EOF'
 EOF</pre></div>
     </div>
 
-    <div class="sub">
-      <div class="sub-head">
+    <details class="sub sub-twisty">
+      <summary class="sub-head">
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
         <h3>Code trace — how Claude Code resolves the hierarchy</h3>
         <span class="sub-pill">≈ 3 min read</span>
-      </div>
+      </summary>
       <p>There's no Python to execute here — but Claude Code runs a deterministic <strong>scope-walk algorithm</strong> every time it starts a session and every time its working scope changes. Once you know that algorithm, the "which rule wins?" question answers itself.</p>
 
       <h4 style="margin-top: var(--s-5); margin-bottom: var(--s-2)">The three files you just created</h4>
@@ -2936,7 +3036,7 @@ EOF</pre></div>
         </div>
         <p>Closest-CLAUDE.md-to-the-work wins. <strong>Global</strong> follows you. <strong>Project</strong> follows the repo. <strong>Subdir</strong> follows a specific path. Content belongs at the tier whose audience matches the rule's scope — that's the only design rule, and every anti-pattern violates it.</p>
       </div>
-    </div>
+    </details>
 
     <div class="sub">
       <div class="sub-head">
@@ -3107,12 +3207,12 @@ Report findings as a numbered list with file:line references.</pre></div>
 <pre>Summarise the last hour of entries in /tmp/hook.log and print a table of which files were touched most frequently.</pre></div>
     </div>
 
-    <div class="sub">
-      <div class="sub-head">
+    <details class="sub sub-twisty">
+      <summary class="sub-head">
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
         <h3>Code trace — three primitives, three initiators</h3>
         <span class="sub-pill">≈ 4 min read</span>
-      </div>
+      </summary>
       <p>Just like the MCP tutorial, there is no single runtime flow. <code class="inline">.claude/settings.json</code>, <code class="inline">SKILL.md</code>, and the slash-command file each wire a different <strong>initiator</strong> into Claude Code. Same harness, three different trigger surfaces.</p>
 
       <h4 style="margin-top: var(--s-5); margin-bottom: var(--s-2)">What happens at session start</h4>
@@ -3147,7 +3247,7 @@ Report findings as a numbered list with file:line references.</pre></div>
         </div>
         <p>Three automation mechanisms differ on <strong>one axis: who initiates</strong>. Hook = harness (deterministic). Skill = model (probabilistic match on description). Slash = user (deterministic on firing, probabilistic on execution). "What should this <em>do</em>?" is a second-order question — pick the initiator first.</p>
       </div>
-    </div>
+    </details>
 
     <div class="sub">
       <div class="sub-head">
@@ -3351,12 +3451,12 @@ def extract_with_retry(doc: str) -&gt; dict:
 print(json.dumps(extract_with_retry(document), indent=2))</pre></div>
     </div>
 
-    <div class="sub">
-      <div class="sub-head">
+    <details class="sub sub-twisty">
+      <summary class="sub-head">
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
         <h3>Code trace — the self-healing retry loop</h3>
         <span class="sub-pill">≈ 4 min read</span>
-      </div>
+      </summary>
       <p>This loop turns a <strong>schema validator into a training signal</strong>. Whenever <code class="inline">jsonschema</code> rejects the model's output, the failing message becomes the next turn's input — the model reads its own mistake and corrects it. Three design choices make that work.</p>
 
       <h4 style="margin-top: var(--s-5); margin-bottom: var(--s-2)">Three design choices before the loop</h4>
@@ -3400,7 +3500,7 @@ print(json.dumps(extract_with_retry(document), indent=2))</pre></div>
         </div>
         <p>Structured output is <strong>tool_use + schema + retry</strong>. The tool forces shape at the type level, the schema closes the semantic gap, the retry loop turns validation failures into corrections. Anything prose-based — "please return JSON" — skips all three.</p>
       </div>
-    </div>
+    </details>
 
     <div class="sub">
       <div class="sub-head">
@@ -3600,11 +3700,11 @@ ask("Name one ship mentioned.", use_cache=True)
 print("--- control: no cache ---")
 ask("What does Ishmael do when he feels spleen?", use_cache=False)</pre></div>
 
-      <div style="margin: var(--s-5) 0; padding: var(--s-5); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: var(--radius); background: var(--surface);">
-        <div class="sub-head" style="border: 0; margin-bottom: var(--s-3); padding: 0;">
+      <details class="trace-inline">
+        <summary>
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-          <h4 style="margin: 0">Code trace — three calls, three cache states</h4>
-        </div>
+          <h4>Code trace — three calls, three cache states</h4>
+        </summary>
         <p>The system prompt is split into <strong>two content blocks</strong>: a short role statement and the full Moby Dick chapters. The <code class="inline">cache_control: {"type": "ephemeral"}</code> marker on the document block tells the API <em>"everything up to and including this block is a stable prefix — cache it under a key derived from the token contents."</em> Three calls exercise three different cache states.</p>
 
         <p style="margin-top: var(--s-4)"><strong>Call 1 — <code class="inline">use_cache=True</code>, cache miss (cache write).</strong> First call with this prefix. The API computes the hash of the system tokens, finds no entry, processes the full input, and writes the prefix to an ephemeral cache with a 5-minute TTL. Usage reports <code class="inline">cache_creation_input_tokens ≈ 5000</code> (the doc being indexed), <code class="inline">cache_read_input_tokens = 0</code>, and a small <code class="inline">input_tokens</code> for the question itself. You pay a <strong>~25% premium</strong> over normal input for the write.</p>
@@ -3614,7 +3714,7 @@ ask("What does Ishmael do when he feels spleen?", use_cache=False)</pre></div>
         <p><strong>Call 3 — <code class="inline">use_cache=False</code>, control.</strong> Same prefix, but the <code class="inline">cache_control</code> marker is absent. The API treats every token as fresh input. Both cache counters are zero; <code class="inline">input_tokens ≈ 5000</code> at the full rate. This is your baseline for measuring the savings.</p>
 
         <p style="margin-top: var(--s-4)"><strong>What actually drives the hit.</strong> The cache key is a hash of the <em>exact</em> prefix tokens. Any change — a punctuation edit, a blank line, a different role description — produces a different key and a cache miss. That's why the 5-minute TTL step (<code class="inline">time.sleep(310)</code>) also forces a rewrite: the prefix is the same, but the entry has expired, so it's effectively a new key.</p>
-      </div>
+      </details>
 
       <ol class="steps">
         <li>
@@ -3682,11 +3782,11 @@ for placement in ["start", "middle", "end"]:
     for trial in range(3):
         ask_with_placement(placement)</pre></div>
 
-      <div style="margin: var(--s-5) 0; padding: var(--s-5); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: var(--radius); background: var(--surface);">
-        <div class="sub-head" style="border: 0; margin-bottom: var(--s-3); padding: 0;">
+      <details class="trace-inline">
+        <summary>
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-          <h4 style="margin: 0">Code trace — nine trials across three placements</h4>
-        </div>
+          <h4>Code trace — nine trials across three placements</h4>
+        </summary>
         <p>Same document, same question, same model — the only variable is <strong>where the target fact lives inside the context</strong>. The outer <code class="inline">for placement</code> loop crossed with the inner <code class="inline">for trial</code> loop fires 9 <code class="inline">create()</code> calls total, three per placement, so you can see the recall rate as a ratio rather than a single data point.</p>
 
         <p style="margin-top: var(--s-4)"><strong>What each placement produces in the system prompt.</strong></p>
@@ -3701,7 +3801,7 @@ for placement in ["start", "middle", "end"]:
         <p><strong>Expected shape of the output.</strong> <code class="inline">start</code> rows: three ✓. <code class="inline">end</code> rows: three ✓. <code class="inline">middle</code> rows: some mix — often two ✓ and one ✗, sometimes worse with bigger documents. That's the U-shaped attention curve from the Domain 5 source, now a number on your terminal rather than a diagram in a slide.</p>
 
         <p style="margin-top: var(--s-4)"><strong>Why three trials.</strong> The model is probabilistic — a single run can coincidentally succeed or fail on any placement. Three trials lets you distinguish <em>"always fails"</em> from <em>"fails sometimes"</em>, which is the whole point: lost-in-the-middle is an <em>unreliability</em> pattern, not a hard failure. If middle recall were always-fail, the workaround would be obvious; because it's sometimes-fail, teams ship the bug.</p>
-      </div>
+      </details>
 
       <ol class="steps" style="counter-reset: step 2;">
         <li>
