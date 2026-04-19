@@ -3631,17 +3631,25 @@ from dotenv import load_dotenv; load_dotenv()</pre>
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           <span><code>Your credit balance is too low to access the Anthropic API. Please go to Plans &amp; Billing to upgrade or purchase credits.</code></span>
         </p>
-        <p class="trouble-cause"><strong>Cause.</strong> Your API key is valid (auth succeeded) but the account has no usable credit. New accounts start at $0; any free trial credit from onboarding may have expired or been consumed. This is a billing gate, not a code bug.</p>
+        <p class="trouble-cause"><strong>Cause.</strong> Your API key is valid (auth succeeded) but the account has no usable credit. New accounts start at $0; any free trial credit from onboarding may have expired or been consumed. <strong>Important gotcha:</strong> an API key created <em>before</em> the account had credit can stay stuck on this error even after you buy credits — the credit-check state attached to that key doesn't always refresh. The reliable fix is to buy credit first, then mint a new key.</p>
         <div class="trouble-fix">
-          <span class="trouble-fix-label">Fix</span>
-          <p>Open <a href="https://console.anthropic.com/settings/billing" target="_blank" rel="noopener noreferrer">console.anthropic.com/settings/billing</a>, add a payment method, and buy credits. The minimum purchase is <strong>$5</strong> — the entire workbook budgets ~$2–4 on Sonnet 4.6 with the iteration caps as written, so $5 covers it several times over.</p>
-          <p>Then check a few things before retrying:</p>
-          <ul style="margin:0 0 var(--s-3)">
-            <li><strong>Wait 1–2 minutes</strong> after purchase — credits occasionally lag behind the UI confirmation.</li>
+          <span class="trouble-fix-label">Fix · do these in order</span>
+          <ol style="margin:0 0 var(--s-3); padding-left: var(--s-5)">
+            <li><strong>Buy credit first.</strong> Open <a href="https://console.anthropic.com/settings/billing" target="_blank" rel="noopener noreferrer">console.anthropic.com/settings/billing</a>, add a payment method, and purchase credits. Minimum is <strong>$5</strong> — the whole workbook budgets ~$2–4 on Sonnet 4.6, so $5 covers it several times over.</li>
+            <li><strong>Wait 1–2 minutes</strong> and confirm the balance shows on the billing page. Credits occasionally lag behind the purchase confirmation.</li>
+            <li><strong>Then create a new API key</strong> at <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener noreferrer">console.anthropic.com/settings/keys</a>. If you already created a key <em>before</em> buying credit, delete that one and mint a fresh one — the new key will pick up the credited balance cleanly.</li>
+            <li><strong>Export and retry</strong> in the same shell where you run the script:</li>
+          </ol>
+          <div class="codeblock">
+            <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>export ANTHROPIC_API_KEY="sk-ant-…NEW_KEY"
+python3 loop.py</pre>
+          </div>
+          <p>Two follow-ups while you're in the console:</p>
+          <ul style="margin:0">
             <li><strong>Key belongs to the right workspace.</strong> If you're in an organisation, the key must be issued under a workspace that has a balance — personal keys won't draw from org credit and vice versa.</li>
-            <li><strong>Enable auto-reload</strong> on the same billing page. Hub-and-spoke (Tutorial 02) and the retry loop (Tutorial 07) fan out multiple calls and a mid-run balance drop will make the error re-appear partway through.</li>
+            <li><strong>Enable auto-reload</strong> on the billing page. Hub-and-spoke (Tutorial 02) and the retry loop (Tutorial 07) fan out multiple calls and a mid-run balance drop will make this error re-appear partway through.</li>
           </ul>
-          <p>Once a balance is showing, re-run the script — no code change needed.</p>
         </div>
       </article>
 
