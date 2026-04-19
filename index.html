@@ -3629,6 +3629,25 @@ from dotenv import load_dotenv; load_dotenv()</pre>
       <article class="trouble-item">
         <p class="trouble-symptom">
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span><code>Your credit balance is too low to access the Anthropic API. Please go to Plans &amp; Billing to upgrade or purchase credits.</code></span>
+        </p>
+        <p class="trouble-cause"><strong>Cause.</strong> Your API key is valid (auth succeeded) but the account has no usable credit. New accounts start at $0; any free trial credit from onboarding may have expired or been consumed. This is a billing gate, not a code bug.</p>
+        <div class="trouble-fix">
+          <span class="trouble-fix-label">Fix</span>
+          <p>Open <a href="https://console.anthropic.com/settings/billing" target="_blank" rel="noopener noreferrer">console.anthropic.com/settings/billing</a>, add a payment method, and buy credits. The minimum purchase is <strong>$5</strong> — the entire workbook budgets ~$2–4 on Sonnet 4.6 with the iteration caps as written, so $5 covers it several times over.</p>
+          <p>Then check a few things before retrying:</p>
+          <ul style="margin:0 0 var(--s-3)">
+            <li><strong>Wait 1–2 minutes</strong> after purchase — credits occasionally lag behind the UI confirmation.</li>
+            <li><strong>Key belongs to the right workspace.</strong> If you're in an organisation, the key must be issued under a workspace that has a balance — personal keys won't draw from org credit and vice versa.</li>
+            <li><strong>Enable auto-reload</strong> on the same billing page. Hub-and-spoke (Tutorial 02) and the retry loop (Tutorial 07) fan out multiple calls and a mid-run balance drop will make the error re-appear partway through.</li>
+          </ul>
+          <p>Once a balance is showing, re-run the script — no code change needed.</p>
+        </div>
+      </article>
+
+      <article class="trouble-item">
+        <p class="trouble-symptom">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           <span><code>The virtual environment was not created successfully because ensurepip is not available</code></span>
         </p>
         <p class="trouble-cause"><strong>Cause.</strong> Ubuntu and Debian ship a minimal Python 3 by default — the stdlib <code class="inline">venv</code> module needs the separate <code class="inline">python3-venv</code> package to actually bootstrap a virtualenv.</p>
