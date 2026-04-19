@@ -1,0 +1,3547 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Free visual study guide for Anthropic's Claude Certified Architect – Foundations (CCA-F) exam. Five domains mapped, 15-question mock quiz, printable cheat sheet.">
+<link rel="canonical" href="https://YOUR-DOMAIN/">
+<title>CCA-F Visual Study Guide — Pass Anthropic's Architect Exam</title>
+
+<!-- Open Graph / LinkedIn / Slack / Discord -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="CCA-F Visual Study Guide — Pass Anthropic's Architect Exam">
+<meta property="og:description" content="Free, unofficial visual study guide for the Claude Certified Architect – Foundations exam. Five domains, 15-question mock, printable cheat sheet.">
+<meta property="og:url" content="https://YOUR-DOMAIN/">
+<meta property="og:image" content="https://YOUR-DOMAIN/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
+<meta property="og:image:alt" content="CCA-F Visual Study Guide — five domain roadmap diagram">
+<meta property="og:site_name" content="CCA-F Atlas">
+
+<!-- X / Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CCA-F Visual Study Guide">
+<meta name="twitter:description" content="Unofficial visual study guide for Anthropic's Claude Certified Architect – Foundations exam. Diagrams, scenarios, and a 15-question mock.">
+<meta name="twitter:image" content="https://YOUR-DOMAIN/og-image.png">
+<meta name="twitter:creator" content="@jamesbuckett">
+
+<!-- JSON-LD: LearningResource + Course reference -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LearningResource",
+  "name": "CCA-F Visual Study Guide",
+  "description": "Unofficial, diagram-first study guide for Anthropic's Claude Certified Architect – Foundations (CCA-F) certification exam. Covers five exam domains, six production scenarios, and includes a 15-question mock quiz.",
+  "url": "https://YOUR-DOMAIN/",
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "learningResourceType": "Study Guide",
+  "educationalLevel": "Associate",
+  "audience": {
+    "@type": "EducationalAudience",
+    "educationalRole": "AI engineers, solution architects, developers"
+  },
+  "teaches": [
+    "Agentic architecture and orchestration",
+    "Model Context Protocol (MCP) and tool design",
+    "Claude Code configuration and workflows",
+    "Prompt engineering and structured output",
+    "Context management and reliability"
+  ],
+  "about": {
+    "@type": "Course",
+    "name": "Claude Certified Architect – Foundations (CCA-F)",
+    "provider": {
+      "@type": "Organization",
+      "name": "Anthropic",
+      "url": "https://www.anthropic.com"
+    }
+  },
+  "author": {
+    "@type": "Person",
+    "name": "James Buckett",
+    "url": "https://github.com/jamesbuckett",
+    "jobTitle": "Product Manager"
+  },
+  "dateModified": "2026-04-19"
+}
+</script>
+
+<!-- JSON-LD: FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is this guide official? Is it affiliated with Anthropic?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. This is an independent study resource written and maintained by James Buckett. It is not affiliated with, endorsed by, or reviewed by Anthropic. Always cross-check critical details against Anthropic's official exam page before sitting the exam."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How current is this guide? When was it last updated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Last updated April 2026 (v2026.03). The guide is versioned against the CCA-F blueprint published by Anthropic. If Anthropic changes the exam blueprint, domain weights, or scoring model, the guide may lag by a few weeks."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What experience do I need before attempting the CCA-F?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Anthropic positions the CCA-F as an associate-level certification. Most passers have at least 6 months of hands-on work with Claude Code, the Claude API, MCP servers, and real agent loops in production."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is this different from reading Anthropic's official documentation?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Anthropic's docs are exhaustive but not exam-shaped. This guide is structured around the five exam domains and their relative weights, and gives practice in the scenario-question format the exam uses. Use the official docs as the source of truth; use this guide to know where to look."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I actually register for the exam?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Registration runs through Anthropic's certification portal. The exam is remotely proctored, 60 questions over 120 minutes, scored 100–1,000, with 720 to pass. Registration fee at time of writing is $99 USD."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "I found an error or want to suggest an improvement. How?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Open an issue on the GitHub repo linked in the footer, or DM the author on the social links in the hero. Corrections and new practice questions are welcome."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     DESIGN TOKENS
+     ============================================================ */
+  :root {
+    /* Spacing scale */
+    --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
+    --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px;
+
+    /* Domain palette - consistent across themes */
+    --d1: #4F46E5;   /* Agentic — Indigo */
+    --d1-soft: #EEF2FF;
+    --d2: #059669;   /* Tools/MCP — Emerald */
+    --d2-soft: #ECFDF5;
+    --d3: #D97706;   /* Claude Code — Amber */
+    --d3-soft: #FFFBEB;
+    --d4: #E11D48;   /* Prompt Eng — Rose */
+    --d4-soft: #FFF1F2;
+    --d5: #0891B2;   /* Context — Cyan */
+    --d5-soft: #ECFEFF;
+
+    /* Semantic */
+    --ok: #16A34A;
+    --bad: #DC2626;
+    --warn: #D97706;
+
+    /* Light theme */
+    --bg: #FAFAF7;
+    --surface: #FFFFFF;
+    --surface-2: #F4F4EF;
+    --text: #0A0A0A;
+    --text-dim: #52525B;
+    --text-faint: #A1A1AA;
+    --border: #E5E7EB;
+    --border-strong: #D4D4D8;
+    --accent: #0A0A0A;
+    --accent-ink: #FFFFFF;
+    --shadow-sm: 0 1px 0 rgba(0,0,0,0.04);
+    --shadow-md: 0 2px 8px rgba(0,0,0,0.06);
+    --grid-line: rgba(0,0,0,0.04);
+  }
+
+  [data-theme="dark"] {
+    --bg: #0B0B0F;
+    --surface: #141418;
+    --surface-2: #1C1C22;
+    --text: #F5F5F0;
+    --text-dim: #A1A1AA;
+    --text-faint: #52525B;
+    --border: #27272A;
+    --border-strong: #3F3F46;
+    --accent: #F5F5F0;
+    --accent-ink: #0A0A0A;
+    --shadow-sm: 0 1px 0 rgba(0,0,0,0.2);
+    --shadow-md: 0 2px 12px rgba(0,0,0,0.4);
+    --grid-line: rgba(255,255,255,0.04);
+    --d1-soft: rgba(79,70,229,0.12);
+    --d2-soft: rgba(5,150,105,0.12);
+    --d3-soft: rgba(217,119,6,0.14);
+    --d4-soft: rgba(225,29,72,0.12);
+    --d5-soft: rgba(8,145,178,0.12);
+  }
+
+  /* ============================================================
+     BASE
+     ============================================================ */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Atkinson Hyperlegible', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 48px 48px;
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+
+  h1, h2, h3, h4 { font-family: 'Atkinson Hyperlegible', sans-serif; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; margin: 0; }
+  h1 { font-size: clamp(2.5rem, 6vw, 4.25rem); }
+  h2 { font-size: clamp(1.75rem, 3.5vw, 2.5rem); }
+  h3 { font-size: clamp(1.15rem, 2vw, 1.35rem); }
+  h4 { font-size: 1rem; }
+  p { margin: 0 0 var(--s-3); color: var(--text-dim); }
+  a { color: inherit; }
+
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; font-feature-settings: 'ss01'; }
+  .caps { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.72rem; font-weight: 500; }
+  .muted { color: var(--text-dim); }
+  .faint { color: var(--text-faint); }
+
+  /* ============================================================
+     LAYOUT
+     ============================================================ */
+  .layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    border-right: 1px solid var(--border);
+    background: var(--surface);
+    padding: var(--s-5) var(--s-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+    overflow-y: auto;
+    z-index: 40;
+  }
+  .brand { display: flex; align-items: center; gap: var(--s-3); }
+  .brand-mark {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--text);
+    border-radius: 8px;
+    display: grid; place-items: center;
+    background: var(--surface);
+    flex-shrink: 0;
+  }
+  .brand-name { font-weight: 700; letter-spacing: -0.02em; font-size: 0.95rem; line-height: 1.2; }
+  .brand-sub { font-size: 0.72rem; color: var(--text-dim); }
+
+  .nav-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; }
+  .nav-item {
+    display: flex; align-items: center; gap: var(--s-3);
+    padding: var(--s-2) var(--s-3);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: all 150ms ease;
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+  .nav-item:hover { background: var(--surface-2); color: var(--text); }
+  .nav-item.active { background: var(--surface-2); color: var(--text); border-color: var(--border); }
+  .nav-num { font-family: 'JetBrains Mono'; font-size: 0.72rem; color: var(--text-faint); min-width: 20px; }
+  .nav-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  .sidebar-footer { margin-top: auto; display: flex; flex-direction: column; gap: var(--s-3); }
+  .progress-wrap { padding: var(--s-4); border: 1px solid var(--border); border-radius: 8px; background: var(--bg); }
+  .progress-label { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.75rem; }
+  .progress-bar { height: 4px; background: var(--surface-2); border-radius: 2px; overflow: hidden; margin-top: var(--s-2); }
+  .progress-fill { height: 100%; background: var(--text); transition: width 300ms ease; }
+
+  .theme-toggle {
+    display: flex; align-items: center; gap: var(--s-2);
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text);
+    font: inherit; font-size: 0.85rem;
+    transition: all 150ms ease;
+  }
+  .theme-toggle:hover { background: var(--surface-2); }
+
+  /* Main */
+  main { min-width: 0; }
+  section {
+    padding: var(--s-9) var(--s-7);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  section:last-child { border-bottom: none; }
+  .section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--s-5); margin-bottom: var(--s-7); flex-wrap: wrap; }
+  .section-eyebrow { display: flex; align-items: center; gap: var(--s-3); color: var(--text-dim); }
+  .section-num { font-family: 'JetBrains Mono'; font-size: 0.75rem; color: var(--text-faint); letter-spacing: 0.08em; }
+  .section-tag { font-family: 'JetBrains Mono'; font-size: 0.7rem; padding: 3px 8px; border: 1px solid var(--border); border-radius: 99px; background: var(--surface); color: var(--text-dim); }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .hero {
+    padding: var(--s-9) var(--s-7) var(--s-8);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--s-8);
+    align-items: center;
+  }
+  .hero-stamp {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-family: 'JetBrains Mono';
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    background: var(--bg);
+    margin-bottom: var(--s-5);
+  }
+  .hero h1 { margin-bottom: var(--s-4); }
+  .hero h1 em { font-style: normal; color: var(--d1); position: relative; }
+  .hero h1 em::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -4px;
+    height: 3px; background: var(--d1);
+    transform-origin: left; animation: grow 800ms ease forwards;
+  }
+  @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  .hero-lede { font-size: 1.1rem; max-width: 52ch; margin-bottom: var(--s-5); color: var(--text-dim); }
+  .hero-meta { display: flex; gap: var(--s-5); flex-wrap: wrap; }
+  .hero-meta-item { display: flex; flex-direction: column; gap: 2px; }
+  .hero-meta-item .mono { font-size: 1.15rem; color: var(--text); font-weight: 600; }
+  .hero-meta-item .caps { color: var(--text-faint); }
+
+  .hero-byline {
+    margin-top: var(--s-6);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--s-4);
+    flex-wrap: wrap;
+  }
+  .hero-byline-author {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+  }
+  .hero-byline-label {
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.68rem;
+  }
+  .hero-byline-name { color: var(--text); font-weight: 600; }
+  .hero-byline-sep {
+    display: inline-block;
+    width: 1px;
+    height: 12px;
+    background: var(--border-strong);
+  }
+  .hero-byline-title { color: var(--text-dim); }
+  .hero-byline-social {
+    display: flex;
+    gap: var(--s-2);
+    flex-wrap: wrap;
+  }
+  .hero-byline-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    padding: 6px var(--s-3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    background: var(--bg);
+    transition: color 160ms ease, border-color 160ms ease, transform 160ms ease, background-color 160ms ease;
+  }
+  .hero-byline-link:hover {
+    color: var(--text);
+    border-color: var(--text);
+    background: var(--surface);
+    transform: translateY(-1px);
+  }
+  .hero-byline-link:focus-visible {
+    outline: 2px solid var(--d1);
+    outline-offset: 2px;
+  }
+  .hero-byline-link svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .hero-roadmap {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: var(--s-5);
+    position: relative;
+  }
+
+  /* ============================================================
+     EXAM AT A GLANCE
+     ============================================================ */
+  .tile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--s-4);
+  }
+  .tile {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: var(--s-5);
+    display: flex; flex-direction: column; gap: var(--s-3);
+    transition: all 200ms ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .tile:hover { border-color: var(--border-strong); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .tile-icon {
+    width: 40px; height: 40px; border-radius: 8px;
+    display: grid; place-items: center;
+    background: var(--surface-2);
+    color: var(--text);
+  }
+  .tile-value { font-family: 'JetBrains Mono'; font-size: 1.75rem; font-weight: 600; color: var(--text); line-height: 1; }
+  .tile-label { font-size: 0.95rem; font-weight: 700; }
+  .tile-note { font-size: 0.8rem; color: var(--text-dim); }
+
+  /* ============================================================
+     DOMAINS
+     ============================================================ */
+  .domain {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    margin-bottom: var(--s-4);
+    overflow: hidden;
+    transition: border-color 200ms ease;
+  }
+  .domain[data-open="true"] { border-color: var(--border-strong); }
+  .domain-header {
+    display: grid;
+    grid-template-columns: 48px 1fr auto auto;
+    gap: var(--s-4);
+    align-items: center;
+    padding: var(--s-5);
+    cursor: pointer;
+    user-select: none;
+  }
+  .domain-header:hover { background: var(--surface-2); }
+  .domain-chip {
+    width: 48px; height: 48px; border-radius: 10px;
+    display: grid; place-items: center;
+    font-family: 'JetBrains Mono'; font-weight: 600;
+    color: white; font-size: 1.1rem;
+  }
+  .d1-bg { background: var(--d1); }
+  .d2-bg { background: var(--d2); }
+  .d3-bg { background: var(--d3); }
+  .d4-bg { background: var(--d4); }
+  .d5-bg { background: var(--d5); }
+  .d1-ink { color: var(--d1); }
+  .d2-ink { color: var(--d2); }
+  .d3-ink { color: var(--d3); }
+  .d4-ink { color: var(--d4); }
+  .d5-ink { color: var(--d5); }
+  .d1-soft { background: var(--d1-soft); }
+  .d2-soft { background: var(--d2-soft); }
+  .d3-soft { background: var(--d3-soft); }
+  .d4-soft { background: var(--d4-soft); }
+  .d5-soft { background: var(--d5-soft); }
+
+  .domain-title { font-size: 1.2rem; font-weight: 700; }
+  .domain-sub { font-size: 0.85rem; color: var(--text-dim); }
+  .domain-weight { font-family: 'JetBrains Mono'; font-weight: 600; font-size: 1.1rem; }
+  .chevron { transition: transform 200ms ease; color: var(--text-dim); }
+  .domain[data-open="true"] .chevron { transform: rotate(180deg); }
+
+  .domain-body {
+    display: none;
+    border-top: 1px solid var(--border);
+    padding: var(--s-6);
+  }
+  .domain[data-open="true"] .domain-body { display: block; }
+  .domain-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: var(--s-6);
+    margin-bottom: var(--s-6);
+  }
+
+  .stat-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: var(--s-5);
+    display: flex; flex-direction: column; align-items: center; gap: var(--s-3);
+  }
+  .stat-label { font-size: 0.8rem; color: var(--text-dim); }
+
+  .task-list { list-style: none; padding: 0; margin: var(--s-3) 0 0; display: flex; flex-direction: column; gap: var(--s-2); }
+  .task-list li {
+    display: flex; gap: var(--s-3); align-items: flex-start;
+    padding: var(--s-3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    font-size: 0.9rem;
+  }
+  .task-list li::before {
+    content: '→'; color: var(--text-faint);
+    font-family: 'JetBrains Mono'; flex-shrink: 0;
+  }
+
+  .concept-map {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: var(--s-4);
+    margin: var(--s-4) 0;
+    overflow: hidden;
+  }
+
+  .subhead {
+    display: flex; align-items: center; gap: var(--s-3);
+    margin-top: var(--s-6); margin-bottom: var(--s-3);
+  }
+  .subhead .caps { color: var(--text-dim); }
+  .subhead::before {
+    content: ''; width: 16px; height: 1px; background: var(--border-strong);
+  }
+
+  /* Flashcards */
+  .flashcards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--s-3); }
+  .flashcard {
+    perspective: 1000px;
+    height: 140px;
+    cursor: pointer;
+  }
+  .flashcard-inner {
+    position: relative; width: 100%; height: 100%;
+    transition: transform 400ms cubic-bezier(.2,.8,.2,1);
+    transform-style: preserve-3d;
+  }
+  .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+  .flashcard-face {
+    position: absolute; inset: 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: var(--s-4);
+    display: flex; flex-direction: column; justify-content: space-between;
+    -webkit-backface-visibility: hidden; backface-visibility: hidden;
+    background: var(--surface);
+  }
+  .flashcard-face.back { transform: rotateY(180deg); background: var(--surface-2); }
+  .flashcard-term { font-size: 1rem; font-weight: 700; letter-spacing: -0.01em; }
+  .flashcard-hint { font-size: 0.7rem; color: var(--text-faint); display: flex; align-items: center; gap: 4px; }
+  .flashcard-def { font-size: 0.82rem; color: var(--text-dim); line-height: 1.5; }
+
+  /* Traps panel */
+  .traps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); }
+  .trap-col {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: var(--s-4);
+    background: var(--bg);
+  }
+  .trap-col.dont { border-left: 3px solid var(--bad); }
+  .trap-col.do { border-left: 3px solid var(--ok); }
+  .trap-col h4 { display: flex; align-items: center; gap: var(--s-2); font-size: 0.82rem; margin-bottom: var(--s-3); letter-spacing: 0.08em; text-transform: uppercase; }
+  .trap-col.dont h4 { color: var(--bad); }
+  .trap-col.do h4 { color: var(--ok); }
+  .trap-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--s-3); }
+  .trap-col li { font-size: 0.85rem; display: flex; gap: var(--s-2); align-items: flex-start; }
+  .trap-col li::before {
+    content: ''; display: inline-block; width: 10px; height: 10px; margin-top: 6px; flex-shrink: 0;
+    border-radius: 2px;
+  }
+  .trap-col.dont li::before { background: var(--bad); }
+  .trap-col.do li::before { background: var(--ok); }
+
+  /* ============================================================
+     SCENARIOS
+     ============================================================ */
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--s-4);
+  }
+  .scenario {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: var(--s-5);
+    cursor: pointer;
+    transition: all 200ms ease;
+    position: relative;
+    display: flex; flex-direction: column; gap: var(--s-3);
+  }
+  .scenario:hover { border-color: var(--border-strong); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .scenario-chips { display: flex; gap: 4px; flex-wrap: wrap; }
+  .chip { font-family: 'JetBrains Mono'; font-size: 0.68rem; padding: 3px 8px; border-radius: 99px; color: white; }
+  .scenario-num { font-family: 'JetBrains Mono'; font-size: 0.72rem; color: var(--text-faint); }
+  .scenario-title { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; }
+  .scenario-desc { font-size: 0.85rem; color: var(--text-dim); }
+  .scenario-expand {
+    margin-top: auto;
+    font-size: 0.78rem; color: var(--text-dim);
+    display: flex; align-items: center; gap: 4px;
+    padding-top: var(--s-3);
+    border-top: 1px solid var(--border);
+  }
+  .scenario-diagram {
+    display: none;
+    margin-top: var(--s-3);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: var(--s-4);
+  }
+  .scenario.open .scenario-diagram { display: block; }
+  .scenario.open .scenario-expand svg { transform: rotate(180deg); }
+  .scenario-expand svg { transition: transform 200ms ease; }
+
+  /* ============================================================
+     MENTAL MODELS
+     ============================================================ */
+  .models-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: var(--s-4);
+  }
+  .model {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: var(--s-5);
+    display: flex; flex-direction: column; gap: var(--s-3);
+  }
+  .model-title { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; }
+  .model-body { font-size: 0.85rem; color: var(--text-dim); line-height: 1.55; }
+  .model-svg-wrap {
+    background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+    padding: var(--s-4); aspect-ratio: 4/3;
+    display: grid; place-items: center;
+  }
+  .model-svg-wrap svg { width: 100%; height: 100%; }
+
+  /* ============================================================
+     STUDY PLAN
+     ============================================================ */
+  .gantt {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: var(--s-4);
+    overflow-x: auto;
+  }
+  .gantt-grid {
+    display: grid;
+    grid-template-columns: 220px repeat(12, minmax(40px, 1fr));
+    gap: 0;
+    min-width: 900px;
+  }
+  .gantt-header {
+    display: contents;
+  }
+  .gantt-header > div {
+    font-family: 'JetBrains Mono';
+    font-size: 0.7rem;
+    color: var(--text-faint);
+    padding: var(--s-2);
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .gantt-header > div:first-child { text-align: left; color: var(--text-dim); }
+  .gantt-row { display: contents; }
+  .gantt-row > div {
+    padding: var(--s-3);
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+    position: relative;
+    min-height: 44px;
+    display: flex; align-items: center;
+  }
+  .gantt-row > div:first-child {
+    gap: var(--s-2);
+  }
+  .gantt-check {
+    width: 16px; height: 16px; border-radius: 3px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    cursor: pointer; flex-shrink: 0;
+    display: grid; place-items: center;
+    transition: all 150ms ease;
+  }
+  .gantt-check.checked { background: var(--text); border-color: var(--text); }
+  .gantt-check svg { opacity: 0; color: var(--accent-ink); width: 10px; height: 10px; }
+  .gantt-check.checked svg { opacity: 1; }
+  .gantt-bar {
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    height: 18px; border-radius: 4px;
+    padding-left: 8px;
+    font-family: 'JetBrains Mono'; font-size: 0.65rem;
+    color: white;
+    display: flex; align-items: center;
+    line-height: 1;
+    box-shadow: var(--shadow-sm);
+  }
+  .gantt-cell { border-left: 1px solid var(--grid-line); }
+  .study-plan-summary {
+    display: flex; gap: var(--s-4); align-items: center; margin-bottom: var(--s-4);
+    padding: var(--s-4); border: 1px solid var(--border); border-radius: 10px;
+    background: var(--surface);
+  }
+
+  /* ============================================================
+     QUIZ
+     ============================================================ */
+  .quiz-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: var(--s-6);
+    max-width: 900px;
+  }
+  .quiz-progress {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: var(--s-4);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: var(--s-5);
+  }
+  .q-pips { display: flex; gap: 4px; }
+  .q-pip {
+    width: 20px; height: 4px; border-radius: 2px;
+    background: var(--surface-2);
+    transition: background 150ms ease;
+  }
+  .q-pip.done { background: var(--text); }
+  .q-pip.current { background: var(--d1); }
+
+  .q-number { font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--text-faint); letter-spacing: 0.1em; margin-bottom: var(--s-3); }
+  .q-text { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: var(--s-5); line-height: 1.4; }
+  .q-options { display: flex; flex-direction: column; gap: var(--s-2); margin-bottom: var(--s-5); }
+  .q-option {
+    padding: var(--s-4);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    cursor: pointer;
+    display: grid; grid-template-columns: auto 1fr; gap: var(--s-3);
+    font-size: 0.92rem;
+    text-align: left;
+    font-family: inherit;
+    color: var(--text);
+    transition: all 150ms ease;
+  }
+  .q-option:hover:not(:disabled) { border-color: var(--border-strong); background: var(--surface-2); }
+  .q-option-letter {
+    font-family: 'JetBrains Mono'; font-weight: 600;
+    width: 24px; height: 24px; border-radius: 4px;
+    background: var(--surface); border: 1px solid var(--border);
+    display: grid; place-items: center;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+  }
+  .q-option.correct { border-color: var(--ok); background: rgba(22,163,74,0.06); }
+  .q-option.correct .q-option-letter { background: var(--ok); color: white; border-color: var(--ok); }
+  .q-option.incorrect { border-color: var(--bad); background: rgba(220,38,38,0.06); }
+  .q-option.incorrect .q-option-letter { background: var(--bad); color: white; border-color: var(--bad); }
+  .q-option:disabled { cursor: default; }
+
+  .q-feedback {
+    display: none;
+    margin-bottom: var(--s-5);
+    padding: var(--s-4);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+  }
+  .q-feedback.show { display: block; }
+  .q-feedback-head { display: flex; align-items: center; gap: var(--s-2); margin-bottom: var(--s-3); font-weight: 700; font-size: 0.92rem; }
+  .q-feedback-head.ok { color: var(--ok); }
+  .q-feedback-head.bad { color: var(--bad); }
+  .q-explain { font-size: 0.9rem; }
+  .q-explain-viz { margin-top: var(--s-3); padding: var(--s-3); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; }
+
+  .q-actions { display: flex; justify-content: space-between; align-items: center; }
+  .btn {
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font: inherit; font-size: 0.9rem; font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    transition: all 150ms ease;
+  }
+  .btn:hover { background: var(--surface-2); border-color: var(--border-strong); }
+  .btn-primary { background: var(--text); color: var(--accent-ink); border-color: var(--text); }
+  .btn-primary:hover { background: var(--text); opacity: 0.88; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .q-results { display: none; }
+  .q-results.show { display: block; }
+  .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-6); align-items: center; }
+  .score-display { display: flex; flex-direction: column; align-items: center; gap: var(--s-3); }
+  .score-big { font-family: 'JetBrains Mono'; font-size: 4rem; font-weight: 600; letter-spacing: -0.04em; line-height: 1; }
+  .score-bar { width: 100%; height: 8px; background: var(--surface-2); border-radius: 4px; overflow: hidden; position: relative; }
+  .score-bar-fill { height: 100%; transition: width 800ms ease; }
+  .score-bar-threshold {
+    position: absolute; top: -4px; bottom: -4px; width: 2px;
+    background: var(--text-faint);
+  }
+
+  /* ============================================================
+     GLOSSARY
+     ============================================================ */
+  .glossary-head { display: flex; gap: var(--s-3); align-items: center; margin-bottom: var(--s-5); flex-wrap: wrap; }
+  .search-wrap {
+    flex: 1; max-width: 420px;
+    position: relative;
+  }
+  .search-input {
+    width: 100%;
+    padding: var(--s-3) var(--s-3) var(--s-3) 40px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    font: inherit; font-size: 0.9rem;
+    color: var(--text);
+  }
+  .search-input:focus { outline: 2px solid var(--d1); outline-offset: -1px; border-color: transparent; }
+  .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-faint); }
+  .filter-chips { display: flex; gap: 4px; flex-wrap: wrap; }
+  .filter-chip {
+    padding: 6px 12px; border-radius: 99px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-family: 'JetBrains Mono'; font-size: 0.72rem;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 150ms ease;
+  }
+  .filter-chip:hover { background: var(--surface-2); }
+  .filter-chip.active { background: var(--text); color: var(--accent-ink); border-color: var(--text); }
+
+  .glossary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--s-3);
+  }
+  .term {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: var(--s-4);
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: var(--s-3);
+    transition: all 150ms ease;
+  }
+  .term:hover { border-color: var(--border-strong); }
+  .term-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: grid; place-items: center;
+    background: var(--surface-2);
+  }
+  .term-name { font-weight: 700; font-size: 0.92rem; margin-bottom: 2px; display: flex; align-items: center; gap: var(--s-2); }
+  .term-pill { font-family: 'JetBrains Mono'; font-size: 0.62rem; padding: 1px 6px; border-radius: 3px; color: white; }
+  .term-def { font-size: 0.8rem; color: var(--text-dim); line-height: 1.45; }
+  .no-results { padding: var(--s-6); text-align: center; color: var(--text-dim); grid-column: 1 / -1; }
+
+  /* ============================================================
+     CHEAT SHEET
+     ============================================================ */
+  .cheat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: var(--s-6);
+  }
+  .cheat-head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding-bottom: var(--s-4); margin-bottom: var(--s-5);
+    border-bottom: 2px solid var(--text);
+  }
+  .cheat-title h3 { font-size: 1.5rem; }
+  .cheat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--s-4);
+  }
+  .cheat-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: var(--s-4);
+    display: flex; flex-direction: column; gap: var(--s-3);
+  }
+  .cheat-card h4 { font-size: 0.95rem; letter-spacing: -0.01em; display: flex; align-items: center; gap: var(--s-2); }
+  .cheat-card h4::before {
+    content: ''; width: 10px; height: 10px; border-radius: 2px;
+    display: inline-block;
+  }
+  .cheat-card.c1 h4::before { background: var(--d1); }
+  .cheat-card.c2 h4::before { background: var(--d2); }
+  .cheat-card.c3 h4::before { background: var(--d3); }
+  .cheat-card.c4 h4::before { background: var(--d4); }
+  .cheat-card.c5 h4::before { background: var(--d5); }
+  .cheat-card ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  .cheat-card li { font-size: 0.82rem; display: flex; gap: var(--s-2); align-items: flex-start; color: var(--text-dim); }
+  .cheat-card li::before { content: '·'; color: var(--text-faint); font-weight: 700; }
+
+  .print-btn { position: absolute; top: var(--s-5); right: var(--s-7); }
+
+  /* ============================================================
+     MOBILE
+     ============================================================ */
+  .mobile-nav-toggle {
+    display: none;
+    position: fixed; top: 16px; left: 16px;
+    z-index: 60;
+    width: 44px; height: 44px;
+    border: 1px solid var(--border); background: var(--surface);
+    border-radius: 8px; cursor: pointer;
+    color: var(--text);
+    align-items: center; justify-content: center;
+  }
+
+  @media (max-width: 960px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar {
+      position: fixed; top: 0; left: 0; bottom: 0;
+      width: 280px; transform: translateX(-100%);
+      transition: transform 200ms ease;
+      z-index: 50;
+    }
+    .sidebar.open { transform: translateX(0); }
+    .mobile-nav-toggle { display: inline-flex; }
+    section, .hero { padding: var(--s-7) var(--s-5); }
+    .hero-grid, .domain-grid, .results-grid { grid-template-columns: 1fr; }
+    .hero-roadmap { aspect-ratio: 3/2; }
+    .traps-grid { grid-template-columns: 1fr; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .print-btn { position: static; }
+    body { background-size: 32px 32px; }
+  }
+  @media (max-width: 520px) {
+    .flashcards { grid-template-columns: 1fr 1fr; }
+    h1 { font-size: 2.2rem; }
+  }
+
+  /* ============================================================
+     PRINT
+     ============================================================ */
+  @media print {
+    body { background: white; color: black; background-image: none; }
+    .sidebar, .mobile-nav-toggle, .theme-toggle, .print-btn { display: none !important; }
+    section:not(#cheat-sheet) { display: none; }
+    .layout { display: block; }
+    #cheat-sheet { padding: 0; border: none; }
+    .cheat { border: none; padding: 0; }
+    .cheat-card { break-inside: avoid; }
+    .cheat-grid { grid-template-columns: repeat(3, 1fr); }
+    @page { margin: 1.5cm; }
+  }
+
+  /* ============================================================
+     UTILITY
+     ============================================================ */
+  .reveal { opacity: 0; transform: translateY(12px); transition: opacity 500ms ease, transform 500ms ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .divider { height: 1px; background: var(--border); margin: var(--s-5) 0; }
+  svg { display: block; }
+  .visually-hidden {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0);
+    white-space: nowrap; border: 0;
+  }
+
+  /* ============================================================
+     HERO ADDITIONS — audience, CTA row, byline creds, disclaimer
+     ============================================================ */
+  .hero-audience {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin: var(--s-4) 0 var(--s-3);
+    max-width: 60ch;
+    line-height: 1.5;
+  }
+  .hero-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin-top: var(--s-5);
+    margin-bottom: var(--s-5);
+  }
+  .hero-cta {
+    text-decoration: none;
+    padding: var(--s-3) var(--s-5);
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    transition: transform 150ms ease, background-color 150ms ease, border-color 150ms ease, opacity 150ms ease;
+  }
+  .hero-cta:hover { transform: translateY(-1px); }
+  .hero-cta:focus-visible {
+    outline: 2px solid var(--d1);
+    outline-offset: 3px;
+  }
+  .hero-byline-identity {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .hero-byline-primary {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    flex-wrap: wrap;
+  }
+  .hero-byline-creds {
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+    letter-spacing: 0;
+  }
+  .hero-disclaimer {
+    margin-top: var(--s-4);
+    padding-top: var(--s-3);
+    border-top: 1px dashed var(--border);
+    font-size: 0.72rem;
+    color: var(--text-faint);
+    font-style: italic;
+    line-height: 1.5;
+    max-width: 72ch;
+  }
+
+  /* ============================================================
+     DOMAIN HEADER (now <button> inside <h3>)
+     ============================================================ */
+  .domain-heading {
+    /* neutralise default h3 styling — the button carries the visual weight */
+    margin: 0;
+    padding: 0;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: 0;
+    line-height: inherit;
+  }
+  /* Override .domain-header styling because it's now a <button> */
+  button.domain-header {
+    width: 100%;
+    background: none;
+    border: none;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+  }
+  button.domain-header:focus-visible {
+    outline: 2px solid var(--d1);
+    outline-offset: -2px;
+    background: var(--surface-2);
+  }
+  .domain-header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .domain-header-text .domain-title { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em; }
+  .domain-header-text .domain-sub { font-size: 0.85rem; color: var(--text-dim); font-weight: 400; }
+
+  /* ============================================================
+     QUIZ NEXT STEPS (post-results CTA strip)
+     ============================================================ */
+  .quiz-next {
+    margin-top: var(--s-5);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--s-5);
+    flex-wrap: wrap;
+  }
+  .quiz-next-prompt { flex: 1; min-width: 240px; }
+  .quiz-next-headline {
+    font-size: 0.95rem;
+    margin-top: 4px;
+    color: var(--text);
+  }
+  .quiz-next-actions {
+    display: flex;
+    gap: var(--s-2);
+    flex-wrap: wrap;
+  }
+  .quiz-next-actions .btn { text-decoration: none; }
+
+  /* ============================================================
+     FAQ
+     ============================================================ */
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    max-width: 860px;
+  }
+  .faq-item {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    overflow: hidden;
+    transition: border-color 150ms ease;
+  }
+  .faq-item[open] { border-color: var(--border-strong); }
+  .faq-q {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--s-4);
+    padding: var(--s-4) var(--s-5);
+    cursor: pointer;
+    list-style: none;
+    font-weight: 600;
+    font-size: 0.98rem;
+    user-select: none;
+    color: var(--text);
+  }
+  .faq-q::-webkit-details-marker { display: none; }
+  .faq-q:hover { background: var(--surface-2); }
+  .faq-q:focus-visible {
+    outline: 2px solid var(--d1);
+    outline-offset: -2px;
+  }
+  .faq-chev {
+    flex-shrink: 0;
+    color: var(--text-dim);
+    transition: transform 200ms ease;
+  }
+  .faq-item[open] .faq-chev { transform: rotate(180deg); }
+  .faq-a {
+    padding: 0 var(--s-5) var(--s-5);
+    border-top: 1px solid var(--border);
+    padding-top: var(--s-4);
+  }
+  .faq-a p { color: var(--text-dim); font-size: 0.92rem; line-height: 1.65; margin: 0; }
+  .faq-a a { color: var(--text); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+
+  /* ============================================================
+     REGISTER SECTION
+     ============================================================ */
+  .register-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: var(--s-7);
+    align-items: start;
+  }
+  @media (max-width: 860px) {
+    .register-grid { grid-template-columns: 1fr; }
+  }
+  .register-primary {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 10px;
+    padding: var(--s-6);
+  }
+  .register-steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+    margin-bottom: var(--s-6);
+  }
+  .register-step {
+    display: flex;
+    gap: var(--s-4);
+    align-items: flex-start;
+  }
+  .register-step-num {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-dim);
+    flex-shrink: 0;
+    padding: 4px 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    letter-spacing: 0.08em;
+  }
+  .register-step-title {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 4px;
+  }
+  .register-step-body {
+    color: var(--text-dim);
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+  .register-cta-row {
+    display: flex;
+    gap: var(--s-3);
+    flex-wrap: wrap;
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--border);
+  }
+  .register-cta {
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .register-tips {
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--d3);
+    background: var(--surface);
+    border-radius: 6px;
+    padding: var(--s-5);
+  }
+  .register-tips .faint { margin-bottom: var(--s-3); display: block; }
+  .register-tip-list {
+    margin: 0;
+    padding-left: var(--s-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+  .register-tip-list li {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    line-height: 1.55;
+  }
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    padding: var(--s-8) var(--s-7) var(--s-6);
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: var(--s-7);
+    margin-bottom: var(--s-7);
+  }
+  @media (max-width: 860px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .footer-brand { grid-column: 1 / -1; }
+  }
+  @media (max-width: 560px) {
+    .footer-grid { grid-template-columns: 1fr; }
+  }
+  .footer-col-head {
+    margin-bottom: var(--s-3);
+    display: block;
+  }
+  .footer-disclaimer {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    max-width: 48ch;
+    margin: 0;
+  }
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+  .footer-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 150ms ease;
+  }
+  .footer-links a:hover { color: var(--text); }
+  .footer-links a:focus-visible {
+    outline: 2px solid var(--d1);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  .footer-base {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--border);
+    font-size: 0.72rem;
+    flex-wrap: wrap;
+  }
+</style>
+</head>
+<body>
+
+<!-- Mobile nav toggle -->
+<button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+
+<div class="layout">
+
+  <!-- ============================================================
+       SIDEBAR
+       ============================================================ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+      </div>
+      <div>
+        <div class="brand-name">CCA-F Atlas</div>
+        <div class="brand-sub mono">v2026.03</div>
+      </div>
+    </div>
+
+    <nav aria-label="Section navigation">
+      <ul class="nav-list">
+        <li><a class="nav-item" href="#hero"><span class="nav-num">00</span>Overview</a></li>
+        <li><a class="nav-item" href="#at-a-glance"><span class="nav-num">01</span>At a Glance</a></li>
+        <li><a class="nav-item" href="#domains"><span class="nav-num">02</span>Domain Deep-Dives</a></li>
+        <li><a class="nav-item" href="#scenarios"><span class="nav-num">03</span>Scenario Gallery</a></li>
+        <li><a class="nav-item" href="#mental-models"><span class="nav-num">04</span>Mental Models</a></li>
+        <li><a class="nav-item" href="#study-plan"><span class="nav-num">05</span>12-Week Plan</a></li>
+        <li><a class="nav-item" href="#quiz"><span class="nav-num">06</span>Practice Quiz</a></li>
+        <li><a class="nav-item" href="#glossary"><span class="nav-num">07</span>Glossary</a></li>
+        <li><a class="nav-item" href="#cheat-sheet"><span class="nav-num">08</span>Cheat Sheet</a></li>
+        <li><a class="nav-item" href="#faq"><span class="nav-num">09</span>FAQ</a></li>
+        <li><a class="nav-item" href="#register"><span class="nav-num">10</span>Register</a></li>
+      </ul>
+    </nav>
+
+    <div class="subhead"><span class="caps">Domains</span></div>
+    <ul class="nav-list" style="margin-top: -12px;">
+      <li><a class="nav-item" href="#domain-1"><span class="nav-dot" style="background: var(--d1)"></span>Agentic Architecture</a></li>
+      <li><a class="nav-item" href="#domain-2"><span class="nav-dot" style="background: var(--d2)"></span>Tools &amp; MCP</a></li>
+      <li><a class="nav-item" href="#domain-3"><span class="nav-dot" style="background: var(--d3)"></span>Claude Code</a></li>
+      <li><a class="nav-item" href="#domain-4"><span class="nav-dot" style="background: var(--d4)"></span>Prompt Engineering</a></li>
+      <li><a class="nav-item" href="#domain-5"><span class="nav-dot" style="background: var(--d5)"></span>Context Management</a></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span class="caps">Study Progress</span>
+          <span class="mono" id="progressPct">0%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      </div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <span id="themeLabel">Dark mode</span>
+      </button>
+    </div>
+  </aside>
+
+  <main>
+
+    <!-- ============================================================
+         HERO
+         ============================================================ -->
+    <section class="hero" id="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="hero-stamp">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/></svg>
+            UPDATED APR 2026 · UNOFFICIAL STUDY GUIDE
+          </div>
+          <p class="hero-audience">For AI engineers and solution architects sitting Anthropic's CCA-F exam in the next 12 weeks.</p>
+          <h1>Pass Anthropic's <em>CCA-F</em> exam.<br>Visually.</h1>
+          <p class="hero-lede">Cut your CCA-F prep from months to weeks. Every exam domain mapped to a diagram, a production scenario, and a drilled flashcard — with a 15-question mock and a printable one-page cheat sheet.</p>
+          <div class="hero-cta-row">
+            <a class="btn btn-primary hero-cta" href="#quiz">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+              Start the 15-question mock
+            </a>
+            <a class="btn hero-cta" href="#cheat-sheet">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+              Grab the cheat sheet
+            </a>
+          </div>
+          <div class="hero-meta">
+            <div class="hero-meta-item"><span class="mono">60</span><span class="caps">Questions</span></div>
+            <div class="hero-meta-item"><span class="mono">120m</span><span class="caps">Time</span></div>
+            <div class="hero-meta-item"><span class="mono">720</span><span class="caps">Pass Score</span></div>
+            <div class="hero-meta-item"><span class="mono">$99</span><span class="caps">Fee</span></div>
+          </div>
+          <div class="hero-byline">
+            <div class="hero-byline-author">
+              <span class="hero-byline-label">By</span>
+              <div class="hero-byline-identity">
+                <div class="hero-byline-primary">
+                  <span class="hero-byline-name">James Buckett</span>
+                  <span class="hero-byline-sep" aria-hidden="true"></span>
+                  <span class="hero-byline-title">Product Manager</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-byline-social">
+              <a class="hero-byline-link" href="https://github.com/jamesbuckett" target="_blank" rel="noopener noreferrer" aria-label="GitHub: jamesbuckett">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+                <span>jamesbuckett</span>
+              </a>
+              <a class="hero-byline-link" href="https://www.linkedin.com/in/jamesbuckett" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn: jamesbuckett">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                <span>jamesbuckett</span>
+              </a>
+              <a class="hero-byline-link" href="https://twitter.com/jamesbuckett" target="_blank" rel="noopener noreferrer" aria-label="Twitter: @jamesbuckett">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+                <span>@jamesbuckett</span>
+              </a>
+            </div>
+          </div>
+          <p class="hero-disclaimer">Independent study resource. Not affiliated with or endorsed by Anthropic. "Claude" and "CCA-F" are trademarks of their respective owners.</p>
+        </div>
+        <div class="hero-roadmap" id="heroRoadmap">
+          <svg viewBox="0 0 480 360" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" aria-label="Exam roadmap">
+            <defs>
+              <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+                <path d="M 24 0 L 0 0 0 24" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.08"/>
+              </pattern>
+            </defs>
+            <rect width="480" height="360" fill="url(#grid)"/>
+
+            <!-- curved path -->
+            <path d="M 40 300 Q 120 300, 140 220 T 260 180 T 360 80 T 440 60" stroke="currentColor" stroke-width="1" fill="none" stroke-dasharray="4 4" opacity="0.35"/>
+
+            <!-- milestones -->
+            <g>
+              <circle cx="60" cy="298" r="24" fill="#4F46E5"/>
+              <text x="60" y="304" text-anchor="middle" fill="white" font-family="JetBrains Mono" font-size="12" font-weight="600">27%</text>
+              <text x="60" y="338" text-anchor="middle" fill="currentColor" font-family="Atkinson Hyperlegible" font-size="10" opacity="0.6">Agentic</text>
+            </g>
+            <g>
+              <circle cx="155" cy="225" r="22" fill="#059669"/>
+              <text x="155" y="231" text-anchor="middle" fill="white" font-family="JetBrains Mono" font-size="11" font-weight="600">20%</text>
+              <text x="155" y="265" text-anchor="middle" fill="currentColor" font-family="Atkinson Hyperlegible" font-size="10" opacity="0.6">Tools · MCP</text>
+            </g>
+            <g>
+              <circle cx="248" cy="178" r="22" fill="#D97706"/>
+              <text x="248" y="184" text-anchor="middle" fill="white" font-family="JetBrains Mono" font-size="11" font-weight="600">20%</text>
+              <text x="248" y="218" text-anchor="middle" fill="currentColor" font-family="Atkinson Hyperlegible" font-size="10" opacity="0.6">Claude Code</text>
+            </g>
+            <g>
+              <circle cx="350" cy="110" r="20" fill="#E11D48"/>
+              <text x="350" y="115" text-anchor="middle" fill="white" font-family="JetBrains Mono" font-size="10" font-weight="600">17%</text>
+              <text x="350" y="150" text-anchor="middle" fill="currentColor" font-family="Atkinson Hyperlegible" font-size="10" opacity="0.6">Prompt Eng.</text>
+            </g>
+            <g>
+              <circle cx="440" cy="62" r="19" fill="#0891B2"/>
+              <text x="440" y="67" text-anchor="middle" fill="white" font-family="JetBrains Mono" font-size="10" font-weight="600">16%</text>
+              <text x="440" y="100" text-anchor="middle" fill="currentColor" font-family="Atkinson Hyperlegible" font-size="10" opacity="0.6">Context</text>
+            </g>
+
+            <!-- start/end labels -->
+            <text x="40" y="22" fill="currentColor" font-family="JetBrains Mono" font-size="9" opacity="0.5">START</text>
+            <g transform="translate(440,30)">
+              <path d="M 0 -2 L 8 0 L 0 2 Z" fill="currentColor" opacity="0.5"/>
+            </g>
+            <text x="432" y="22" text-anchor="end" fill="currentColor" font-family="JetBrains Mono" font-size="9" opacity="0.5">CERTIFIED</text>
+
+            <!-- flag at end -->
+            <g transform="translate(440, 62)">
+              <path d="M 0 -28 L 0 -14" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M 0 -28 L 12 -24 L 8 -20 L 12 -16 L 0 -16 Z" fill="currentColor" opacity="0.8"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         EXAM AT A GLANCE
+         ============================================================ -->
+    <section id="at-a-glance">
+      <div class="section-head">
+        <div>
+          <div class="section-eyebrow">
+            <span class="section-num">01 /</span>
+            <span class="caps">Exam at a Glance</span>
+          </div>
+          <h2 style="margin-top: var(--s-3)">Exam at a glance: six key numbers</h2>
+        </div>
+        <span class="section-tag">Study all 6 scenarios</span>
+      </div>
+
+      <div class="tile-grid">
+        <div class="tile reveal">
+          <div class="tile-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 2v4M16 2v4"/></svg>
+          </div>
+          <div class="tile-value">60</div>
+          <div class="tile-label">Questions</div>
+          <div class="tile-note">Scenario-based multiple choice, proctored</div>
+        </div>
+        <div class="tile reveal">
+          <div class="tile-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="tile-value">120<span style="font-size:1rem; color: var(--text-dim)">m</span></div>
+          <div class="tile-label">Total Time</div>
+          <div class="tile-note">≈ 2 minutes per question</div>
+        </div>
+        <div class="tile reveal">
+          <div class="tile-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17a2 2 0 0 1-2 2"/><path d="M14 14.66V17a2 2 0 0 0 2 2"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+          </div>
+          <div class="tile-value">720<span style="font-size:1rem; color: var(--text-dim)">/1000</span></div>
+          <div class="tile-label">Passing Score</div>
+          <div class="tile-note">Scaled 100–1,000 scoring</div>
+        </div>
+        <div class="tile reveal">
+          <div class="tile-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div class="tile-value">$99</div>
+          <div class="tile-label">Registration Fee</div>
+          <div class="tile-note">USD · one attempt</div>
+        </div>
+        <div class="tile reveal">
+          <div class="tile-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="tile-value">6+<span style="font-size:1rem; color: var(--text-dim)">mo</span></div>
+          <div class="tile-label">Experience Expected</div>
+          <div class="tile-note">Associate-level · hands-on with Claude Code and agent patterns</div>
+        </div>
+        <div class="tile reveal">
+          <div class="tile-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </div>
+          <div class="tile-value">6 / 4</div>
+          <div class="tile-label">Scenarios</div>
+          <div class="tile-note">4 drawn randomly from 6 — study all</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         DOMAIN DEEP-DIVES
+         ============================================================ -->
+    <section id="domains">
+      <div class="section-head">
+        <div>
+          <div class="section-eyebrow">
+            <span class="section-num">02 /</span>
+            <span class="caps">Domain Deep-Dives</span>
+          </div>
+          <h2 style="margin-top: var(--s-3)">Five exam domains, ranked by weight</h2>
+        </div>
+        <span class="section-tag">Click any domain to expand</span>
+      </div>
+
+      <!-- DOMAIN 1 — AGENTIC -->
+      <article class="domain" id="domain-1" data-open="true" data-domain="1">
+        <h3 class="domain-heading">
+          <button type="button" class="domain-header" aria-expanded="true" aria-controls="domain-1-body" onclick="toggleDomain(this)">
+            <span class="domain-chip d1-bg">01</span>
+            <span class="domain-header-text">
+              <span class="domain-title">Agentic Architecture &amp; Orchestration</span>
+              <span class="domain-sub">Heaviest domain · orchestrator-worker patterns, sub-agents, delegation</span>
+            </span>
+            <span class="domain-weight d1-ink">27%</span>
+            <span class="chevron"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+        </h3>
+        <div class="domain-body" id="domain-1-body">
+          <div class="domain-grid">
+            <div class="stat-box">
+              <!-- Donut -->
+              <svg width="140" height="140" viewBox="0 0 140 140" aria-label="27% weight">
+                <circle cx="70" cy="70" r="56" fill="none" stroke="var(--border)" stroke-width="16"/>
+                <circle cx="70" cy="70" r="56" fill="none" stroke="var(--d1)" stroke-width="16"
+                        stroke-dasharray="95.0 351.9" stroke-dashoffset="0"
+                        transform="rotate(-90 70 70)" stroke-linecap="round"/>
+                <text x="70" y="68" text-anchor="middle" font-family="JetBrains Mono" font-size="22" font-weight="600" fill="currentColor">27%</text>
+                <text x="70" y="88" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="10" fill="var(--text-dim)">of exam</text>
+              </svg>
+              <div class="stat-label">~16 of 60 questions</div>
+            </div>
+            <div>
+              <div class="caps muted">Task Statements — what you must DO</div>
+              <ul class="task-list">
+                <li>Choose orchestration patterns (single agent · orchestrator-worker · hub-and-spoke) for a given problem.</li>
+                <li>Decide when to spin up a sub-agent vs. stay in the main loop.</li>
+                <li>Design context boundaries so sub-agents don't leak state back into the parent.</li>
+                <li>Manage the agentic loop: tool call → observation → next action → termination.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="subhead"><span class="caps">Concept Map</span></div>
+          <div class="concept-map">
+            <svg viewBox="0 0 720 260" width="100%" aria-label="Agentic architecture concept map">
+              <g font-family="Atkinson Hyperlegible" font-size="12">
+                <!-- center -->
+                <g>
+                  <rect x="300" y="110" width="120" height="40" rx="6" fill="var(--d1)"/>
+                  <text x="360" y="135" text-anchor="middle" fill="white" font-weight="700">Orchestrator</text>
+                </g>
+                <!-- workers -->
+                <g>
+                  <rect x="60" y="30" width="110" height="36" rx="6" fill="none" stroke="var(--d1)" stroke-width="1.5"/>
+                  <text x="115" y="53" text-anchor="middle" fill="currentColor">Research Sub</text>
+                </g>
+                <g>
+                  <rect x="60" y="210" width="110" height="36" rx="6" fill="none" stroke="var(--d1)" stroke-width="1.5"/>
+                  <text x="115" y="233" text-anchor="middle" fill="currentColor">Code Sub</text>
+                </g>
+                <g>
+                  <rect x="560" y="30" width="110" height="36" rx="6" fill="none" stroke="var(--d1)" stroke-width="1.5"/>
+                  <text x="615" y="53" text-anchor="middle" fill="currentColor">Review Sub</text>
+                </g>
+                <g>
+                  <rect x="560" y="210" width="110" height="36" rx="6" fill="none" stroke="var(--d1)" stroke-width="1.5"/>
+                  <text x="615" y="233" text-anchor="middle" fill="currentColor">Test Sub</text>
+                </g>
+                <!-- lines -->
+                <g stroke="var(--d1)" stroke-width="1.5" fill="none" opacity="0.7">
+                  <path d="M 300 120 Q 220 80, 170 48"/>
+                  <path d="M 300 140 Q 220 190, 170 228"/>
+                  <path d="M 420 120 Q 500 80, 560 48"/>
+                  <path d="M 420 140 Q 500 190, 560 228"/>
+                </g>
+                <!-- annotations -->
+                <text x="360" y="180" text-anchor="middle" fill="var(--text-dim)" font-size="10">isolated context per worker</text>
+                <text x="360" y="200" text-anchor="middle" fill="var(--text-dim)" font-size="10">results return as summaries</text>
+              </g>
+            </svg>
+          </div>
+
+          <div class="subhead"><span class="caps">Key Terms — tap to flip</span></div>
+          <div class="flashcards" data-domain-flashcards="1"></div>
+
+          <div class="subhead"><span class="caps">Common Traps</span></div>
+          <div class="traps-grid">
+            <div class="trap-col dont">
+              <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Don't</h4>
+              <ul>
+                <li>Connect every sub-agent to every other sub-agent ("mesh of agents").</li>
+                <li>Share the orchestrator's full context with sub-agents by default.</li>
+                <li>Use multi-agent for tasks that fit a single loop.</li>
+                <li>Skip a termination condition on the agentic loop.</li>
+              </ul>
+            </div>
+            <div class="trap-col do">
+              <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Do</h4>
+              <ul>
+                <li>Start with a single agent; split only when tasks are independent.</li>
+                <li>Pass focused task briefs to sub-agents; have them return summaries.</li>
+                <li>Use a hub-and-spoke shape with one orchestrator.</li>
+                <li>Define max-iteration + success criteria on every loop.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- DOMAIN 2 — TOOLS/MCP -->
+      <article class="domain" id="domain-2" data-domain="2">
+        <h3 class="domain-heading">
+          <button type="button" class="domain-header" aria-expanded="false" aria-controls="domain-2-body" onclick="toggleDomain(this)">
+            <span class="domain-chip d2-bg">02</span>
+            <span class="domain-header-text">
+              <span class="domain-title">Tool Design &amp; MCP Integration</span>
+              <span class="domain-sub">Tools, resources, prompt templates — and error recovery patterns</span>
+            </span>
+            <span class="domain-weight d2-ink">~20%</span>
+            <span class="chevron"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+        </h3>
+        <div class="domain-body" id="domain-2-body">
+          <div class="domain-grid">
+            <div class="stat-box">
+              <svg width="140" height="140" viewBox="0 0 140 140" aria-label="~20% weight">
+                <circle cx="70" cy="70" r="56" fill="none" stroke="var(--border)" stroke-width="16"/>
+                <circle cx="70" cy="70" r="56" fill="none" stroke="var(--d2)" stroke-width="16"
+                        stroke-dasharray="70.4 351.9" stroke-dashoffset="0"
+                        transform="rotate(-90 70 70)" stroke-linecap="round"/>
+                <text x="70" y="68" text-anchor="middle" font-family="JetBrains Mono" font-size="22" font-weight="600" fill="currentColor">20%</text>
+                <text x="70" y="88" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="10" fill="var(--text-dim)">of exam</text>
+              </svg>
+              <div class="stat-label">~12 of 60 questions</div>
+            </div>
+            <div>
+              <div class="caps muted">Task Statements — what you must DO</div>
+              <ul class="task-list">
+                <li>Write tool descriptions that leave zero ambiguity about when to call the tool.</li>
+                <li>Choose the right MCP primitive: tool (action) · resource (data) · prompt (template).</li>
+                <li>Handle tool errors with structured messages that the model can reason about.</li>
+                <li>Pick the right MCP transport: stdio (local) vs. HTTP/SSE (remote).</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="subhead"><span class="caps">Concept Map — MCP Triangle</span></div>
+          <div class="concept-map">
+            <svg viewBox="0 0 720 260" width="100%" aria-label="MCP primitives triangle">
+              <g font-family="Atkinson Hyperlegible" font-size="12">
+                <polygon points="360,30 600,220 120,220" fill="none" stroke="var(--d2)" stroke-width="1.5" opacity="0.3"/>
+                <!-- tools -->
+                <g>
+                  <rect x="300" y="10" width="120" height="44" rx="8" fill="var(--d2)"/>
+                  <text x="360" y="31" text-anchor="middle" fill="white" font-weight="700">Tools</text>
+                  <text x="360" y="46" text-anchor="middle" fill="white" font-size="10" opacity="0.85">model-invoked actions</text>
+                </g>
+                <!-- resources -->
+                <g>
+                  <rect x="60" y="200" width="120" height="44" rx="8" fill="white" stroke="var(--d2)" stroke-width="2"/>
+                  <text x="120" y="221" text-anchor="middle" fill="var(--d2)" font-weight="700">Resources</text>
+                  <text x="120" y="236" text-anchor="middle" fill="var(--text-dim)" font-size="10">app-controlled data</text>
+                </g>
+                <!-- prompts -->
+                <g>
+                  <rect x="540" y="200" width="120" height="44" rx="8" fill="white" stroke="var(--d2)" stroke-width="2"/>
+                  <text x="600" y="221" text-anchor="middle" fill="var(--d2)" font-weight="700">Prompts</text>
+                  <text x="600" y="236" text-anchor="middle" fill="var(--text-dim)" font-size="10">user-triggered templates</text>
+                </g>
+                <!-- annotations -->
+                <text x="360" y="140" text-anchor="middle" fill="var(--text-dim)" font-size="11" font-style="italic">Same server, three primitives.</text>
+                <text x="360" y="158" text-anchor="middle" fill="var(--text-dim)" font-size="11" font-style="italic">Who triggers matters most.</text>
+              </g>
+            </svg>
+          </div>
+
+          <div class="subhead"><span class="caps">Key Terms</span></div>
+          <div class="flashcards" data-domain-flashcards="2"></div>
+
+          <div class="subhead"><span class="caps">Common Traps</span></div>
+          <div class="traps-grid">
+            <div class="trap-col dont">
+              <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Don't</h4>
+              <ul>
+                <li>Write tool descriptions like <span class="mono">"gets things"</span>. The model can't guess.</li>
+                <li>Return raw 1MB JSON blobs from a tool call.</li>
+                <li>Throw on tool errors — raise them to code instead of the model.</li>
+                <li>Use a tool for static reference data (that's a resource).</li>
+              </ul>
+            </div>
+            <div class="trap-col do">
+              <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Do</h4>
+              <ul>
+                <li>Describe parameters, units, side effects, and when NOT to call.</li>
+                <li>Return concise results with cursors/IDs for detail fetches.</li>
+                <li>Return structured error messages the model can interpret.</li>
+                <li>Pick the primitive by <em>who initiates</em>: model · app · user.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- DOMAIN 3 — CLAUDE CODE -->
+      <article class="domain" id="domain-3" data-domain="3">
+        <h3 class="domain-heading">
+          <button type="button" class="domain-header" aria-expanded="false" aria-controls="domain-3-body" onclick="toggleDomain(this)">
+            <span class="domain-chip d3-bg">03</span>
+            <span class="domain-header-text">
+              <span class="domain-title">Claude Code Configuration &amp; Workflows</span>
+              <span class="domain-sub">CLAUDE.md, skills, slash commands, hooks, sub-agents in Claude Code</span>
+            </span>
+            <span class="domain-weight d3-ink">20%</span>
+            <span class="chevron"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+        </h3>
+        <div class="domain-body" id="domain-3-body">
+          <div class="domain-grid">
+            <div class="stat-box">
+              <svg width="140" height="140" viewBox="0 0 140 140">
+                <circle cx="70" cy="70" r="56" fill="none" stroke="var(--border)" stroke-width="16"/>
+                <circle cx="70" cy="70" r="56" fill="none" stroke="var(--d3)" stroke-width="16"
+                        stroke-dasharray="70.4 351.9" transform="rotate(-90 70 70)" stroke-linecap="round"/>
+                <text x="70" y="68" text-anchor="middle" font-family="JetBrains Mono" font-size="22" font-weight="600" fill="currentColor">20%</text>
+                <text x="70" y="88" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="10" fill="var(--text-dim)">of exam</text>
+              </svg>
+              <div class="stat-label">~12 of 60 questions</div>
+            </div>
+            <div>
+              <div class="caps muted">Task Statements — what you must DO</div>
+              <ul class="task-list">
+                <li>Place instructions at the right level of the CLAUDE.md hierarchy.</li>
+                <li>Choose between hook (deterministic event) vs. skill (capability bundle) vs. slash command (user shortcut).</li>
+                <li>Wire sub-agents into workflows for parallelizable or context-isolated tasks.</li>
+                <li>Configure settings.json for permissions, env vars, and automated behaviors.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="subhead"><span class="caps">Concept Map — CLAUDE.md Pyramid</span></div>
+          <div class="concept-map">
+            <svg viewBox="0 0 720 260" width="100%">
+              <g font-family="Atkinson Hyperlegible">
+                <!-- Pyramid: global -> project -> subdir -->
+                <polygon points="360,20 540,100 180,100" fill="var(--d3)" opacity="0.18"/>
+                <polygon points="540,100 620,180 100,180 180,100" fill="var(--d3)" opacity="0.36"/>
+                <polygon points="620,180 700,240 40,240 100,180" fill="var(--d3)" opacity="0.6"/>
+
+                <text x="360" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="currentColor">Global · ~/.claude/CLAUDE.md</text>
+                <text x="360" y="85" text-anchor="middle" font-size="10" fill="var(--text-dim)">Your personal defaults · every session</text>
+
+                <text x="360" y="148" text-anchor="middle" font-size="13" font-weight="700" fill="currentColor">Project · ./CLAUDE.md</text>
+                <text x="360" y="163" text-anchor="middle" font-size="10" fill="var(--text-dim)">Team rules · checked into the repo</text>
+
+                <text x="360" y="215" text-anchor="middle" font-size="13" font-weight="700" fill="currentColor">Subdir · ./src/module/CLAUDE.md</text>
+                <text x="360" y="230" text-anchor="middle" font-size="10" fill="var(--text-dim)">Local overrides · loaded when working in that path</text>
+
+                <!-- arrow showing specificity -->
+                <g transform="translate(700,20)">
+                  <line x1="0" y1="0" x2="0" y2="200" stroke="var(--text-faint)" stroke-dasharray="3 3"/>
+                  <text x="-6" y="10" text-anchor="end" font-size="10" fill="var(--text-dim)">broad</text>
+                  <text x="-6" y="210" text-anchor="end" font-size="10" fill="var(--text-dim)">specific</text>
+                </g>
+              </g>
+            </svg>
+          </div>
+
+          <div class="subhead"><span class="caps">Key Terms</span></div>
+          <div class="flashcards" data-domain-flashcards="3"></div>
+
+          <div class="subhead"><span class="caps">Common Traps</span></div>
+          <div class="traps-grid">
+            <div class="trap-col dont">
+              <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Don't</h4>
+              <ul>
+                <li>Put user-preference "always X" into a project CLAUDE.md.</li>
+                <li>Try to enforce deterministic behavior through CLAUDE.md alone.</li>
+                <li>Confuse "slash command" (user shortcut) with "skill" (model capability).</li>
+                <li>Stuff the root CLAUDE.md with every rule for every subdirectory.</li>
+              </ul>
+            </div>
+            <div class="trap-col do">
+              <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Do</h4>
+              <ul>
+                <li>Global CLAUDE.md = personal · Project = team · Subdir = local.</li>
+                <li>Use hooks when you need guaranteed, deterministic actions.</li>
+                <li>Use skills when you want the model to <em>choose</em> to use a capability.</li>
+                <li>Keep each CLAUDE.md tight — redundancy invites drift.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- DOMAIN 4 — PROMPT ENGINEERING -->
+      <article class="domain" id="domain-4" data-domain="4">
+        <h3 class="domain-heading">
+          <button type="button" class="domain-header" aria-expanded="false" aria-controls="domain-4-body" onclick="toggleDomain(this)">
+            <span class="domain-chip d4-bg">04</span>
+            <span class="domain-header-text">
+              <span class="domain-title">Prompt Engineering &amp; Structured Output</span>
+              <span class="domain-sub">XML tags, tool-use for JSON, system prompts, few-shot patterns</span>
+            </span>
+            <span class="domain-weight d4-ink">~17%</span>
+            <span class="chevron"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+        </h3>
+        <div class="domain-body" id="domain-4-body">
+          <div class="domain-grid">
+            <div class="stat-box">
+              <svg width="140" height="140" viewBox="0 0 140 140">
+                <circle cx="70" cy="70" r="56" fill="none" stroke="var(--border)" stroke-width="16"/>
+                <circle cx="70" cy="70" r="56" fill="none" stroke="var(--d4)" stroke-width="16"
+                        stroke-dasharray="59.8 351.9" transform="rotate(-90 70 70)" stroke-linecap="round"/>
+                <text x="70" y="68" text-anchor="middle" font-family="JetBrains Mono" font-size="22" font-weight="600" fill="currentColor">~17%</text>
+                <text x="70" y="88" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="10" fill="var(--text-dim)">of exam</text>
+              </svg>
+              <div class="stat-label">~10 of 60 · foundation for D1, D2</div>
+            </div>
+            <div>
+              <div class="caps muted">Task Statements — what you must DO</div>
+              <ul class="task-list">
+                <li>Write system prompts that set role, constraints, and output format.</li>
+                <li>Use XML tags to separate instructions, examples, and data.</li>
+                <li>Get structured output reliably via tool-use + JSON schema (not natural-language "return JSON").</li>
+                <li>Design few-shot examples that match the target output distribution.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="subhead"><span class="caps">Concept Map — Prompt Anatomy</span></div>
+          <div class="concept-map">
+            <svg viewBox="0 0 720 260" width="100%">
+              <g font-family="Atkinson Hyperlegible">
+                <!-- System prompt -->
+                <rect x="20" y="30" width="200" height="70" rx="6" fill="var(--d4)" opacity="0.9"/>
+                <text x="120" y="55" text-anchor="middle" fill="white" font-weight="700" font-size="13">System Prompt</text>
+                <text x="120" y="75" text-anchor="middle" fill="white" font-size="10" opacity="0.85">role · constraints</text>
+                <text x="120" y="90" text-anchor="middle" fill="white" font-size="10" opacity="0.85">&lt;instructions&gt;, &lt;rules&gt;</text>
+
+                <!-- Messages / turns -->
+                <rect x="260" y="30" width="200" height="70" rx="6" fill="white" stroke="var(--d4)" stroke-width="2"/>
+                <text x="360" y="55" text-anchor="middle" fill="var(--d4)" font-weight="700" font-size="13">User Message</text>
+                <text x="360" y="75" text-anchor="middle" fill="var(--text-dim)" font-size="10">task · data · examples</text>
+                <text x="360" y="90" text-anchor="middle" fill="var(--text-dim)" font-size="10">&lt;task&gt;, &lt;data&gt;, &lt;example&gt;</text>
+
+                <!-- Tool schema -->
+                <rect x="500" y="30" width="200" height="70" rx="6" fill="white" stroke="var(--d4)" stroke-width="2"/>
+                <text x="600" y="55" text-anchor="middle" fill="var(--d4)" font-weight="700" font-size="13">Tool Schema</text>
+                <text x="600" y="75" text-anchor="middle" fill="var(--text-dim)" font-size="10">JSON shape contract</text>
+                <text x="600" y="90" text-anchor="middle" fill="var(--text-dim)" font-size="10">structured output path</text>
+
+                <!-- Arrows down to output -->
+                <g stroke="var(--d4)" stroke-width="1.5" fill="none" opacity="0.6">
+                  <path d="M 120 100 L 120 160"/>
+                  <path d="M 360 100 L 360 160"/>
+                  <path d="M 600 100 L 600 160"/>
+                </g>
+
+                <rect x="180" y="160" width="360" height="60" rx="6" fill="var(--surface-2)" stroke="var(--border)"/>
+                <text x="360" y="185" text-anchor="middle" fill="currentColor" font-weight="700" font-size="13">Response (assistant turn)</text>
+                <text x="360" y="205" text-anchor="middle" fill="var(--text-dim)" font-size="11">text content · tool_use blocks · stop_reason</text>
+              </g>
+            </svg>
+          </div>
+
+          <div class="subhead"><span class="caps">Key Terms</span></div>
+          <div class="flashcards" data-domain-flashcards="4"></div>
+
+          <div class="subhead"><span class="caps">Common Traps</span></div>
+          <div class="traps-grid">
+            <div class="trap-col dont">
+              <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Don't</h4>
+              <ul>
+                <li>Say "Return JSON" in prose and hope for the best.</li>
+                <li>Mix instructions, examples, and user data without delimiters.</li>
+                <li>Assume a single example covers all edge cases.</li>
+                <li>Put critical constraints at the very end of a long prompt.</li>
+              </ul>
+            </div>
+            <div class="trap-col do">
+              <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Do</h4>
+              <ul>
+                <li>Use tool-use with a JSON schema for guaranteed structure.</li>
+                <li>Wrap sections in XML tags (<span class="mono">&lt;example&gt;</span>, <span class="mono">&lt;data&gt;</span>).</li>
+                <li>Include 3–5 diverse few-shot examples including edge cases.</li>
+                <li>Keep key instructions at the start <em>and</em> end of long prompts.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- DOMAIN 5 — CONTEXT -->
+      <article class="domain" id="domain-5" data-domain="5">
+        <h3 class="domain-heading">
+          <button type="button" class="domain-header" aria-expanded="false" aria-controls="domain-5-body" onclick="toggleDomain(this)">
+            <span class="domain-chip d5-bg">05</span>
+            <span class="domain-header-text">
+              <span class="domain-title">Context Management &amp; Reliability</span>
+              <span class="domain-sub">Prompt caching, memory tool, compaction, "lost in the middle"</span>
+            </span>
+            <span class="domain-weight d5-ink">~16%</span>
+            <span class="chevron"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+        </h3>
+        <div class="domain-body" id="domain-5-body">
+          <div class="domain-grid">
+            <div class="stat-box">
+              <svg width="140" height="140" viewBox="0 0 140 140">
+                <circle cx="70" cy="70" r="56" fill="none" stroke="var(--border)" stroke-width="16"/>
+                <circle cx="70" cy="70" r="56" fill="none" stroke="var(--d5)" stroke-width="16"
+                        stroke-dasharray="56.3 351.9" transform="rotate(-90 70 70)" stroke-linecap="round"/>
+                <text x="70" y="68" text-anchor="middle" font-family="JetBrains Mono" font-size="22" font-weight="600" fill="currentColor">~16%</text>
+                <text x="70" y="88" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="10" fill="var(--text-dim)">of exam</text>
+              </svg>
+              <div class="stat-label">~10 of 60 questions</div>
+            </div>
+            <div>
+              <div class="caps muted">Task Statements — what you must DO</div>
+              <ul class="task-list">
+                <li>Use prompt caching to make repeated long contexts cheap and fast.</li>
+                <li>Decide between context window, memory tool, and sub-agent isolation.</li>
+                <li>Place critical information at the start/end of context (fight "lost in the middle").</li>
+                <li>Design compaction + summarization for long-running agent loops.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="subhead"><span class="caps">Concept Map — Attention Curve</span></div>
+          <div class="concept-map">
+            <svg viewBox="0 0 720 240" width="100%">
+              <g font-family="Atkinson Hyperlegible">
+                <!-- axes -->
+                <line x1="60" y1="30" x2="60" y2="200" stroke="var(--text-faint)"/>
+                <line x1="60" y1="200" x2="680" y2="200" stroke="var(--text-faint)"/>
+                <text x="40" y="115" text-anchor="middle" font-size="10" fill="var(--text-dim)" transform="rotate(-90 40 115)">attention</text>
+                <text x="370" y="230" text-anchor="middle" font-size="10" fill="var(--text-dim)">position in context</text>
+
+                <!-- U-shape attention -->
+                <path d="M 60 60 Q 180 80 370 160 Q 560 80 680 60" stroke="var(--d5)" stroke-width="2.5" fill="none"/>
+                <path d="M 60 60 Q 180 80 370 160 Q 560 80 680 60 L 680 200 L 60 200 Z" fill="var(--d5)" opacity="0.08"/>
+
+                <!-- labels -->
+                <g>
+                  <circle cx="80" cy="60" r="5" fill="var(--d5)"/>
+                  <text x="80" y="48" text-anchor="middle" font-size="10" fill="currentColor" font-weight="700">START</text>
+                  <text x="80" y="220" text-anchor="middle" font-size="10" fill="var(--text-dim)">put critical info</text>
+                </g>
+                <g>
+                  <circle cx="370" cy="160" r="5" fill="var(--bad)"/>
+                  <text x="370" y="148" text-anchor="middle" font-size="10" fill="var(--bad)" font-weight="700">MIDDLE</text>
+                  <text x="370" y="180" text-anchor="middle" font-size="10" fill="var(--text-dim)">"lost in the middle"</text>
+                </g>
+                <g>
+                  <circle cx="660" cy="60" r="5" fill="var(--d5)"/>
+                  <text x="660" y="48" text-anchor="middle" font-size="10" fill="currentColor" font-weight="700">END</text>
+                  <text x="660" y="220" text-anchor="middle" font-size="10" fill="var(--text-dim)">repeat critical info</text>
+                </g>
+              </g>
+            </svg>
+          </div>
+
+          <div class="subhead"><span class="caps">Key Terms</span></div>
+          <div class="flashcards" data-domain-flashcards="5"></div>
+
+          <div class="subhead"><span class="caps">Common Traps</span></div>
+          <div class="traps-grid">
+            <div class="trap-col dont">
+              <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Don't</h4>
+              <ul>
+                <li>Stuff a 200K token context with everything "just in case".</li>
+                <li>Rebuild the same long system prompt every request (no caching).</li>
+                <li>Rely on the middle of the context to hold critical constraints.</li>
+                <li>Persist growing chat history forever without compaction.</li>
+              </ul>
+            </div>
+            <div class="trap-col do">
+              <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Do</h4>
+              <ul>
+                <li>Mark stable prefixes with <span class="mono">cache_control</span> for huge cost savings.</li>
+                <li>Push critical rules to the start AND end of the prompt.</li>
+                <li>Use the memory tool for persistent state across sessions.</li>
+                <li>Summarize old turns once the loop gets long.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================
+         SCENARIO GALLERY
+         ============================================================ -->
+    <section id="scenarios">
+      <div class="section-head">
+        <div>
+          <div class="section-eyebrow">
+            <span class="section-num">03 /</span>
+            <span class="caps">Scenario Gallery</span>
+          </div>
+          <h2 style="margin-top: var(--s-3)">Six production scenarios (four appear on the exam)</h2>
+        </div>
+        <span class="section-tag">4 appear on exam · drawn randomly</span>
+      </div>
+
+      <div class="scenario-grid" id="scenarioGrid"></div>
+    </section>
+
+    <!-- ============================================================
+         MENTAL MODELS
+         ============================================================ -->
+    <section id="mental-models">
+      <div class="section-head">
+        <div>
+          <div class="section-eyebrow">
+            <span class="section-num">04 /</span>
+            <span class="caps">Mental Models Library</span>
+          </div>
+          <h2 style="margin-top: var(--s-3)">Five mental models that recur across domains</h2>
+        </div>
+      </div>
+
+      <div class="models-grid">
+        <!-- Hub and spoke -->
+        <article class="model">
+          <h3 class="model-title">Hub-and-Spoke Orchestration</h3>
+          <p class="model-body">One orchestrator delegates to independent workers. Each worker runs in its own context; results return as summaries. No worker-to-worker edges.</p>
+          <div class="model-svg-wrap">
+            <svg viewBox="0 0 300 220">
+              <g>
+                <!-- spokes -->
+                <g stroke="var(--d1)" stroke-width="1.5" fill="none" opacity="0.6">
+                  <line x1="150" y1="110" x2="55" y2="50"/>
+                  <line x1="150" y1="110" x2="245" y2="50"/>
+                  <line x1="150" y1="110" x2="40" y2="110"/>
+                  <line x1="150" y1="110" x2="260" y2="110"/>
+                  <line x1="150" y1="110" x2="55" y2="170"/>
+                  <line x1="150" y1="110" x2="245" y2="170"/>
+                </g>
+                <!-- hub -->
+                <circle cx="150" cy="110" r="28" fill="var(--d1)"/>
+                <text x="150" y="114" text-anchor="middle" fill="white" font-family="JetBrains Mono" font-size="10" font-weight="600">HUB</text>
+                <!-- workers -->
+                <g font-family="JetBrains Mono" font-size="9" font-weight="500">
+                  <circle cx="55" cy="50" r="15" fill="white" stroke="var(--d1)" stroke-width="1.5"/>
+                  <text x="55" y="53" text-anchor="middle" fill="var(--d1)">W1</text>
+                  <circle cx="245" cy="50" r="15" fill="white" stroke="var(--d1)" stroke-width="1.5"/>
+                  <text x="245" y="53" text-anchor="middle" fill="var(--d1)">W2</text>
+                  <circle cx="40" cy="110" r="15" fill="white" stroke="var(--d1)" stroke-width="1.5"/>
+                  <text x="40" y="113" text-anchor="middle" fill="var(--d1)">W3</text>
+                  <circle cx="260" cy="110" r="15" fill="white" stroke="var(--d1)" stroke-width="1.5"/>
+                  <text x="260" y="113" text-anchor="middle" fill="var(--d1)">W4</text>
+                  <circle cx="55" cy="170" r="15" fill="white" stroke="var(--d1)" stroke-width="1.5"/>
+                  <text x="55" y="173" text-anchor="middle" fill="var(--d1)">W5</text>
+                  <circle cx="245" cy="170" r="15" fill="white" stroke="var(--d1)" stroke-width="1.5"/>
+                  <text x="245" y="173" text-anchor="middle" fill="var(--d1)">W6</text>
+                </g>
+              </g>
+            </svg>
+          </div>
+        </article>
+
+        <!-- CLAUDE.md pyramid -->
+        <article class="model">
+          <h3 class="model-title">CLAUDE.md Hierarchy Pyramid</h3>
+          <p class="model-body">Three levels, broad to specific. Closer to the code = higher precedence. User-level is always you; project-level is team; subdir-level overrides for scope.</p>
+          <div class="model-svg-wrap">
+            <svg viewBox="0 0 300 220">
+              <g font-family="Atkinson Hyperlegible" font-size="10">
+                <polygon points="150,20 230,60 70,60" fill="var(--d3)" opacity="0.25"/>
+                <polygon points="230,60 270,110 30,110 70,60" fill="var(--d3)" opacity="0.5"/>
+                <polygon points="270,110 310,170 -10,170 30,110" fill="var(--d3)" opacity="0.85"/>
+                <text x="150" y="45" text-anchor="middle" fill="currentColor" font-weight="700">~/.claude/CLAUDE.md</text>
+                <text x="150" y="92" text-anchor="middle" fill="currentColor" font-weight="700">./CLAUDE.md</text>
+                <text x="150" y="145" text-anchor="middle" fill="white" font-weight="700">./src/x/CLAUDE.md</text>
+                <text x="150" y="205" text-anchor="middle" fill="var(--text-dim)" font-size="9">more specific → higher precedence</text>
+              </g>
+            </svg>
+          </div>
+        </article>
+
+        <!-- MCP triangle -->
+        <article class="model">
+          <h3 class="model-title">MCP Primitives Triangle</h3>
+          <p class="model-body">Tools are model-invoked. Resources are app-controlled data. Prompts are user-invoked templates. Picking the wrong primitive is a top exam trap.</p>
+          <div class="model-svg-wrap">
+            <svg viewBox="0 0 300 220">
+              <g font-family="Atkinson Hyperlegible" font-size="10">
+                <polygon points="150,30 260,190 40,190" fill="none" stroke="var(--d2)" stroke-width="1.5" opacity="0.4"/>
+                <circle cx="150" cy="30" r="28" fill="var(--d2)"/>
+                <text x="150" y="28" text-anchor="middle" fill="white" font-weight="700">Tools</text>
+                <text x="150" y="42" text-anchor="middle" fill="white" font-size="8" opacity="0.85">model</text>
+
+                <circle cx="40" cy="190" r="28" fill="white" stroke="var(--d2)" stroke-width="2"/>
+                <text x="40" y="187" text-anchor="middle" fill="var(--d2)" font-weight="700">Res.</text>
+                <text x="40" y="200" text-anchor="middle" fill="var(--d2)" font-size="8">app</text>
+
+                <circle cx="260" cy="190" r="28" fill="white" stroke="var(--d2)" stroke-width="2"/>
+                <text x="260" y="187" text-anchor="middle" fill="var(--d2)" font-weight="700">Pr.</text>
+                <text x="260" y="200" text-anchor="middle" fill="var(--d2)" font-size="8">user</text>
+
+                <text x="150" y="130" text-anchor="middle" fill="var(--text-dim)" font-size="9" font-style="italic">who initiates?</text>
+              </g>
+            </svg>
+          </div>
+        </article>
+
+        <!-- JSON schema retry loop -->
+        <article class="model">
+          <h3 class="model-title">JSON Schema Validation Retry Loop</h3>
+          <p class="model-body">Call with tool-use → parse response → validate against schema → on fail, return validator error back to the model and retry. Cap retries.</p>
+          <div class="model-svg-wrap">
+            <svg viewBox="0 0 300 220">
+              <g font-family="Atkinson Hyperlegible" font-size="9">
+                <rect x="20" y="20" width="80" height="40" rx="6" fill="var(--d4)"/>
+                <text x="60" y="44" text-anchor="middle" fill="white" font-weight="700">Call</text>
+                <rect x="200" y="20" width="80" height="40" rx="6" fill="white" stroke="var(--d4)" stroke-width="2"/>
+                <text x="240" y="44" text-anchor="middle" fill="var(--d4)" font-weight="700">Parse</text>
+                <rect x="200" y="160" width="80" height="40" rx="6" fill="white" stroke="var(--d4)" stroke-width="2"/>
+                <text x="240" y="184" text-anchor="middle" fill="var(--d4)" font-weight="700">Validate</text>
+                <rect x="20" y="160" width="80" height="40" rx="6" fill="white" stroke="var(--d4)" stroke-width="2"/>
+                <text x="60" y="177" text-anchor="middle" fill="var(--d4)" font-weight="700">Retry</text>
+                <text x="60" y="192" text-anchor="middle" fill="var(--text-dim)" font-size="8">w/ error msg</text>
+
+                <g stroke="var(--d4)" stroke-width="1.5" fill="none">
+                  <path d="M 100 40 L 200 40" marker-end="url(#arrowD4)"/>
+                  <path d="M 240 60 L 240 160" marker-end="url(#arrowD4)"/>
+                  <path d="M 200 180 L 100 180" marker-end="url(#arrowD4)"/>
+                  <path d="M 60 160 L 60 60" marker-end="url(#arrowD4)"/>
+                </g>
+                <defs>
+                  <marker id="arrowD4" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                    <path d="M 0 0 L 8 4 L 0 8 Z" fill="var(--d4)"/>
+                  </marker>
+                </defs>
+
+                <text x="150" y="115" text-anchor="middle" fill="currentColor" font-weight="700" font-size="11">Self-healing loop</text>
+                <text x="150" y="128" text-anchor="middle" fill="var(--text-dim)" font-size="9">cap retries · then fail</text>
+              </g>
+            </svg>
+          </div>
+        </article>
+
+        <!-- Lost in the middle -->
+        <article class="model">
+          <h3 class="model-title">"Lost in the Middle" Placement</h3>
+          <p class="model-body">Language models attend strongly to the start and end of context. Information buried in the middle has measurably lower recall.</p>
+          <div class="model-svg-wrap">
+            <svg viewBox="0 0 300 220">
+              <g font-family="Atkinson Hyperlegible" font-size="10">
+                <line x1="30" y1="30" x2="30" y2="180" stroke="var(--text-faint)"/>
+                <line x1="30" y1="180" x2="280" y2="180" stroke="var(--text-faint)"/>
+                <path d="M 30 50 Q 100 70 150 150 Q 200 70 270 50" stroke="var(--d5)" stroke-width="2.5" fill="none"/>
+                <path d="M 30 50 Q 100 70 150 150 Q 200 70 270 50 L 270 180 L 30 180 Z" fill="var(--d5)" opacity="0.12"/>
+                <text x="30" y="22" text-anchor="start" fill="currentColor" font-weight="700">start</text>
+                <text x="270" y="22" text-anchor="end" fill="currentColor" font-weight="700">end</text>
+                <text x="150" y="140" text-anchor="middle" fill="var(--bad)" font-weight="700">middle</text>
+                <text x="150" y="155" text-anchor="middle" fill="var(--text-dim)" font-size="9">weaker recall</text>
+                <text x="150" y="205" text-anchor="middle" fill="var(--text-dim)" font-size="9" font-style="italic">→ repeat critical rules at both ends</text>
+              </g>
+            </svg>
+          </div>
+        </article>
+
+        <!-- Agentic loop -->
+        <article class="model">
+          <h3 class="model-title">The Agentic Loop</h3>
+          <p class="model-body">Think → Act (tool call) → Observe (tool result) → Think again. Terminates on a stop condition, a final answer, or a safety cap.</p>
+          <div class="model-svg-wrap">
+            <svg viewBox="0 0 300 220">
+              <g font-family="Atkinson Hyperlegible" font-size="10">
+                <circle cx="150" cy="110" r="70" fill="none" stroke="var(--d1)" stroke-width="2" stroke-dasharray="4 3"/>
+                <g>
+                  <rect x="112" y="20" width="76" height="32" rx="6" fill="var(--d1)"/>
+                  <text x="150" y="40" text-anchor="middle" fill="white" font-weight="700">Think</text>
+                </g>
+                <g>
+                  <rect x="210" y="94" width="76" height="32" rx="6" fill="white" stroke="var(--d1)" stroke-width="2"/>
+                  <text x="248" y="114" text-anchor="middle" fill="var(--d1)" font-weight="700">Act</text>
+                </g>
+                <g>
+                  <rect x="112" y="168" width="76" height="32" rx="6" fill="white" stroke="var(--d1)" stroke-width="2"/>
+                  <text x="150" y="188" text-anchor="middle" fill="var(--d1)" font-weight="700">Observe</text>
+                </g>
+                <g>
+                  <rect x="14" y="94" width="76" height="32" rx="6" fill="white" stroke="var(--d1)" stroke-width="2"/>
+                  <text x="52" y="114" text-anchor="middle" fill="var(--d1)" font-weight="700">Update</text>
+                </g>
+              </g>
+            </svg>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STUDY PLAN
+         ============================================================ -->
+    <section id="study-plan">
+      <div class="section-head">
+        <div>
+          <div class="section-eyebrow">
+            <span class="section-num">05 /</span>
+            <span class="caps">12-Week Study Plan</span>
+          </div>
+          <h2 style="margin-top: var(--s-3)">12-week study plan (progress saved locally)</h2>
+        </div>
+        <span class="section-tag">State saved locally</span>
+      </div>
+
+      <div class="study-plan-summary">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--d1)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <div style="flex:1">
+          <div class="mono" style="font-weight:600; font-size:0.95rem;">
+            <span id="studyDone">0</span> / <span id="studyTotal">12</span> weeks complete
+          </div>
+          <div style="font-size:0.8rem; color:var(--text-dim)">Weighted toward Domain 1 (heaviest on exam). Reserve weeks 11–12 for full-length practice runs.</div>
+        </div>
+        <button class="btn" onclick="resetStudyPlan()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 3v6h6"/></svg>
+          Reset
+        </button>
+      </div>
+
+      <div class="gantt">
+        <div class="gantt-grid" id="ganttGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         QUIZ
+         ============================================================ -->
+    <section id="quiz">
+      <div class="section-head">
+        <div>
+          <div class="section-eyebrow">
+            <span class="section-num">06 /</span>
+            <span class="caps">Practice Quiz</span>
+          </div>
+          <h2 style="margin-top: var(--s-3)">15-question mock exam with instant feedback</h2>
+        </div>
+        <span class="section-tag" id="quizTimer">00:00</span>
+      </div>
+
+      <div class="quiz-wrap">
+        <div id="quizBody"></div>
+        <div id="quizResults" class="q-results"></div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         GLOSSARY
+         ============================================================ -->
+    <section id="glossary">
+      <div class="section-head">
+        <div>
+          <div class="section-eyebrow">
+            <span class="section-num">07 /</span>
+            <span class="caps">Visual Glossary</span>
+          </div>
+          <h2 style="margin-top: var(--s-3)">Visual glossary (filter by domain)</h2>
+        </div>
+      </div>
+
+      <div class="glossary-head">
+        <div class="search-wrap">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-input" id="searchInput" type="search" placeholder="Search terms, e.g. &quot;MCP&quot; or &quot;lost in the middle&quot;…" aria-label="Search glossary">
+        </div>
+        <div class="filter-chips" id="filterChips">
+          <button class="filter-chip active" data-filter="all">All</button>
+          <button class="filter-chip" data-filter="1" style="--fc: var(--d1)">D1</button>
+          <button class="filter-chip" data-filter="2" style="--fc: var(--d2)">D2</button>
+          <button class="filter-chip" data-filter="3" style="--fc: var(--d3)">D3</button>
+          <button class="filter-chip" data-filter="4" style="--fc: var(--d4)">D4</button>
+          <button class="filter-chip" data-filter="5" style="--fc: var(--d5)">D5</button>
+        </div>
+      </div>
+
+      <div class="glossary-grid" id="glossaryGrid"></div>
+    </section>
+
+    <!-- ============================================================
+         CHEAT SHEET
+         ============================================================ -->
+    <section id="cheat-sheet">
+      <button class="btn print-btn" onclick="window.print()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print cheat sheet
+      </button>
+      <div class="section-head">
+        <div>
+          <div class="section-eyebrow">
+            <span class="section-num">08 /</span>
+            <span class="caps">Printable Cheat Sheet</span>
+          </div>
+          <h2 style="margin-top: var(--s-3)">One-page cheat sheet (print-ready)</h2>
+        </div>
+      </div>
+
+      <div class="cheat">
+        <div class="cheat-head">
+          <div class="cheat-title">
+            <h3>CCA-F Cheat Sheet</h3>
+            <div class="mono muted" style="font-size: 0.75rem; margin-top: 4px;">v2026.03 · 60 Qs · 120 min · pass 720 · $99</div>
+          </div>
+          <div class="mono" style="font-size: 0.7rem; color: var(--text-dim); text-align: right">
+            D1 · 27% Agentic<br>
+            D2 · 20% Tools/MCP<br>
+            D3 · 20% Claude Code<br>
+            D4 · ~17% Prompt Eng.<br>
+            D5 · ~16% Context
+          </div>
+        </div>
+
+        <div class="cheat-grid">
+          <div class="cheat-card c1">
+            <h4>D1 · Agentic Architecture</h4>
+            <ul>
+              <li>Hub-and-spoke beats mesh</li>
+              <li>Sub-agents get isolated context</li>
+              <li>Return summaries, not raw state</li>
+              <li>Every loop needs a stop condition</li>
+              <li>Single agent first — split only for independence</li>
+            </ul>
+          </div>
+          <div class="cheat-card c2">
+            <h4>D2 · Tools &amp; MCP</h4>
+            <ul>
+              <li>Tool = model-invoked action</li>
+              <li>Resource = app-controlled data</li>
+              <li>Prompt = user-triggered template</li>
+              <li>Describe WHEN to call, not just WHAT</li>
+              <li>Return structured errors, don't throw</li>
+            </ul>
+          </div>
+          <div class="cheat-card c3">
+            <h4>D3 · Claude Code</h4>
+            <ul>
+              <li>Global → Project → Subdir precedence</li>
+              <li>Hook = deterministic event response</li>
+              <li>Skill = model-chosen capability</li>
+              <li>Slash command = user shortcut</li>
+              <li>Keep each CLAUDE.md tight</li>
+            </ul>
+          </div>
+          <div class="cheat-card c4">
+            <h4>D4 · Prompt Engineering</h4>
+            <ul>
+              <li>Use XML tags to delimit sections</li>
+              <li>Structured output = tool use + JSON schema</li>
+              <li>3–5 diverse few-shot examples</li>
+              <li>Critical rules at start + end</li>
+              <li>Never "please return JSON" in prose</li>
+            </ul>
+          </div>
+          <div class="cheat-card c5">
+            <h4>D5 · Context &amp; Reliability</h4>
+            <ul>
+              <li>Cache stable prefixes → cheap + fast</li>
+              <li>Lost-in-middle is real — anchor both ends</li>
+              <li>Memory tool for cross-session state</li>
+              <li>Compact old turns as the loop grows</li>
+              <li>Don't stuff context "just in case"</li>
+            </ul>
+          </div>
+          <div class="cheat-card c1">
+            <h4>Six Scenarios</h4>
+            <ul>
+              <li>Customer Support Resolution</li>
+              <li>Code Generation (Claude Code)</li>
+              <li>Multi-Agent Research</li>
+              <li>Developer Productivity</li>
+              <li>Claude Code for CI/CD</li>
+              <li>Structured Data Extraction</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FAQ
+         ============================================================ -->
+    <section id="faq">
+      <div class="section-head">
+        <div>
+          <div class="section-eyebrow">
+            <span class="section-num">09 /</span>
+            <span class="caps">Frequently Asked Questions</span>
+          </div>
+          <h2 style="margin-top: var(--s-3)">Answers to the six questions everyone asks</h2>
+        </div>
+      </div>
+
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary class="faq-q">
+            <span>Is this guide official? Is it affiliated with Anthropic?</span>
+            <svg class="faq-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>No. This is an independent study resource written and maintained by James Buckett. It is not affiliated with, endorsed by, or reviewed by Anthropic. Always cross-check critical details against Anthropic's official exam page before sitting the exam.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">
+            <span>How current is this guide? When was it last updated?</span>
+            <svg class="faq-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>Last updated April 2026 (v2026.03). The guide is versioned against the CCA-F blueprint published by Anthropic. If Anthropic changes the exam blueprint, domain weights, or scoring model, the guide may lag by a few weeks — watch the GitHub repo for changelog entries.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">
+            <span>What experience do I need before attempting the CCA-F?</span>
+            <svg class="faq-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>Anthropic positions the CCA-F as an associate-level certification. In practice, most passers have at least 6 months of hands-on work with Claude Code, the Claude API, MCP servers, and real agent loops in production (or close to it). If you've never shipped anything with sub-agents or tools, spend a few weeks building before you study.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">
+            <span>How is this different from reading Anthropic's official documentation?</span>
+            <svg class="faq-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>Anthropic's docs are exhaustive but not exam-shaped. This guide is structured around the five exam domains and their relative weights, emphasises the patterns Anthropic keeps contrasting (hub-and-spoke vs mesh, tool vs resource vs prompt, hook vs skill), and gives you practice in the scenario-question format the exam actually uses. Use the official docs as the source of truth; use this guide to know where to look.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">
+            <span>How do I actually register for the exam?</span>
+            <svg class="faq-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>Registration runs through Anthropic's certification portal — see the "Ready to register?" section below for the official link. The exam is remotely proctored, 60 questions over 120 minutes, scored 100–1,000, with 720 to pass. Registration fee at time of writing is $99 USD.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q">
+            <span>I found an error or want to suggest an improvement. How?</span>
+            <svg class="faq-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="faq-a">
+            <p>Open an issue on the <a href="https://github.com/jamesbuckett" target="_blank" rel="noopener noreferrer">GitHub repo</a>, or DM the author on the social links in the hero. Corrections and new practice questions are welcome — this guide improves fastest when readers flag what confused them.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         REGISTER — closing CTA
+         ============================================================ -->
+    <section id="register">
+      <div class="section-head">
+        <div>
+          <div class="section-eyebrow">
+            <span class="section-num">10 /</span>
+            <span class="caps">Ready to Register?</span>
+          </div>
+          <h2 style="margin-top: var(--s-3)">You've done the work. Book the exam.</h2>
+        </div>
+      </div>
+
+      <div class="register-grid">
+        <div class="register-primary">
+          <div class="register-steps">
+            <div class="register-step">
+              <span class="register-step-num mono">01</span>
+              <div>
+                <div class="register-step-title">Create an Anthropic account</div>
+                <div class="register-step-body">If you don't already have one. You'll use the same login for the certification portal.</div>
+              </div>
+            </div>
+            <div class="register-step">
+              <span class="register-step-num mono">02</span>
+              <div>
+                <div class="register-step-title">Pick an exam slot</div>
+                <div class="register-step-body">Pay the $99 USD registration. Slots are remotely proctored — you'll get a system check email ahead of time.</div>
+              </div>
+            </div>
+            <div class="register-step">
+              <span class="register-step-num mono">03</span>
+              <div>
+                <div class="register-step-title">Sit the exam</div>
+                <div class="register-step-body">60 questions, 120 minutes, scored 100–1,000, pass at 720. You'll see results on-screen at the end.</div>
+              </div>
+            </div>
+          </div>
+          <div class="register-cta-row">
+            <a class="btn btn-primary register-cta" href="https://www.anthropic.com/" target="_blank" rel="noopener noreferrer">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Go to Anthropic certification
+            </a>
+            <a class="btn register-cta" href="#cheat-sheet">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+              Print cheat sheet first
+            </a>
+          </div>
+        </div>
+
+        <aside class="register-tips" aria-labelledby="exam-day-tips">
+          <div class="caps faint" id="exam-day-tips">Exam-day tips</div>
+          <ul class="register-tip-list">
+            <li>Budget ~2 min per question. Flag the hard ones, come back.</li>
+            <li>Eliminate absolutes ("always", "never") — usually wrong in scenario questions.</li>
+            <li>When two answers look right, pick the one that handles the failure case.</li>
+            <li>If stuck between <em>skill</em>, <em>hook</em>, and <em>slash command</em>: ask who triggers it.</li>
+            <li>If stuck on MCP primitives: ask who initiates (model / app / user).</li>
+          </ul>
+        </aside>
+      </div>
+
+    </section>
+
+    <!-- ============================================================
+         FOOTER
+         ============================================================ -->
+    <footer class="site-footer">
+      <div class="footer-grid">
+        <div class="footer-col footer-brand">
+          <div class="brand" style="margin-bottom: var(--s-3)">
+            <div class="brand-mark">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+            </div>
+            <div>
+              <div class="brand-name">CCA-F Atlas</div>
+              <div class="brand-sub mono">v2026.03 · updated Apr 2026</div>
+            </div>
+          </div>
+          <p class="footer-disclaimer">Independent study resource. Not affiliated with or endorsed by Anthropic. "Claude", "Claude Code", and "CCA-F" are trademarks of their respective owners. Exam format, fees, and passing scores are accurate as of April 2026 — always verify against the official Anthropic certification page before registering.</p>
+        </div>
+
+        <div class="footer-col">
+          <div class="caps faint footer-col-head">Official resources</div>
+          <ul class="footer-links">
+            <li><a href="https://www.anthropic.com/" target="_blank" rel="noopener noreferrer">Anthropic certification portal</a></li>
+            <li><a href="https://docs.anthropic.com/" target="_blank" rel="noopener noreferrer">Claude API docs</a></li>
+            <li><a href="https://docs.anthropic.com/claude/docs/claude-code" target="_blank" rel="noopener noreferrer">Claude Code docs</a></li>
+            <li><a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer">Model Context Protocol</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <div class="caps faint footer-col-head">This guide</div>
+          <ul class="footer-links">
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#cheat-sheet">Cheat sheet</a></li>
+            <li><a href="#quiz">Mock exam</a></li>
+            <li><a href="https://github.com/jamesbuckett" target="_blank" rel="noopener noreferrer">Feedback &amp; corrections</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <div class="caps faint footer-col-head">Author</div>
+          <ul class="footer-links">
+            <li><a href="https://github.com/jamesbuckett" target="_blank" rel="noopener noreferrer">GitHub · jamesbuckett</a></li>
+            <li><a href="https://www.linkedin.com/in/jamesbuckett" target="_blank" rel="noopener noreferrer">LinkedIn · jamesbuckett</a></li>
+            <li><a href="https://twitter.com/jamesbuckett" target="_blank" rel="noopener noreferrer">X · @jamesbuckett</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-base">
+        <div class="mono faint">© 2026 James Buckett · Content CC-BY 4.0 · Code MIT</div>
+        <div class="mono faint">Last updated 2026-04-19</div>
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+/* ============================================================
+   DATA — flashcards, scenarios, quiz, glossary
+   ============================================================ */
+
+const FLASHCARDS = {
+  "1": [
+    { term: "Orchestrator", def: "Top-level agent that plans, delegates, and synthesizes — doesn't do line-level work itself." },
+    { term: "Sub-agent", def: "Worker spawned with its own isolated context; returns a summary, not raw state." },
+    { term: "Hub-and-spoke", def: "Topology with one orchestrator and independent workers — no worker-to-worker edges." },
+    { term: "Agentic Loop", def: "Think → Act → Observe → Think again. Terminates on goal met or safety cap." },
+    { term: "Context Isolation", def: "Keeping a sub-agent's working context separate from the parent's — scales attention." }
+  ],
+  "2": [
+    { term: "MCP", def: "Model Context Protocol — open standard for exposing tools, resources, and prompts to models." },
+    { term: "Tool", def: "Model-invoked action with a JSON schema. Has side effects or fetches live data." },
+    { term: "Resource", def: "App-controlled data a model can read. Think of it like a file on a server." },
+    { term: "Prompt Template", def: "User-triggered reusable prompt exposed by an MCP server. Often starts a slash command." },
+    { term: "Stdio vs HTTP", def: "Stdio: local process. HTTP/SSE: remote server. Exam cue: local → stdio, remote → HTTP." }
+  ],
+  "3": [
+    { term: "CLAUDE.md", def: "Markdown file the harness auto-loads as instructions. Tiered: global → project → subdir." },
+    { term: "Skill", def: "Capability bundle the model can choose to invoke. Good for tasks the model picks the moment for." },
+    { term: "Slash Command", def: "User-typed shortcut (e.g. /review). Best when the human decides when to trigger." },
+    { term: "Hook", def: "Deterministic handler wired to lifecycle events (tool calls, stops). Runs regardless of the model." },
+    { term: "Settings.json", def: "The harness's config: permissions, env vars, hooks, MCP servers. User or project scope." }
+  ],
+  "4": [
+    { term: "System Prompt", def: "Top-of-context message setting role, constraints, and output expectations." },
+    { term: "XML Tag", def: "Claude-native delimiter (e.g. <example>) that separates instructions, data, and samples." },
+    { term: "Tool Use (for JSON)", def: "Canonical way to get structured output: define a tool; the model fills its schema." },
+    { term: "Few-shot", def: "Inline examples that demonstrate the desired mapping from input to output." },
+    { term: "JSON Schema", def: "Contract that validates tool arguments or structured output. Pair with a retry loop." }
+  ],
+  "5": [
+    { term: "Prompt Caching", def: "Cache stable prefix tokens so repeated long prompts cost far less and return faster." },
+    { term: "Memory Tool", def: "File-backed store the model reads/writes to persist facts across sessions." },
+    { term: "Context Window", def: "Maximum tokens Claude can attend to in a single request — but attention isn't uniform." },
+    { term: "Lost in the Middle", def: "Empirical drop in recall for information buried in the middle of long contexts." },
+    { term: "Compaction", def: "Summarizing older turns to shrink context while preserving task-relevant state." }
+  ]
+};
+
+const SCENARIOS = [
+  {
+    n: "01", title: "Customer Support Resolution Agent",
+    desc: "Classify incoming ticket, route to the right tool, resolve without escalation when possible.",
+    domains: ["1","2","4"],
+    diagram: `
+<svg viewBox="0 0 600 180" width="100%">
+<g font-family="Atkinson Hyperlegible" font-size="11">
+  <rect x="10" y="70" width="90" height="40" rx="6" fill="var(--surface-2)" stroke="var(--border)"/><text x="55" y="94" text-anchor="middle">Ticket in</text>
+  <rect x="130" y="70" width="110" height="40" rx="6" fill="var(--d1)" /><text x="185" y="95" text-anchor="middle" fill="white" font-weight="700">Classify</text>
+  <rect x="270" y="10" width="100" height="34" rx="6" fill="white" stroke="var(--d2)" stroke-width="2"/><text x="320" y="31" text-anchor="middle" fill="var(--d2)">lookup_order</text>
+  <rect x="270" y="70" width="100" height="40" rx="6" fill="white" stroke="var(--d2)" stroke-width="2"/><text x="320" y="95" text-anchor="middle" fill="var(--d2)">issue_refund</text>
+  <rect x="270" y="135" width="100" height="34" rx="6" fill="white" stroke="var(--d2)" stroke-width="2"/><text x="320" y="156" text-anchor="middle" fill="var(--d2)">escalate</text>
+  <rect x="400" y="70" width="110" height="40" rx="6" fill="var(--d4)"/><text x="455" y="95" text-anchor="middle" fill="white" font-weight="700">Reply (JSON)</text>
+  <rect x="530" y="70" width="60" height="40" rx="6" fill="var(--surface-2)" stroke="var(--border)"/><text x="560" y="94" text-anchor="middle">Send</text>
+  <g stroke="var(--text-dim)" stroke-width="1" fill="none" opacity="0.5">
+    <path d="M100 90 L130 90"/>
+    <path d="M240 90 L270 30"/><path d="M240 90 L270 90"/><path d="M240 90 L270 150"/>
+    <path d="M370 30 L400 90"/><path d="M370 90 L400 90"/><path d="M370 150 L400 90"/>
+    <path d="M510 90 L530 90"/>
+  </g>
+</g>
+</svg>`
+  },
+  {
+    n: "02", title: "Code Generation with Claude Code",
+    desc: "Claude Code plans a feature, spawns sub-agents for parallel files, then runs tests before committing.",
+    domains: ["1","3"],
+    diagram: `
+<svg viewBox="0 0 600 200" width="100%">
+<g font-family="Atkinson Hyperlegible" font-size="11">
+  <rect x="10" y="80" width="90" height="40" rx="6" fill="var(--surface-2)" stroke="var(--border)"/><text x="55" y="104" text-anchor="middle">Read CLAUDE.md</text>
+  <rect x="130" y="80" width="80" height="40" rx="6" fill="var(--d3)"/><text x="170" y="105" text-anchor="middle" fill="white" font-weight="700">Plan</text>
+  <rect x="250" y="20" width="100" height="34" rx="6" fill="var(--d1)"/><text x="300" y="41" text-anchor="middle" fill="white">sub: impl</text>
+  <rect x="250" y="80" width="100" height="40" rx="6" fill="var(--d1)"/><text x="300" y="105" text-anchor="middle" fill="white" font-weight="700">sub: test</text>
+  <rect x="250" y="140" width="100" height="34" rx="6" fill="var(--d1)"/><text x="300" y="161" text-anchor="middle" fill="white">sub: docs</text>
+  <rect x="390" y="80" width="90" height="40" rx="6" fill="var(--d3)"/><text x="435" y="105" text-anchor="middle" fill="white" font-weight="700">Run tests</text>
+  <rect x="510" y="80" width="80" height="40" rx="6" fill="var(--surface-2)" stroke="var(--border)"/><text x="550" y="104" text-anchor="middle">Commit</text>
+  <g stroke="var(--text-dim)" stroke-width="1" fill="none" opacity="0.5">
+    <path d="M100 100 L130 100"/><path d="M210 100 L250 40"/><path d="M210 100 L250 100"/><path d="M210 100 L250 160"/>
+    <path d="M350 40 L390 100"/><path d="M350 100 L390 100"/><path d="M350 160 L390 100"/>
+    <path d="M480 100 L510 100"/>
+  </g>
+</g>
+</svg>`
+  },
+  {
+    n: "03", title: "Multi-Agent Research System",
+    desc: "Orchestrator decomposes a research brief, spawns specialized search sub-agents, then synthesizes findings.",
+    domains: ["1","5"],
+    diagram: `
+<svg viewBox="0 0 600 200" width="100%">
+<g font-family="Atkinson Hyperlegible" font-size="11">
+  <rect x="10" y="80" width="90" height="40" rx="6" fill="var(--surface-2)" stroke="var(--border)"/><text x="55" y="104" text-anchor="middle">Research query</text>
+  <rect x="130" y="80" width="110" height="40" rx="6" fill="var(--d1)"/><text x="185" y="105" text-anchor="middle" fill="white" font-weight="700">Orchestrator</text>
+  <circle cx="310" cy="40" r="20" fill="white" stroke="var(--d1)" stroke-width="2"/><text x="310" y="45" text-anchor="middle" fill="var(--d1)" font-size="9">sub A</text>
+  <circle cx="310" cy="100" r="20" fill="white" stroke="var(--d1)" stroke-width="2"/><text x="310" y="105" text-anchor="middle" fill="var(--d1)" font-size="9">sub B</text>
+  <circle cx="310" cy="160" r="20" fill="white" stroke="var(--d1)" stroke-width="2"/><text x="310" y="165" text-anchor="middle" fill="var(--d1)" font-size="9">sub C</text>
+  <rect x="380" y="80" width="100" height="40" rx="6" fill="var(--d5)"/><text x="430" y="105" text-anchor="middle" fill="white" font-weight="700">Synthesize</text>
+  <rect x="510" y="80" width="80" height="40" rx="6" fill="var(--d4)"/><text x="550" y="105" text-anchor="middle" fill="white" font-weight="700">Report</text>
+  <g stroke="var(--text-dim)" stroke-width="1" fill="none" opacity="0.5">
+    <path d="M100 100 L130 100"/><path d="M240 100 L290 40"/><path d="M240 100 L290 100"/><path d="M240 100 L290 160"/>
+    <path d="M330 40 L380 100"/><path d="M330 100 L380 100"/><path d="M330 160 L380 100"/>
+    <path d="M480 100 L510 100"/>
+  </g>
+  <text x="310" y="185" text-anchor="middle" fill="var(--text-dim)" font-size="9">each sub returns a summary only</text>
+</g>
+</svg>`
+  },
+  {
+    n: "04", title: "Developer Productivity with Claude",
+    desc: "IDE surfaces contextual suggestions; tool-use applies edits; hooks run formatters after every change.",
+    domains: ["3","4"],
+    diagram: `
+<svg viewBox="0 0 600 200" width="100%">
+<g font-family="Atkinson Hyperlegible" font-size="11">
+  <rect x="10" y="80" width="90" height="40" rx="6" fill="var(--surface-2)" stroke="var(--border)"/><text x="55" y="104" text-anchor="middle">Selection</text>
+  <rect x="130" y="80" width="110" height="40" rx="6" fill="var(--d4)"/><text x="185" y="105" text-anchor="middle" fill="white" font-weight="700">Build prompt</text>
+  <rect x="270" y="80" width="100" height="40" rx="6" fill="var(--d3)"/><text x="320" y="105" text-anchor="middle" fill="white" font-weight="700">edit_file tool</text>
+  <rect x="400" y="80" width="100" height="40" rx="6" fill="var(--d3)" opacity="0.7"/><text x="450" y="105" text-anchor="middle" fill="white">hook: format</text>
+  <rect x="520" y="80" width="70" height="40" rx="6" fill="var(--surface-2)" stroke="var(--border)"/><text x="555" y="104" text-anchor="middle">Preview</text>
+  <g stroke="var(--text-dim)" stroke-width="1" fill="none" opacity="0.5">
+    <path d="M100 100 L130 100"/><path d="M240 100 L270 100"/><path d="M370 100 L400 100"/><path d="M500 100 L520 100"/>
+  </g>
+  <text x="300" y="155" text-anchor="middle" fill="var(--text-dim)" font-size="9">CLAUDE.md provides project rules as system context</text>
+</g>
+</svg>`
+  },
+  {
+    n: "05", title: "Claude Code for CI/CD",
+    desc: "Headless Claude Code reviews PRs, proposes fixes, and gates merge on structured criteria.",
+    domains: ["3","5"],
+    diagram: `
+<svg viewBox="0 0 600 200" width="100%">
+<g font-family="Atkinson Hyperlegible" font-size="11">
+  <rect x="10" y="80" width="80" height="40" rx="6" fill="var(--surface-2)" stroke="var(--border)"/><text x="50" y="104" text-anchor="middle">PR opened</text>
+  <rect x="120" y="80" width="100" height="40" rx="6" fill="var(--d3)"/><text x="170" y="105" text-anchor="middle" fill="white" font-weight="700">Headless CC</text>
+  <rect x="250" y="30" width="100" height="34" rx="6" fill="var(--d5)" opacity="0.85"/><text x="300" y="51" text-anchor="middle" fill="white">cache repo ctx</text>
+  <rect x="250" y="80" width="100" height="40" rx="6" fill="var(--d2)"/><text x="300" y="105" text-anchor="middle" fill="white" font-weight="700">Review tools</text>
+  <rect x="250" y="140" width="100" height="34" rx="6" fill="var(--d4)"/><text x="300" y="161" text-anchor="middle" fill="white">Fix patches</text>
+  <rect x="390" y="80" width="100" height="40" rx="6" fill="var(--d3)"/><text x="440" y="105" text-anchor="middle" fill="white" font-weight="700">Status check</text>
+  <rect x="510" y="80" width="80" height="40" rx="6" fill="var(--surface-2)" stroke="var(--border)"/><text x="550" y="104" text-anchor="middle">Gate merge</text>
+  <g stroke="var(--text-dim)" stroke-width="1" fill="none" opacity="0.5">
+    <path d="M90 100 L120 100"/><path d="M220 100 L250 50"/><path d="M220 100 L250 100"/><path d="M220 100 L250 160"/>
+    <path d="M350 50 L390 100"/><path d="M350 100 L390 100"/><path d="M350 160 L390 100"/>
+    <path d="M490 100 L510 100"/>
+  </g>
+</g>
+</svg>`
+  },
+  {
+    n: "06", title: "Structured Data Extraction",
+    desc: "Document in. Tool-use with JSON schema out. Validator loop retries with errors. Schema-backed reliability.",
+    domains: ["4","5"],
+    diagram: `
+<svg viewBox="0 0 600 200" width="100%">
+<g font-family="Atkinson Hyperlegible" font-size="11">
+  <rect x="10" y="80" width="80" height="40" rx="6" fill="var(--surface-2)" stroke="var(--border)"/><text x="50" y="104" text-anchor="middle">Document</text>
+  <rect x="120" y="80" width="100" height="40" rx="6" fill="var(--d4)"/><text x="170" y="105" text-anchor="middle" fill="white" font-weight="700">Call w/ tool</text>
+  <rect x="250" y="80" width="100" height="40" rx="6" fill="var(--d5)"/><text x="300" y="105" text-anchor="middle" fill="white" font-weight="700">Validate</text>
+  <rect x="250" y="150" width="100" height="34" rx="6" fill="var(--d4)" opacity="0.6"/><text x="300" y="171" text-anchor="middle" fill="white">Retry w/ err</text>
+  <rect x="380" y="80" width="100" height="40" rx="6" fill="var(--d2)"/><text x="430" y="105" text-anchor="middle" fill="white" font-weight="700">Emit record</text>
+  <rect x="510" y="80" width="80" height="40" rx="6" fill="var(--surface-2)" stroke="var(--border)"/><text x="550" y="104" text-anchor="middle">Store</text>
+  <g stroke="var(--text-dim)" stroke-width="1" fill="none" opacity="0.5">
+    <path d="M90 100 L120 100"/><path d="M220 100 L250 100"/><path d="M350 100 L380 100"/><path d="M480 100 L510 100"/>
+    <path d="M300 120 L300 150"/><path d="M250 167 Q 170 167 170 120"/>
+  </g>
+</g>
+</svg>`
+  }
+];
+
+const QUIZ = [
+  {
+    d: "1",
+    q: "You're designing a multi-agent research system. Each specialized agent needs to search different sources independently. Which topology should you choose?",
+    options: [
+      "Fully-connected mesh: every agent can call every other agent for maximum flexibility.",
+      "Hub-and-spoke: one orchestrator decomposes the query and delegates to isolated sub-agents.",
+      "Sequential chain: each agent hands off the full conversation to the next.",
+      "Single-agent loop: a single Claude instance iteratively searches all sources itself."
+    ],
+    a: 1,
+    explain: "Hub-and-spoke is the canonical pattern: the orchestrator keeps the plan, each sub-agent owns one slice of work in isolated context, and only summaries return. Mesh is chaos; chain leaks context; single-agent fails when sub-tasks are independent and parallelizable."
+  },
+  {
+    d: "2",
+    q: "Your MCP server needs to expose (a) a way for the model to fetch live order data, (b) a set of documentation pages the app preloads, (c) a shortcut users can type to start a refund workflow. Map each to the right primitive.",
+    options: [
+      "(a) resource, (b) tool, (c) prompt",
+      "(a) tool, (b) resource, (c) prompt",
+      "(a) tool, (b) prompt, (c) resource",
+      "(a) prompt, (b) tool, (c) resource"
+    ],
+    a: 1,
+    explain: "Ask who initiates. Model-invoked action → tool. App-provided data → resource. User-triggered template → prompt. Live fetch is a tool (model decides to call it); preloaded docs are resources; a user shortcut is a prompt template."
+  },
+  {
+    d: "3",
+    q: "You want 'always run gofmt after every file edit' to happen deterministically, no matter what the model decides. Where does this belong?",
+    options: [
+      "A line in the project CLAUDE.md.",
+      "A custom skill the model can invoke.",
+      "A PostToolUse hook in settings.json.",
+      "A slash command the user types manually."
+    ],
+    a: 2,
+    explain: "CLAUDE.md can't guarantee behavior — the model can ignore or overlook it. Skills are model-chosen. Slash commands require the user to type. Hooks are the harness's deterministic event handlers — they always fire."
+  },
+  {
+    d: "4",
+    q: "You need structured output from Claude for a data extraction pipeline — guaranteed to match a schema. What's the reliable approach?",
+    options: [
+      "Write 'Respond in JSON matching this schema: {...}' in the system prompt.",
+      "Define a tool whose input_schema is the target JSON schema and force the model to use it.",
+      "Ask Claude to 'think step by step' and then 'output only JSON'.",
+      "Use a very high temperature so Claude explores more output formats."
+    ],
+    a: 1,
+    explain: "Tool-use with a JSON schema is the canonical structured-output path: the model fills a schema the API enforces, and you get a validated tool_use block back. Prose instructions alone are unreliable and don't guarantee shape."
+  },
+  {
+    d: "5",
+    q: "A long-running agent has a 150K-token conversation that includes a policy block the model must always follow. Where should the policy live?",
+    options: [
+      "Buried in the middle of the conversation so it doesn't dominate.",
+      "In the system prompt at the top — and repeated near the end of the context.",
+      "Only at the very end, right before the final user turn.",
+      "Attached as a resource so the model fetches it when needed."
+    ],
+    a: 1,
+    explain: "Attention is strongest at start and end, weakest in the middle ('lost in the middle'). Critical rules belong at both anchors. The system prompt alone is vulnerable on long contexts — restate the policy near the current turn."
+  },
+  {
+    d: "1",
+    q: "A customer support agent handles refunds, order lookups, and escalations. Team is considering splitting into 3 specialized sub-agents. What's the best first move?",
+    options: [
+      "Split immediately — specialization improves accuracy.",
+      "Start with a single agent and a set of tools; split only if evidence demands it.",
+      "Build a mesh of 3 agents that call each other as needed.",
+      "Use one agent per user message for minimum state."
+    ],
+    a: 1,
+    explain: "Most 'support-agent' workloads fit a single loop with well-described tools. Adding sub-agents adds orchestration cost and context-boundary bugs. Split only when you have independent, parallelizable work — not by default."
+  },
+  {
+    d: "2",
+    q: "Your tool's description reads: 'Gets data from the database.' The model keeps calling it at wrong times. What's the fix?",
+    options: [
+      "Raise the model temperature for more exploration.",
+      "Rewrite the description to specify what data, which parameters, side effects, and when NOT to call.",
+      "Rename the tool 'get_data_v2' to refresh the model's attention.",
+      "Add more few-shot examples of unrelated tasks."
+    ],
+    a: 1,
+    explain: "The model decides based on the description. Vague text = wrong calls. A good description names the domain, lists parameters with units, states side effects, and gives anti-examples of when NOT to call."
+  },
+  {
+    d: "3",
+    q: "You want a capability the model can choose to invoke for 'review this PR for security issues'. It should not run on every tool call — only when relevant. Which Claude Code primitive?",
+    options: [
+      "A hook wired to the PreToolUse event.",
+      "An MCP resource containing a security checklist.",
+      "A skill with a clear description of when to use it.",
+      "A line in global CLAUDE.md that says 'always check security'."
+    ],
+    a: 2,
+    explain: "Skills are model-selected capabilities. The description tells Claude when to invoke them. Hooks fire deterministically on events (wrong for 'only when relevant'). A resource is passive data. CLAUDE.md instructions can drift."
+  },
+  {
+    d: "4",
+    q: "You're writing a long prompt with instructions, three in-context examples, and a block of user data. How should you structure it?",
+    options: [
+      "Concatenate everything as plain prose separated by blank lines.",
+      "Wrap each section in XML tags: <instructions>, <example>, <data>.",
+      "Put everything in Markdown headings.",
+      "Interleave examples with the instructions to reinforce each rule."
+    ],
+    a: 1,
+    explain: "Claude is trained to respect XML-tag structure. Tags cleanly delimit instructions from examples from raw data and reduce confusion on what's a directive vs. what's content to process."
+  },
+  {
+    d: "5",
+    q: "A chatbot repeatedly sends the same 40K-token product manual as part of its system prompt. Traffic is high and latency is bad. Best fix?",
+    options: [
+      "Move the manual to the user turn so it's 'closer' to the question.",
+      "Mark the manual with cache_control so it's cached as a stable prefix.",
+      "Summarize the manual into 200 tokens once and discard the rest.",
+      "Use a smaller model to reduce per-token cost."
+    ],
+    a: 1,
+    explain: "Prompt caching is designed exactly for this: stable prefixes (system prompt, long references) get marked with cache_control; cache hits cost a fraction of uncached tokens and cut latency dramatically."
+  },
+  {
+    d: "1",
+    q: "A sub-agent spawned by an orchestrator finishes a task. What should it return to the parent?",
+    options: [
+      "Its full conversation history so the parent can audit every step.",
+      "A concise summary of the outcome + any structured artifacts the parent asked for.",
+      "Nothing — the parent should poll tools to verify.",
+      "All of the tool outputs it saw, verbatim."
+    ],
+    a: 1,
+    explain: "Sub-agents exist to isolate context. Dumping the full transcript back defeats the purpose and blows up the parent's token budget. Return a summary + the specific artifact the parent requested."
+  },
+  {
+    d: "2",
+    q: "A tool returns 2MB of JSON per call. The model's context fills up after three calls. Best remediation?",
+    options: [
+      "Raise max_tokens so the model can output longer responses.",
+      "Return a small preview + IDs or cursors; expose a second tool to fetch details on demand.",
+      "Compress the JSON with gzip inline in the response.",
+      "Rename the tool so the model calls it less often."
+    ],
+    a: 1,
+    explain: "Tool result size is a context budget issue. The standard fix is a paginated / cursor-based pattern: return a tight preview with handles, and let the model fetch details only when needed."
+  },
+  {
+    d: "3",
+    q: "You're configuring Claude Code for a team. Every engineer should share the same 'no emojis in commits' rule, but you personally want 'use 4-space indent everywhere'. Where does each go?",
+    options: [
+      "Both in the global CLAUDE.md.",
+      "Both in the project CLAUDE.md.",
+      "'No emojis' in project CLAUDE.md (checked in); '4-space indent' in your global CLAUDE.md.",
+      "Put both in settings.json."
+    ],
+    a: 2,
+    explain: "Team-wide rules belong in the project CLAUDE.md (checked in, shared). Personal preferences belong in your global ~/.claude/CLAUDE.md — they apply across your sessions without imposing on teammates."
+  },
+  {
+    d: "4",
+    q: "Which prompt pattern is most likely to produce inconsistent output structure?",
+    options: [
+      "A tool-use call backed by a strict JSON schema.",
+      "A prompt that says 'Return your answer as JSON with fields x, y, z.'",
+      "A prompt with a wrapped <output_format> tag describing the schema.",
+      "Few-shot examples showing three input → JSON output pairs."
+    ],
+    a: 1,
+    explain: "Natural-language 'return as JSON' is the weakest contract — nothing enforces it, and the model may wrap output in prose or add fields. Tool-use with a schema is strongest; XML-tagged format hints and few-shot examples are solid second tiers."
+  },
+  {
+    d: "5",
+    q: "Your agent needs to remember user preferences across separate sessions (new chats, different days). Best mechanism?",
+    options: [
+      "Expand the context window and keep the full history forever.",
+      "Use the memory tool (file-backed) so the model reads/writes persistent notes.",
+      "Save preferences in a Python variable in the outer loop.",
+      "Rely on prompt caching — the cache persists across sessions."
+    ],
+    a: 1,
+    explain: "Prompt caching is ephemeral and tied to prompt prefixes, not user state. The memory tool is designed for persistent, cross-session facts — the model can list, read, and write notes that survive between conversations."
+  }
+];
+
+const GLOSSARY = [
+  { name: "Agent", d: "1", def: "A Claude instance given tools and an agentic loop to work toward a goal autonomously.", icon: "bot" },
+  { name: "Agentic Loop", d: "1", def: "The cycle of think → act (tool call) → observe → think; terminates on a stop condition.", icon: "loop" },
+  { name: "CLAUDE.md", d: "3", def: "Markdown file auto-loaded as instructions by Claude Code. Tiered: global, project, subdir.", icon: "doc" },
+  { name: "Claude Code", d: "3", def: "Anthropic's agentic coding CLI and IDE integration with hooks, skills, slash commands.", icon: "terminal" },
+  { name: "Context Window", d: "5", def: "Maximum tokens a model can attend to per request. Attention is not uniform across it.", icon: "window" },
+  { name: "Compaction", d: "5", def: "Summarizing older turns to shrink context while preserving task-relevant information.", icon: "shrink" },
+  { name: "Hook", d: "3", def: "Deterministic shell handler wired to harness events like PreToolUse, PostToolUse, Stop.", icon: "plug" },
+  { name: "Hub-and-Spoke", d: "1", def: "Topology with one orchestrator and independent workers; no worker-to-worker edges.", icon: "network" },
+  { name: "JSON Schema", d: "4", def: "Contract describing valid shape of structured data. Used in tool input_schema and validation.", icon: "schema" },
+  { name: "Lost in the Middle", d: "5", def: "Empirical effect: models recall start/end of long contexts better than the middle.", icon: "curve" },
+  { name: "MCP", d: "2", def: "Model Context Protocol — open standard for exposing tools, resources, and prompts to models.", icon: "mcp" },
+  { name: "Memory Tool", d: "5", def: "File-backed tool for persisting facts and preferences across sessions.", icon: "memory" },
+  { name: "Orchestrator", d: "1", def: "Top-level agent that plans and delegates; doesn't do line-level work itself.", icon: "conductor" },
+  { name: "Prompt Caching", d: "5", def: "Marking stable prefixes with cache_control so repeated long prompts cost far less.", icon: "cache" },
+  { name: "Prompt Template", d: "2", def: "User-invoked reusable prompt exposed by an MCP server; fills variables from user input.", icon: "template" },
+  { name: "Resource", d: "2", def: "App-controlled data an MCP server exposes — like a file the app hands to the model.", icon: "file" },
+  { name: "Skill", d: "3", def: "Capability bundle the model chooses to invoke. Contrasts with hook (deterministic) and slash (user-invoked).", icon: "spark" },
+  { name: "Slash Command", d: "3", def: "User-typed shortcut (e.g. /review) that injects a prompt or triggers a flow.", icon: "slash" },
+  { name: "Structured Output", d: "4", def: "Guaranteed-shape response; canonically achieved via tool-use with a JSON schema.", icon: "shape" },
+  { name: "Sub-agent", d: "1", def: "Worker Claude instance spawned with isolated context; returns a summary to the parent.", icon: "branch" },
+  { name: "System Prompt", d: "4", def: "Top-of-context message setting role, constraints, and output expectations.", icon: "head" },
+  { name: "Tool", d: "2", def: "Model-invoked action with a JSON input schema. Has side effects or fetches live data.", icon: "tool" },
+  { name: "Tool Use", d: "4", def: "Response block where the model calls a tool with arguments matching its schema.", icon: "tool-use" },
+  { name: "XML Tag", d: "4", def: "Claude-native delimiter (e.g. <example>) that separates instructions, data, and samples.", icon: "tag" }
+];
+
+const STUDY_PLAN = [
+  { label: "D1 — Agentic Architecture", start: 1, span: 2, domain: 1 },
+  { label: "D1 — Sub-agent patterns drill", start: 2, span: 1, domain: 1 },
+  { label: "D2 — Tools & MCP primitives", start: 3, span: 2, domain: 2 },
+  { label: "D3 — CLAUDE.md + skills", start: 5, span: 2, domain: 3 },
+  { label: "D3 — Hooks & slash commands", start: 6, span: 1, domain: 3 },
+  { label: "D4 — Prompt engineering", start: 7, span: 1, domain: 4 },
+  { label: "D4 — Structured output drills", start: 7, span: 1, domain: 4 },
+  { label: "D5 — Context mgmt & caching", start: 8, span: 1, domain: 5 },
+  { label: "Scenarios 1–3 walkthrough", start: 9, span: 1, domain: 1 },
+  { label: "Scenarios 4–6 walkthrough", start: 10, span: 1, domain: 3 },
+  { label: "Full-length practice exam", start: 11, span: 1, domain: 2 },
+  { label: "Review + rest day + exam", start: 12, span: 1, domain: 5 }
+];
+
+/* ============================================================
+   RENDERING
+   ============================================================ */
+
+// Flashcards per domain
+document.querySelectorAll('[data-domain-flashcards]').forEach(el => {
+  const d = el.getAttribute('data-domain-flashcards');
+  el.innerHTML = FLASHCARDS[d].map(c => `
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-face">
+          <span class="caps faint">Term</span>
+          <span class="flashcard-term">${c.term}</span>
+          <span class="flashcard-hint">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 3v6h6"/></svg>
+            tap to flip
+          </span>
+        </div>
+        <div class="flashcard-face back">
+          <span class="caps faint">Definition</span>
+          <span class="flashcard-def">${c.def}</span>
+          <span class="flashcard-hint d${d}-ink">Domain ${d}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+});
+
+// Scenarios
+const scenarioGrid = document.getElementById('scenarioGrid');
+scenarioGrid.innerHTML = SCENARIOS.map((s, i) => `
+  <article class="scenario" onclick="this.classList.toggle('open')">
+    <div class="scenario-chips">
+      ${s.domains.map(d => `<span class="chip d${d}-bg">D${d}</span>`).join('')}
+    </div>
+    <div class="scenario-num">SCENARIO ${s.n} / 06</div>
+    <div class="scenario-title">${s.title}</div>
+    <div class="scenario-desc">${s.desc}</div>
+    <div class="scenario-expand">
+      <span>View workflow diagram</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="scenario-diagram" onclick="event.stopPropagation()">${s.diagram}</div>
+  </article>
+`).join('');
+
+// Glossary
+const glossaryGrid = document.getElementById('glossaryGrid');
+function renderGlossary(filter = 'all', query = '') {
+  const q = query.toLowerCase().trim();
+  const filtered = GLOSSARY.filter(t => {
+    if (filter !== 'all' && t.d !== filter) return false;
+    if (q && !t.name.toLowerCase().includes(q) && !t.def.toLowerCase().includes(q)) return false;
+    return true;
+  });
+  if (filtered.length === 0) {
+    glossaryGrid.innerHTML = '<div class="no-results">No terms match. Try clearing the filter or query.</div>';
+    return;
+  }
+  glossaryGrid.innerHTML = filtered.map(t => `
+    <div class="term">
+      <div class="term-icon d${t.d}-soft" style="color: var(--d${t.d})">
+        ${getGlossaryIcon(t.icon)}
+      </div>
+      <div>
+        <div class="term-name">
+          ${t.name}
+          <span class="term-pill d${t.d}-bg">D${t.d}</span>
+        </div>
+        <div class="term-def">${t.def}</div>
+      </div>
+    </div>
+  `).join('');
+}
+function getGlossaryIcon(name) {
+  const icons = {
+    bot: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>',
+    loop: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 3v6h6"/></svg>',
+    doc: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+    terminal: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>',
+    window: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>',
+    shrink: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg>',
+    plug: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"/><path d="M9 7V2"/><path d="M15 7V2"/><path d="M6 13V8h12v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4z"/></svg>',
+    network: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="4" cy="4" r="2"/><circle cx="20" cy="4" r="2"/><circle cx="4" cy="20" r="2"/><circle cx="20" cy="20" r="2"/><line x1="6" y1="6" x2="10" y2="10"/><line x1="18" y1="6" x2="14" y2="10"/><line x1="6" y1="18" x2="10" y2="14"/><line x1="18" y1="18" x2="14" y2="14"/></svg>',
+    schema: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v6H4z"/><path d="M14 4h6v6h-6z"/><path d="M4 14h6v6H4z"/><path d="M14 14h6v6h-6z"/></svg>',
+    curve: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6 Q 9 10 12 18 Q 15 10 21 6"/></svg>',
+    mcp: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 20 20 4 20"/></svg>',
+    memory: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 19a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2z"/><path d="M8 3v4"/><path d="M16 3v4"/><line x1="8" y1="12" x2="16" y2="12"/></svg>',
+    conductor: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="9"/></svg>',
+    cache: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>',
+    template: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
+    file: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>',
+    spark: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8L4.5 10l5.6 1.9L12 17l1.9-5.1L20 10l-5.6-1.2L12 3z"/></svg>',
+    slash: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="20" x2="17" y2="4"/></svg>',
+    shape: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg>',
+    branch: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>',
+    head: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>',
+    tool: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
+    'tool-use': '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 3 6 6-12 12H3v-6z"/></svg>',
+    tag: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>'
+  };
+  return icons[name] || icons.tag;
+}
+renderGlossary();
+
+// Glossary filters + search
+let currentFilter = 'all';
+document.getElementById('searchInput').addEventListener('input', e => renderGlossary(currentFilter, e.target.value));
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    currentFilter = chip.dataset.filter;
+    renderGlossary(currentFilter, document.getElementById('searchInput').value);
+  });
+});
+
+/* ============================================================
+   STUDY PLAN — Gantt with localStorage
+   ============================================================ */
+const ganttGrid = document.getElementById('ganttGrid');
+function safeStorage() {
+  try { return window.localStorage; } catch (e) { return null; }
+}
+const storage = safeStorage();
+let studyState = {};
+try {
+  studyState = JSON.parse(storage?.getItem('ccaf-study') || '{}');
+} catch (e) { studyState = {}; }
+const memoryStudyState = studyState;
+
+function renderGantt() {
+  let html = '<div class="gantt-header"><div>Task</div>';
+  for (let w = 1; w <= 12; w++) html += `<div>W${w}</div>`;
+  html += '</div>';
+
+  STUDY_PLAN.forEach((item, idx) => {
+    const checked = memoryStudyState[idx] ? 'checked' : '';
+    html += `<div class="gantt-row"><div>
+      <span class="gantt-check ${checked}" data-idx="${idx}" role="checkbox" aria-checked="${!!memoryStudyState[idx]}" tabindex="0">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </span>
+      <span>${item.label}</span>
+    </div>`;
+    for (let w = 1; w <= 12; w++) {
+      if (w === item.start) {
+        const width = `calc(${item.span * 100}% - 8px)`;
+        html += `<div class="gantt-cell" style="position:relative">
+          <div class="gantt-bar" style="left:4px; width:${width}; background: var(--d${item.domain})">
+            W${item.start}–${item.start + item.span - 1}
+          </div>
+        </div>`;
+      } else {
+        html += '<div class="gantt-cell"></div>';
+      }
+    }
+    html += '</div>';
+  });
+
+  ganttGrid.innerHTML = html;
+
+  ganttGrid.querySelectorAll('.gantt-check').forEach(el => {
+    el.addEventListener('click', () => toggleStudy(el.dataset.idx));
+    el.addEventListener('keydown', e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggleStudy(el.dataset.idx); } });
+  });
+  updateStudySummary();
+}
+function toggleStudy(idx) {
+  memoryStudyState[idx] = !memoryStudyState[idx];
+  try { storage?.setItem('ccaf-study', JSON.stringify(memoryStudyState)); } catch (e) {}
+  renderGantt();
+  updateProgress();
+}
+function resetStudyPlan() {
+  for (const k in memoryStudyState) delete memoryStudyState[k];
+  try { storage?.removeItem('ccaf-study'); } catch (e) {}
+  renderGantt();
+  updateProgress();
+}
+function updateStudySummary() {
+  const done = Object.values(memoryStudyState).filter(Boolean).length;
+  document.getElementById('studyDone').textContent = done;
+  document.getElementById('studyTotal').textContent = STUDY_PLAN.length;
+}
+renderGantt();
+
+/* ============================================================
+   QUIZ
+   ============================================================ */
+let qIdx = 0;
+let answers = [];
+let quizStart = null;
+let timerHandle = null;
+const quizBody = document.getElementById('quizBody');
+const quizResults = document.getElementById('quizResults');
+
+function renderQuestion() {
+  if (qIdx === 0 && !quizStart) {
+    quizStart = Date.now();
+    timerHandle = setInterval(() => {
+      const s = Math.floor((Date.now() - quizStart) / 1000);
+      const mm = String(Math.floor(s / 60)).padStart(2, '0');
+      const ss = String(s % 60).padStart(2, '0');
+      document.getElementById('quizTimer').textContent = `${mm}:${ss}`;
+    }, 500);
+  }
+
+  const q = QUIZ[qIdx];
+  const pips = QUIZ.map((_, i) => {
+    if (i < qIdx) return '<span class="q-pip done"></span>';
+    if (i === qIdx) return '<span class="q-pip current"></span>';
+    return '<span class="q-pip"></span>';
+  }).join('');
+
+  quizBody.innerHTML = `
+    <div class="quiz-progress">
+      <div class="mono" style="font-size: 0.78rem; color: var(--text-dim)">Question ${qIdx + 1} of ${QUIZ.length}</div>
+      <div class="q-pips">${pips}</div>
+    </div>
+    <div class="q-number">DOMAIN ${q.d} · QUESTION ${qIdx + 1}</div>
+    <div class="q-text">${q.q}</div>
+    <div class="q-options" id="qOptions">
+      ${q.options.map((opt, i) => `
+        <button class="q-option" data-i="${i}">
+          <span class="q-option-letter">${String.fromCharCode(65 + i)}</span>
+          <span>${opt}</span>
+        </button>
+      `).join('')}
+    </div>
+    <div class="q-feedback" id="qFeedback"></div>
+    <div class="q-actions">
+      <button class="btn" id="qBack" ${qIdx === 0 ? 'disabled' : ''}>Back</button>
+      <button class="btn btn-primary" id="qNext" disabled>${qIdx === QUIZ.length - 1 ? 'Finish' : 'Next'}</button>
+    </div>
+  `;
+
+  document.querySelectorAll('.q-option').forEach(btn => {
+    btn.addEventListener('click', () => answerQuestion(parseInt(btn.dataset.i, 10)));
+  });
+  document.getElementById('qBack').addEventListener('click', () => { if (qIdx > 0) { qIdx--; renderQuestion(); } });
+  document.getElementById('qNext').addEventListener('click', () => {
+    if (qIdx === QUIZ.length - 1) showResults();
+    else { qIdx++; renderQuestion(); }
+  });
+
+  // If previously answered, restore state
+  if (answers[qIdx] !== undefined) applyAnswer(answers[qIdx], true);
+}
+
+function answerQuestion(choice) {
+  answers[qIdx] = choice;
+  applyAnswer(choice, false);
+}
+function applyAnswer(choice, skipScroll) {
+  const q = QUIZ[qIdx];
+  const opts = document.querySelectorAll('.q-option');
+  opts.forEach(opt => { opt.disabled = true; });
+  opts[choice].classList.add(choice === q.a ? 'correct' : 'incorrect');
+  if (choice !== q.a) opts[q.a].classList.add('correct');
+
+  const fb = document.getElementById('qFeedback');
+  const ok = choice === q.a;
+  fb.innerHTML = `
+    <div class="q-feedback-head ${ok ? 'ok' : 'bad'}">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        ${ok ? '<polyline points="20 6 9 17 4 12"/>' : '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>'}
+      </svg>
+      ${ok ? 'Correct' : 'Not quite'} — correct answer is ${String.fromCharCode(65 + q.a)}
+    </div>
+    <div class="q-explain">${q.explain}</div>
+    <div class="q-explain-viz">
+      <div class="mono" style="font-size:0.7rem; color: var(--text-dim); margin-bottom: 6px">MAPS TO</div>
+      <span class="chip d${q.d}-bg">Domain ${q.d}</span>
+    </div>
+  `;
+  fb.classList.add('show');
+  document.getElementById('qNext').disabled = false;
+}
+
+function showResults() {
+  clearInterval(timerHandle);
+  quizBody.style.display = 'none';
+
+  // Compute per-domain scores
+  const domainTotals = { "1": 0, "2": 0, "3": 0, "4": 0, "5": 0 };
+  const domainCorrect = { "1": 0, "2": 0, "3": 0, "4": 0, "5": 0 };
+  QUIZ.forEach((q, i) => {
+    domainTotals[q.d]++;
+    if (answers[i] === q.a) domainCorrect[q.d]++;
+  });
+  const totalCorrect = QUIZ.reduce((a, _, i) => a + (answers[i] === QUIZ[i].a ? 1 : 0), 0);
+  const pct = Math.round(totalCorrect / QUIZ.length * 100);
+  const scaled = 100 + Math.round(pct / 100 * 900);
+  const pass = scaled >= 720;
+
+  // Radar
+  const axes = ["1","2","3","4","5"];
+  const cx = 150, cy = 150, r = 110;
+  const points = axes.map((d, i) => {
+    const angle = (Math.PI * 2 * i / axes.length) - Math.PI / 2;
+    const value = domainTotals[d] > 0 ? domainCorrect[d] / domainTotals[d] : 0;
+    const x = cx + Math.cos(angle) * r * value;
+    const y = cy + Math.sin(angle) * r * value;
+    return `${x},${y}`;
+  }).join(' ');
+  const gridPolys = [0.25, 0.5, 0.75, 1.0].map(lvl => {
+    const pts = axes.map((_, i) => {
+      const angle = (Math.PI * 2 * i / axes.length) - Math.PI / 2;
+      return `${cx + Math.cos(angle) * r * lvl},${cy + Math.sin(angle) * r * lvl}`;
+    }).join(' ');
+    return `<polygon points="${pts}" fill="none" stroke="var(--border)" stroke-width="1"/>`;
+  }).join('');
+  const axisLines = axes.map((d, i) => {
+    const angle = (Math.PI * 2 * i / axes.length) - Math.PI / 2;
+    const x = cx + Math.cos(angle) * r;
+    const y = cy + Math.sin(angle) * r;
+    const lx = cx + Math.cos(angle) * (r + 22);
+    const ly = cy + Math.sin(angle) * (r + 22);
+    return `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="var(--border)" stroke-width="1"/>
+            <text x="${lx}" y="${ly + 4}" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="var(--d${d})" font-weight="600">D${d}</text>`;
+  }).join('');
+
+  // Weakest domain = lowest accuracy (ties broken by lowest domain number for determinism)
+  const DOMAIN_NAMES = { "1": "Agentic Architecture", "2": "Tools & MCP", "3": "Claude Code", "4": "Prompt Engineering", "5": "Context Management" };
+  let weakestD = "1";
+  let weakestAcc = 2;
+  axes.forEach(d => {
+    const acc = domainTotals[d] > 0 ? domainCorrect[d] / domainTotals[d] : 1;
+    if (acc < weakestAcc) { weakestAcc = acc; weakestD = d; }
+  });
+  const weakestPct = Math.round(weakestAcc * 100);
+
+  quizResults.innerHTML = `
+    <div class="quiz-progress">
+      <div class="mono" style="font-size: 0.78rem; color: var(--text-dim)">Final Score</div>
+      <div class="q-pips">${QUIZ.map(() => '<span class="q-pip done"></span>').join('')}</div>
+    </div>
+    <div class="results-grid">
+      <div class="score-display">
+        <div class="mono caps" style="color: var(--text-dim)">Scaled score estimate</div>
+        <div class="score-big" style="color: ${pass ? 'var(--ok)' : 'var(--bad)'}">${scaled}</div>
+        <div class="score-bar">
+          <div class="score-bar-threshold" style="left: ${720/10}%"></div>
+          <div class="score-bar-fill" style="width: ${scaled / 10}%; background: ${pass ? 'var(--ok)' : 'var(--bad)'}"></div>
+        </div>
+        <div style="font-size:0.85rem">${totalCorrect} / ${QUIZ.length} correct · passing at 720</div>
+        <div class="mono" style="font-size:0.7rem; color: var(--text-faint); margin-top: 8px">THIS IS AN ESTIMATE · EXAM SCORING MAY DIFFER</div>
+      </div>
+      <div>
+        <div class="caps muted" style="margin-bottom: 8px">Per-domain accuracy</div>
+        <svg viewBox="0 0 300 300" width="100%" aria-label="Domain performance radar">
+          ${gridPolys}
+          ${axisLines}
+          <polygon points="${points}" fill="var(--d1)" fill-opacity="0.22" stroke="var(--d1)" stroke-width="2"/>
+          ${axes.map((d, i) => {
+            const angle = (Math.PI * 2 * i / axes.length) - Math.PI / 2;
+            const value = domainTotals[d] > 0 ? domainCorrect[d] / domainTotals[d] : 0;
+            const x = cx + Math.cos(angle) * r * value;
+            const y = cy + Math.sin(angle) * r * value;
+            return `<circle cx="${x}" cy="${y}" r="4" fill="var(--d${d})"/>`;
+          }).join('')}
+        </svg>
+      </div>
+    </div>
+    <div class="quiz-next">
+      <div class="quiz-next-prompt">
+        <div class="caps faint">Where to go next</div>
+        <div class="quiz-next-headline">
+          Your weakest domain: <span class="d${weakestD}-ink" style="font-weight: 700">D${weakestD} · ${DOMAIN_NAMES[weakestD]}</span>
+          <span class="faint mono" style="font-size: 0.8rem; margin-left: 6px">(${weakestPct}%)</span>
+        </div>
+      </div>
+      <div class="quiz-next-actions">
+        <a class="btn" href="#domain-${weakestD}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+          Review D${weakestD} now
+        </a>
+        <a class="btn" href="#cheat-sheet">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print cheat sheet
+        </a>
+        <button class="btn btn-primary" onclick="restartQuiz()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 3v6h6"/></svg>
+          Retake quiz
+        </button>
+      </div>
+    </div>
+  `;
+  quizResults.classList.add('show');
+}
+
+function restartQuiz() {
+  qIdx = 0;
+  answers = [];
+  quizStart = null;
+  document.getElementById('quizTimer').textContent = '00:00';
+  quizResults.classList.remove('show');
+  quizBody.style.display = 'block';
+  renderQuestion();
+}
+renderQuestion();
+
+/* ============================================================
+   THEME TOGGLE
+   ============================================================ */
+const themeToggle = document.getElementById('themeToggle');
+const themeLabel = document.getElementById('themeLabel');
+const themeIcon = document.getElementById('themeIcon');
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  themeLabel.textContent = t === 'dark' ? 'Light mode' : 'Dark mode';
+  themeIcon.innerHTML = t === 'dark'
+    ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+    : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>';
+  try { storage?.setItem('ccaf-theme', t); } catch (e) {}
+}
+const savedTheme = (() => { try { return storage?.getItem('ccaf-theme'); } catch (e) { return null; } })();
+setTheme(savedTheme || 'light');
+themeToggle.addEventListener('click', () => {
+  const curr = document.documentElement.getAttribute('data-theme');
+  setTheme(curr === 'dark' ? 'light' : 'dark');
+});
+
+/* ============================================================
+   DOMAIN ACCORDION
+   ============================================================ */
+function toggleDomain(trigger) {
+  // trigger is the <button>; its parent is <h3.domain-heading>; its grandparent is <article.domain>
+  const domain = trigger.closest('.domain');
+  const willOpen = domain.getAttribute('data-open') !== 'true';
+  domain.setAttribute('data-open', willOpen ? 'true' : 'false');
+  trigger.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+}
+
+/* ============================================================
+   MOBILE NAV
+   ============================================================ */
+const sidebar = document.getElementById('sidebar');
+document.getElementById('mobileNavToggle').addEventListener('click', () => sidebar.classList.toggle('open'));
+document.querySelectorAll('.nav-item').forEach(a => a.addEventListener('click', () => sidebar.classList.remove('open')));
+
+/* ============================================================
+   SCROLL PROGRESS + ACTIVE NAV
+   ============================================================ */
+const sectionIds = ['hero','at-a-glance','domains','scenarios','mental-models','study-plan','quiz','glossary','cheat-sheet','faq','register'];
+const navItems = document.querySelectorAll('.sidebar .nav-list .nav-item');
+
+function updateProgress() {
+  const scrollPct = Math.min(100, Math.round(
+    (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100
+  ));
+  const studyCount = Object.values(memoryStudyState).filter(Boolean).length;
+  const studyPct = Math.round(studyCount / STUDY_PLAN.length * 100);
+  // Blend scroll and study progress
+  const pct = Math.round((scrollPct + studyPct) / 2);
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressFill').style.width = pct + '%';
+
+  // Active nav
+  let current = sectionIds[0];
+  for (const id of sectionIds) {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 120) current = id;
+  }
+  navItems.forEach(item => {
+    item.classList.toggle('active', item.getAttribute('href') === '#' + current);
+  });
+}
+window.addEventListener('scroll', updateProgress, { passive: true });
+updateProgress();
+
+/* ============================================================
+   REVEAL ON SCROLL
+   ============================================================ */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+</script>
+</body>
+</html>
