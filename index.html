@@ -1932,9 +1932,14 @@ else:
           <div class="step-why"><em>Why it matters:</em> You can see the Think → Act → Observe cycle explicitly — the API never hides it.</div>
         </li>
         <li>
-          <span class="step-title">Inspect one tool-use block.</span>
-          <p>Before the <code class="inline">break</code>, print <code class="inline">resp.content[0]</code>. Expected: a <code class="inline">ToolUseBlock(name='get_weather', input={'city': 'Paris'}, id='toolu_…')</code>.</p>
-          <div class="step-why"><em>Why it matters:</em> Tool use is a structured response block, not parsed text — this is the contract your loop depends on.</div>
+          <span class="step-title">Inspect the first content block each turn.</span>
+          <p>Inside the <code class="inline">for turn</code> loop, right after the turn-header <code class="inline">print</code>, add one line:</p>
+          <div class="codeblock">
+            <div class="codeblock-head"><span class="codeblock-lang">python · loop.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>print(resp.content[0])</pre>
+          </div>
+          <p>Re-run the script. On turns where <code class="inline">stop_reason=tool_use</code> you'll see a structured block — <code class="inline">ToolUseBlock(id='toolu_…', input={'city': 'Paris'}, name='get_weather', type='tool_use')</code> — and on the final <code class="inline">end_turn</code> turn you'll see a <code class="inline">TextBlock(text='…', type='text')</code> instead.</p>
+          <div class="step-why"><em>Why it matters:</em> Tool use is a structured response block, not parsed text. The block <em>type</em> differs by turn, and your loop depends on that difference — this is the contract you're coding against.</div>
         </li>
         <li>
           <span class="step-title">Trace the message list after run completes.</span>
