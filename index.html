@@ -1379,6 +1379,63 @@ footer.site-foot {
 .gloss-empty.is-visible { display: block; }
 
 /* ============================================================
+   TROUBLESHOOTING
+   ============================================================ */
+.trouble-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  margin-top: var(--s-5);
+}
+.trouble-item {
+  padding: var(--s-5);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--bad);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.trouble-item.info { border-left-color: var(--warn); }
+.trouble-symptom {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-2);
+  font-family: var(--mono);
+  font-size: 0.86rem;
+  color: var(--bad);
+  line-height: 1.5;
+  margin: 0 0 var(--s-3);
+  word-break: break-word;
+}
+.trouble-item.info .trouble-symptom { color: var(--warn); }
+.trouble-symptom svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 3px; stroke: currentColor; }
+.trouble-cause {
+  font-size: 0.92rem;
+  color: var(--text-dim);
+  line-height: 1.55;
+  margin: 0 0 var(--s-3);
+}
+.trouble-cause strong { color: var(--text); font-weight: 600; }
+.trouble-fix {
+  margin-top: var(--s-3);
+  padding-top: var(--s-3);
+  border-top: 1px dashed var(--border);
+}
+.trouble-fix-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ok);
+  font-weight: 700;
+  margin-bottom: var(--s-2);
+}
+.trouble-fix p { font-size: 0.92rem; margin: 0 0 var(--s-3); line-height: 1.55; }
+.trouble-fix p:last-child { margin-bottom: 0; }
+.trouble-fix .codeblock { margin: var(--s-2) 0 0; }
+.trouble-fix .codeblock pre { font-size: 0.76rem; padding: var(--s-3); }
+
+/* ============================================================
    FRESHNESS STAMP
    ============================================================ */
 .freshness {
@@ -1544,6 +1601,7 @@ footer.site-foot {
         <a class="head-link hide-sm" href="#index">Tutorial index</a>
         <a class="head-link hide-sm" href="study-guide.html">Study guide</a>
         <a class="head-link hide-sm" href="#glossary">Glossary</a>
+        <a class="head-link hide-sm" href="#troubleshooting">Fixes</a>
         <a class="head-link hide-sm" href="#wrapup">Learning path</a>
         <button class="icon-btn" id="themeToggle" aria-label="Switch to dark theme" aria-pressed="false" type="button">
           <svg aria-hidden="true" class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -3529,6 +3587,219 @@ for placement in ["start", "middle", "end"]:
 </section>
 
 <!-- ============================================================
+     TROUBLESHOOTING
+     ============================================================ -->
+<section class="block" id="troubleshooting" aria-labelledby="troubleshooting-heading">
+  <div class="page">
+    <div class="eyebrow">
+      <span class="eyebrow-num">03 /</span>
+      <span class="eyebrow-label">Troubleshooting</span>
+    </div>
+    <h2 id="troubleshooting-heading">When things go wrong.</h2>
+    <p class="muted" style="max-width:62ch; margin-top: var(--s-3)">The errors most people hit running these tutorials, with the fix that actually works — especially on Ubuntu, where the defaults bite.</p>
+
+    <div class="trouble-list">
+
+      <article class="trouble-item">
+        <p class="trouble-symptom">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span><code>TypeError: Could not resolve authentication method. Expected either api_key or auth_token to be set</code></span>
+        </p>
+        <p class="trouble-cause"><strong>Cause.</strong> The <code class="inline">ANTHROPIC_API_KEY</code> environment variable is not visible to the Python process — <code class="inline">anthropic.Anthropic()</code> with no arguments reads the key from the environment. Typically you exported it in a different shell, or ran the script under <code class="inline">sudo</code> (which strips env vars).</p>
+        <div class="trouble-fix">
+          <span class="trouble-fix-label">Fix</span>
+          <p>First confirm what the shell sees. If this prints empty, export the key <em>in the same shell</em> where you run the script:</p>
+          <div class="codeblock">
+            <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>echo $ANTHROPIC_API_KEY
+export ANTHROPIC_API_KEY="sk-ant-…"
+python3 loop.py</pre>
+          </div>
+          <p>For a durable per-project setup, use a <code class="inline">.env</code> file:</p>
+          <div class="codeblock">
+            <div class="codeblock-head"><span class="codeblock-lang">bash + python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>pip install python-dotenv
+echo 'ANTHROPIC_API_KEY=sk-ant-…' &gt; .env
+# then at the top of loop.py:
+from dotenv import load_dotenv; load_dotenv()</pre>
+          </div>
+        </div>
+      </article>
+
+      <article class="trouble-item">
+        <p class="trouble-symptom">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span><code>The virtual environment was not created successfully because ensurepip is not available</code></span>
+        </p>
+        <p class="trouble-cause"><strong>Cause.</strong> Ubuntu and Debian ship a minimal Python 3 by default — the stdlib <code class="inline">venv</code> module needs the separate <code class="inline">python3-venv</code> package to actually bootstrap a virtualenv.</p>
+        <div class="trouble-fix">
+          <span class="trouble-fix-label">Fix</span>
+          <div class="codeblock">
+            <div class="codeblock-head"><span class="codeblock-lang">bash · one-time</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>sudo apt update &amp;&amp; sudo apt install -y python3 python3-venv python3-pip</pre>
+          </div>
+          <p>Then re-run the venv step from the tutorial setup.</p>
+        </div>
+      </article>
+
+      <article class="trouble-item">
+        <p class="trouble-symptom">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span><code>python: command not found</code> (Ubuntu)</span>
+        </p>
+        <p class="trouble-cause"><strong>Cause.</strong> On Ubuntu 20.04+ the binary on PATH is <code class="inline">python3</code>, not <code class="inline">python</code>. This workbook uses <code class="inline">python3</code> throughout for that reason.</p>
+        <div class="trouble-fix">
+          <span class="trouble-fix-label">Fix</span>
+          <p>Either run every command with <code class="inline">python3</code> explicitly, or install the alias package so <code class="inline">python</code> resolves to <code class="inline">python3</code>:</p>
+          <div class="codeblock">
+            <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>sudo apt install -y python-is-python3</pre>
+          </div>
+        </div>
+      </article>
+
+      <article class="trouble-item">
+        <p class="trouble-symptom">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span><code>error: externally-managed-environment</code> from <code>pip install</code></span>
+        </p>
+        <p class="trouble-cause"><strong>Cause.</strong> Ubuntu 23.04+ and current Homebrew Python enforce <a href="https://peps.python.org/pep-0668/" target="_blank" rel="noopener noreferrer">PEP 668</a> — the system Python refuses global <code class="inline">pip install</code> to protect OS packages. This workbook assumes you install Python packages <em>inside</em> each tutorial's venv, which sidesteps the problem entirely.</p>
+        <div class="trouble-fix">
+          <span class="trouble-fix-label">Fix</span>
+          <p>Activate the venv before <code class="inline">pip install</code>:</p>
+          <div class="codeblock">
+            <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>source .venv/bin/activate
+which pip  # should point inside .venv, not /usr/bin/pip
+pip install "anthropic&gt;=0.40"</pre>
+          </div>
+          <p>For CLIs you genuinely want globally (like a linter), use <code class="inline">pipx</code> instead of <code class="inline">pip</code>.</p>
+        </div>
+      </article>
+
+      <article class="trouble-item">
+        <p class="trouble-symptom">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span><code>ModuleNotFoundError: No module named 'anthropic'</code></span>
+        </p>
+        <p class="trouble-cause"><strong>Cause.</strong> You installed the package into a different Python than the one running the script. Nearly always: venv not activated, or you opened a new terminal and forgot to re-activate.</p>
+        <div class="trouble-fix">
+          <span class="trouble-fix-label">Fix</span>
+          <p>Verify which Python and which pip the shell is using — both should live inside <code class="inline">.venv</code>:</p>
+          <div class="codeblock">
+            <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>source .venv/bin/activate
+which python3 pip
+python3 -c "import anthropic, sys; print(anthropic.__version__, sys.executable)"</pre>
+          </div>
+          <p>If <code class="inline">which</code> points to <code class="inline">/usr/bin/</code>, activation didn't run — re-run <code class="inline">source .venv/bin/activate</code> and re-install.</p>
+        </div>
+      </article>
+
+      <article class="trouble-item">
+        <p class="trouble-symptom">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span><code>NotFoundError: 404 {"error":{"type":"not_found_error","message":"model: claude-…"}}</code></span>
+        </p>
+        <p class="trouble-cause"><strong>Cause.</strong> Either the model ID has drifted (the workbook pins <code class="inline">claude-sonnet-4-6</code>), or your SDK is too old to know about it, or your API key's tier hasn't been enabled for that model.</p>
+        <div class="trouble-fix">
+          <span class="trouble-fix-label">Fix</span>
+          <div class="codeblock">
+            <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>pip install -U "anthropic&gt;=0.40"
+# Confirm the model ID against the live catalogue:
+python3 -c "import anthropic; [print(m.id) for m in anthropic.Anthropic().models.list().data]"</pre>
+          </div>
+          <p>If Sonnet 4.6 isn't listed, fall back to <code class="inline">claude-haiku-4-5-20251001</code> for the tutorials — they don't require the bigger model.</p>
+        </div>
+      </article>
+
+      <article class="trouble-item">
+        <p class="trouble-symptom">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span><code>RateLimitError: 429 — Your account has hit a rate limit</code></span>
+        </p>
+        <p class="trouble-cause"><strong>Cause.</strong> New accounts start on tight tiers. Tutorials 02 (hub-and-spoke), 07 (retry loop), and 08 (caching) fan out multiple calls and can trip requests-per-minute or tokens-per-minute limits.</p>
+        <div class="trouble-fix">
+          <span class="trouble-fix-label">Fix</span>
+          <p>Lower parallelism and retry with backoff. The SDK already retries transient 429s, but you can also reduce the iteration cap in the loop or switch to Haiku 4.5 while you're testing. Check your current tier limits in the <a href="https://console.anthropic.com/settings/limits" target="_blank" rel="noopener noreferrer">Anthropic console</a>.</p>
+        </div>
+      </article>
+
+      <article class="trouble-item info">
+        <p class="trouble-symptom">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>Loop in Tutorial 01 keeps running, never prints <code>FINAL:</code>, never exits</span>
+        </p>
+        <p class="trouble-cause"><strong>Cause.</strong> That's not a bug — that's the intentional build-and-break in <a href="#tut-1">Tutorial 01</a>. You removed <code class="inline">MAX_ITERATIONS</code> and now nothing terminates the agentic loop when the model keeps requesting tools.</p>
+        <div class="trouble-fix">
+          <span class="trouble-fix-label">Fix</span>
+          <p><strong>Ctrl-C</strong> to kill the runaway loop. Put the bound back: <code class="inline">for turn in range(MAX_ITERATIONS):</code>. The whole point of T01 is to watch this happen once, then never forget it.</p>
+        </div>
+      </article>
+
+      <article class="trouble-item">
+        <p class="trouble-symptom">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span><code>BadRequestError: tool_result.content must be a string or list of content blocks</code></span>
+        </p>
+        <p class="trouble-cause"><strong>Cause.</strong> You returned a Python dict (or some other non-string object) as the <code class="inline">content</code> of a <code class="inline">tool_result</code>. The API accepts a string or a structured content-block list — not a raw dict.</p>
+        <div class="trouble-fix">
+          <span class="trouble-fix-label">Fix</span>
+          <div class="codeblock">
+            <div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>tool_results.append({
+    "type": "tool_result",
+    "tool_use_id": block.id,
+    "content": json.dumps(result),   # &lt;- stringify here
+})</pre>
+          </div>
+        </div>
+      </article>
+
+      <article class="trouble-item">
+        <p class="trouble-symptom">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span><code>claude: command not found</code> after <code>npm i -g @anthropic-ai/claude-code</code></span>
+        </p>
+        <p class="trouble-cause"><strong>Cause.</strong> npm's global bin directory is not on your PATH. On Ubuntu with a system-packaged Node, this happens because the default prefix is <code class="inline">/usr/local</code> but shells installed earlier may not include it; with nvm, each version has its own bin dir that must be sourced.</p>
+        <div class="trouble-fix">
+          <span class="trouble-fix-label">Fix</span>
+          <div class="codeblock">
+            <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>npm config get prefix          # find where it installed
+ls $(npm config get prefix)/bin # should list 'claude'
+echo 'export PATH="$(npm config get prefix)/bin:$PATH"' &gt;&gt; ~/.bashrc
+source ~/.bashrc</pre>
+          </div>
+        </div>
+      </article>
+
+      <article class="trouble-item">
+        <p class="trouble-symptom">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>MCP server in Tutorial 03 starts but Claude Code never gets a response; stdio just hangs</span>
+        </p>
+        <p class="trouble-cause"><strong>Cause.</strong> Almost always a silent import error or exception in the server script. Because Claude Code launches the server over stdio as a subprocess, its <code class="inline">stderr</code> doesn't surface in the CLI UI — the process just dies quietly and the handshake never completes.</p>
+        <div class="trouble-fix">
+          <span class="trouble-fix-label">Fix</span>
+          <p>Run the server directly before registering it with Claude Code — any traceback surfaces immediately:</p>
+          <div class="codeblock">
+            <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>source .venv/bin/activate
+python3 server.py  # Ctrl-C once it reports "ready" or prints a traceback</pre>
+          </div>
+          <p>If it says "ready", the server itself is fine — check the Claude Code <code class="inline">mcp.json</code> config path is absolute and the working directory is correct.</p>
+        </div>
+      </article>
+
+    </div>
+
+    <p class="muted" style="margin-top: var(--s-5); font-size: 0.9rem">Still stuck? Open an issue on <a href="https://github.com/jamesbuckett/ccaf-claude-certified-architect-practical/issues" target="_blank" rel="noopener noreferrer">the GitHub repo</a> — the more specific the error and the command that produced it, the faster it gets added here.</p>
+  </div>
+</section>
+
+<!-- ============================================================
      WRAPUP
      ============================================================ -->
 <section class="block" id="wrapup">
@@ -3621,6 +3892,7 @@ export ANTHROPIC_API_KEY="sk-ant-…"</pre>
           <li><a href="study-guide.html">Visual study guide</a></li>
           <li><a href="#index">Tutorial index</a></li>
           <li><a href="#glossary">Glossary · 33 terms</a></li>
+          <li><a href="#troubleshooting">Troubleshooting</a></li>
           <li><a href="#wrapup">Learning path & tooling</a></li>
         </ul>
       </div>
