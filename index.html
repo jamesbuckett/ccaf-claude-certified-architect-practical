@@ -3,8 +3,96 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Eight hands-on, build-and-break tutorials covering every domain of Anthropic's Claude Certified Architect – Foundations (CCA-F) exam. Runnable code, failure modes, verification checklists.">
-<title>CCA-F Practical — 8 Hands-On Tutorials for the Claude Architect Exam</title>
+<title>CCA-F Exam Prep — 8 Hands-On Claude Architect Tutorials</title>
+<meta name="description" content="Eight runnable tutorials for Anthropic's Claude Certified Architect (CCA-F) exam. Build each concept, trigger a deliberate failure, tick a checklist.">
+<link rel="canonical" href="https://jamesbuckett.github.io/ccaf-claude-certified-architect-practical/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="CCA-F Exam Prep — 8 Hands-On Claude Architect Tutorials">
+<meta property="og:description" content="Eight runnable tutorials for Anthropic's Claude Certified Architect exam. Build each concept, trigger a failure, tick a checklist. ~6.5 hrs, under $4 in API spend.">
+<meta property="og:url" content="https://jamesbuckett.github.io/ccaf-claude-certified-architect-practical/">
+<meta property="og:image" content="https://jamesbuckett.github.io/ccaf-claude-certified-architect-practical/og.png">
+<meta property="og:site_name" content="CCA-F Practical">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@jamesbuckett">
+<meta name="twitter:creator" content="@jamesbuckett">
+<meta name="twitter:title" content="CCA-F Exam Prep — 8 Hands-On Claude Architect Tutorials">
+<meta name="twitter:description" content="Build each CCA-F concept yourself, trigger a deliberate failure, tick a checklist. ~6.5 hrs, under $4 in API spend.">
+<meta name="twitter:image" content="https://jamesbuckett.github.io/ccaf-claude-certified-architect-practical/og.png">
+
+<!-- Structured data: the workbook itself -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LearningResource",
+  "name": "CCA-F Practical — 8 Hands-On Tutorials",
+  "learningResourceType": "Tutorial workbook",
+  "teaches": "Anthropic Claude Certified Architect – Foundations (CCA-F)",
+  "educationalLevel": "Professional certification preparation",
+  "timeRequired": "PT6H30M",
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "url": "https://jamesbuckett.github.io/ccaf-claude-certified-architect-practical/",
+  "datePublished": "2026-04-01",
+  "author": {
+    "@type": "Person",
+    "name": "James Buckett",
+    "url": "https://github.com/jamesbuckett"
+  },
+  "about": [
+    "Agentic loops",
+    "Model Context Protocol (MCP)",
+    "Claude Code",
+    "Prompt engineering",
+    "Context management"
+  ]
+}
+</script>
+
+<!-- Structured data: FAQ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is this the official Anthropic certification prep?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. This is an independent, community-made study resource. It is not affiliated with or endorsed by Anthropic." }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does the full workbook take?",
+      "acceptedAnswer": { "@type": "Answer", "text": "About 6 hours 30 minutes of focused time across all eight tutorials, typically spread over one or two weeks." }
+    },
+    {
+      "@type": "Question",
+      "name": "How much will the API calls cost?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Approximately $2–4 on Claude Sonnet 4.6 with the iteration caps shown. All loops have termination limits to prevent runaway spend." }
+    },
+    {
+      "@type": "Question",
+      "name": "How is this different from the study guide?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The study guide is the theory — visual maps of the five exam domains. This workbook is the hands-on half: every domain concept as runnable code, with a deliberate failure to trigger." }
+    },
+    {
+      "@type": "Question",
+      "name": "What do I need before I start?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Python 3.11+, Node 20 LTS (for Claude Code), an exported ANTHROPIC_API_KEY, and comfort with a terminal. Full tooling list is in the wrap-up." }
+    },
+    {
+      "@type": "Question",
+      "name": "Will this alone make me pass the exam?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No single resource will. Work through the study guide for the theory, this workbook for the muscle memory, then reserve the final week for the scenarios and the 15-question mock in the study guide." }
+    }
+  ]
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
@@ -964,6 +1052,350 @@ footer.site-foot {
 .foot-meta { font-family: var(--mono); font-size: 0.75rem; color: var(--text-faint); margin-top: var(--s-5); }
 
 /* ============================================================
+   SKIP LINK (keyboard a11y)
+   ============================================================ */
+.skip-link {
+  position: absolute;
+  left: var(--s-3);
+  top: var(--s-3);
+  z-index: 200;
+  padding: var(--s-2) var(--s-4);
+  background: var(--text);
+  color: var(--bg);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: var(--radius);
+  transform: translateY(-200%);
+  transition: transform 160ms ease;
+}
+.skip-link:focus { transform: translateY(0); outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ============================================================
+   BUTTONS (hero CTAs)
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.2;
+  padding: var(--s-3) var(--s-5);
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 150ms, border-color 150ms, color 150ms, transform 80ms;
+  white-space: nowrap;
+}
+.btn:active { transform: translateY(1px); }
+.btn svg { width: 16px; height: 16px; }
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+}
+.btn-primary:hover { background: var(--text); border-color: var(--text); color: var(--bg); }
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+.btn-ghost:hover { background: var(--surface); border-color: var(--text); }
+
+/* ============================================================
+   HERO — new blocks (friction line, CTA row, outcome strip)
+   ============================================================ */
+.hero-friction {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  margin: calc(-1 * var(--s-3)) 0 var(--s-5);
+}
+.hero-friction > span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.hero-friction > span + span::before {
+  content: "·";
+  color: var(--text-faint);
+  margin-right: var(--s-2);
+}
+
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  margin: var(--s-5) 0 var(--s-4);
+}
+
+.hero-outcome {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  margin-top: var(--s-2);
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  font-size: 0.92rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+.hero-outcome svg { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; margin-top: 3px; }
+.hero-outcome strong { color: var(--text); font-weight: 600; }
+
+/* ============================================================
+   BEFORE-YOU-START & WHO-THIS-IS-FOR
+   ============================================================ */
+.prestart-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-5);
+  margin-top: var(--s-5);
+}
+@media (min-width: 780px) {
+  .prestart-grid { grid-template-columns: 1fr 1fr; }
+}
+.prestart-card {
+  padding: var(--s-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+.prestart-card h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-bottom: var(--s-3);
+}
+.prestart-card h3 svg { width: 16px; height: 16px; stroke: var(--accent); }
+.prestart-card ul { margin: 0; padding-left: var(--s-5); }
+.prestart-card li { font-size: 0.92rem; }
+.prestart-card .muted-caps {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+  font-weight: 600;
+  margin-top: var(--s-4);
+  margin-bottom: var(--s-2);
+}
+
+.prestart-install {
+  margin-top: var(--s-5);
+  padding: var(--s-4) var(--s-5);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: var(--mono);
+  font-size: 0.84rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+.prestart-install strong { color: var(--text); font-weight: 600; }
+
+/* ============================================================
+   FAQ
+   ============================================================ */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  margin-top: var(--s-5);
+}
+.faq-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+}
+.faq-item[open] { border-color: var(--border-strong); }
+.faq-item > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding: var(--s-4) var(--s-5);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.98rem;
+  color: var(--text);
+  list-style: none;
+}
+.faq-item > summary::-webkit-details-marker { display: none; }
+.faq-item > summary::after {
+  content: "+";
+  font-family: var(--mono);
+  font-size: 1.2rem;
+  color: var(--text-faint);
+  transition: transform 150ms;
+}
+.faq-item[open] > summary::after { content: "−"; color: var(--accent); }
+.faq-item > summary:hover { background: var(--surface-2); }
+.faq-body {
+  padding: 0 var(--s-5) var(--s-4);
+  font-size: 0.92rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.faq-body p { margin: 0 0 var(--s-3); }
+.faq-body p:last-child { margin: 0; }
+.faq-body a { color: var(--text); }
+
+/* ============================================================
+   GLOSSARY
+   ============================================================ */
+.glossary-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-4);
+  align-items: center;
+  justify-content: space-between;
+  margin: var(--s-5) 0 var(--s-4);
+}
+.glossary-meta {
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  color: var(--text-dim);
+}
+.glossary-meta #glossCount { color: var(--text); font-weight: 600; }
+
+.glossary-search {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: var(--s-2) var(--s-3);
+  min-width: 260px;
+  transition: border-color 120ms, box-shadow 120ms;
+}
+.glossary-search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.glossary-search svg { width: 14px; height: 14px; color: var(--text-faint); flex-shrink: 0; }
+.glossary-search input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.84rem;
+  min-width: 0;
+}
+.glossary-search input::placeholder { color: var(--text-faint); }
+
+.gloss-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-3);
+  border-top: 1px solid var(--border);
+}
+@media (min-width: 780px) {
+  .gloss-list { grid-template-columns: 1fr 1fr; gap: 0; }
+  .gloss-list > .gloss-item:nth-child(even) { border-left: 1px solid var(--border); }
+}
+
+.gloss-item {
+  padding: var(--s-4) var(--s-4);
+  border-bottom: 1px solid var(--border);
+  transition: background 120ms;
+}
+.gloss-item:hover { background: var(--surface-2); }
+.gloss-item.is-hidden { display: none; }
+.gloss-item.is-match mark { background: var(--accent-soft); color: var(--accent); font-weight: 600; padding: 0 2px; border-radius: 2px; }
+
+.gloss-term-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-3);
+  margin-bottom: var(--s-2);
+}
+.gloss-term {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin: 0;
+}
+.gloss-term code {
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 0.92rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+.gloss-domain {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.gloss-domain::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.gloss-def {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  margin: 0;
+}
+.gloss-def a, .gloss-def code.inline { font-size: inherit; }
+.gloss-def strong { color: var(--text); font-weight: 600; }
+
+.gloss-empty {
+  display: none;
+  padding: var(--s-6) var(--s-4);
+  text-align: center;
+  color: var(--text-faint);
+  font-family: var(--mono);
+  font-size: 0.88rem;
+  border-bottom: 1px solid var(--border);
+}
+.gloss-empty.is-visible { display: block; }
+
+/* ============================================================
+   FRESHNESS STAMP
+   ============================================================ */
+.freshness {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  color: var(--text-dim);
+  padding: var(--s-2) var(--s-3);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  margin-top: var(--s-4);
+}
+.freshness svg { width: 12px; height: 12px; stroke: var(--ok); }
+
+/* ============================================================
    REVEAL ANIMATION (respects reduced motion)
    ============================================================ */
 @media (prefers-reduced-motion: no-preference) {
@@ -987,12 +1419,14 @@ footer.site-foot {
 </head>
 <body>
 
+<a class="skip-link" href="#top">Skip to main content</a>
+
 <aside class="toc-sidebar" id="index" aria-label="Tutorial index">
   <div class="toc-inner">
     <div class="toc-top">
       <span class="toc-eyebrow"><span class="toc-eyebrow-num">01 /</span> Tutorial Index</span>
       <button class="toc-close" id="tocClose" aria-label="Close navigation" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
       </button>
     </div>
     <h2 class="toc-title">Pick a tutorial.</h2>
@@ -1105,14 +1539,15 @@ footer.site-foot {
       </a>
       <div class="head-actions">
         <button class="nav-toggle" id="navToggle" aria-label="Open tutorial index" aria-controls="index" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/></svg>
         </button>
-        <a class="head-link hide-sm" href="#index">Index</a>
+        <a class="head-link hide-sm" href="#index">Tutorial index</a>
         <a class="head-link hide-sm" href="study-guide.html">Study guide</a>
-        <a class="head-link hide-sm" href="#wrapup">Wrap-up</a>
-        <button class="icon-btn" id="themeToggle" aria-label="Toggle theme" type="button">
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <a class="head-link hide-sm" href="#glossary">Glossary</a>
+        <a class="head-link hide-sm" href="#wrapup">Learning path</a>
+        <button class="icon-btn" id="themeToggle" aria-label="Switch to dark theme" aria-pressed="false" type="button">
+          <svg aria-hidden="true" class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg aria-hidden="true" class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
         </button>
       </div>
     </div>
@@ -1127,9 +1562,30 @@ footer.site-foot {
      ============================================================ -->
 <section class="hero">
   <div class="page">
-    <div class="hero-stamp"><span class="hero-stamp-dot"></span> LAB MANUAL · APR 2026 · v2026.04</div>
-    <h1>Eight tutorials. One architect exam. <em>All hands on keyboard.</em></h1>
-    <p class="hero-lede">The CCA-F study guide maps the territory. This is the workshop. Every domain of Anthropic's Claude Certified Architect exam translated into runnable code, a specific failure you're asked to trigger, and a checklist you can tick only after you've seen the behaviour with your own terminal.</p>
+    <div class="hero-stamp"><span class="hero-stamp-dot"></span> LAB MANUAL · CCA-F EXAM PREP · v2026.04</div>
+    <h1>Pass Anthropic's Claude Architect exam by <em>building</em> every concept yourself.</h1>
+    <p class="hero-lede">Every CCA-F domain as runnable code — with a deliberate failure to trigger and a checklist you can only tick after you've seen it on your own terminal. Companion to the <a href="study-guide.html">visual study guide</a>.</p>
+
+    <div class="hero-friction">
+      <span>Free &amp; open source</span>
+      <span>~6h 30m hands-on</span>
+      <span>One API key</span>
+      <span>Under $4 in Sonnet 4.6 spend</span>
+      <span>Python 3.11 + Node 20</span>
+    </div>
+
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#tut-1">
+        Start Tutorial 01 — The Agentic Loop
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="study-guide.html">Read the study guide first</a>
+    </div>
+
+    <div class="hero-outcome">
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <span>Finish 8/8 and you've <strong>seen every exam behaviour run, fail, and recover on your own machine</strong> — not just read about it.</span>
+    </div>
 
     <div class="hero-stats">
       <div class="hero-stat"><div class="hero-stat-v">08</div><div class="hero-stat-l">Tutorials</div></div>
@@ -1143,25 +1599,137 @@ footer.site-foot {
         <span class="caps">By</span>
         <span class="hero-author-name">James Buckett</span>
         <span class="hero-author-sep">·</span>
-        <span class="hero-author-role">Product Manager</span>
+        <span class="hero-author-role">Product Manager · Anthropic SDK since 0.10</span>
       </div>
       <div class="hero-socials">
         <a class="social-link" href="https://github.com/jamesbuckett" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
           <span>jamesbuckett</span>
         </a>
         <a class="social-link" href="https://www.linkedin.com/in/jamesbuckett" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
           <span>jamesbuckett</span>
         </a>
         <a class="social-link" href="https://twitter.com/jamesbuckett" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
           <span>@jamesbuckett</span>
         </a>
       </div>
     </div>
 
-    <p class="hero-note">Companion to the <a href="study-guide.html">visual study guide</a>. Independent study resource — not affiliated with or endorsed by Anthropic. All code is runnable on a clean laptop with an <code class="inline">ANTHROPIC_API_KEY</code> exported.</p>
+    <p class="hero-note">This is the <strong style="color:var(--text)">practical half</strong> of a two-part CCA-F prep kit — the <a href="study-guide.html">visual study guide</a> is the theory. Independent, not affiliated with or endorsed by Anthropic. All code runs on a clean laptop with an <code class="inline">ANTHROPIC_API_KEY</code> exported.</p>
+
+    <div class="freshness" role="note">
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Last verified against <code class="inline" style="font-size:0.72rem">anthropic &gt;= 0.40</code> and Claude Sonnet 4.6 · 2026-04-14 · <a href="https://github.com/jamesbuckett/ccaf-claude-certified-architect-practical/issues" target="_blank" rel="noopener noreferrer">report an issue</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     BEFORE YOU START / WHO THIS IS FOR
+     ============================================================ -->
+<section class="block" id="before-you-start" aria-labelledby="prestart-heading">
+  <div class="page">
+    <div class="eyebrow">
+      <span class="eyebrow-num">00 /</span>
+      <span class="eyebrow-label">Before you start</span>
+    </div>
+    <h2 id="prestart-heading">Two minutes of setup, then you're doing exam-relevant work.</h2>
+    <p class="muted" style="max-width:62ch; margin-top: var(--s-3)">Qualify the fit, install the toolchain, then dive in. Everything on one laptop — no cluster, no infra account, no SaaS signup beyond Anthropic.</p>
+
+    <div class="prestart-grid">
+      <div class="prestart-card">
+        <h3>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          For you if…
+        </h3>
+        <ul>
+          <li>You're preparing for Anthropic's CCA-F certification and want <strong>muscle memory</strong>, not just notes.</li>
+          <li>You've read (or are actively using) the <a href="study-guide.html">visual study guide</a> and want to make the concepts concrete.</li>
+          <li>You're comfortable reading Python and using a terminal.</li>
+          <li>You learn better by <em>breaking</em> code and watching the failure than by reading specs.</li>
+        </ul>
+      </div>
+      <div class="prestart-card">
+        <h3 style="color:var(--bad)">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          Skip this if…
+        </h3>
+        <ul>
+          <li>You haven't touched any CCA-F material — start with the <a href="study-guide.html">study guide</a> first, not here.</li>
+          <li>You don't have (or can't get) an Anthropic API key.</li>
+          <li>You want passive reading without running code — the tutorials are verification-gated on observed behaviour.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="prestart-install">
+      <p style="margin:0 0 var(--s-2)"><strong>One-time install</strong> (~2 minutes) — full tooling list in the <a href="#wrapup" style="color:var(--text)">wrap-up</a>:</p>
+      <div>pip install "anthropic&gt;=0.40" "mcp&gt;=1.0" jsonschema requests</div>
+      <div>npm i -g @anthropic-ai/claude-code</div>
+      <div>export ANTHROPIC_API_KEY="sk-ant-…"</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FAQ
+     ============================================================ -->
+<section class="block" id="faq" aria-labelledby="faq-heading">
+  <div class="page">
+    <div class="eyebrow">
+      <span class="eyebrow-num">00 /</span>
+      <span class="eyebrow-label">Frequently asked</span>
+    </div>
+    <h2 id="faq-heading">Before you commit six hours.</h2>
+    <p class="muted" style="max-width:58ch; margin-top: var(--s-3)">The questions people ask about this workbook — up front, so you don't get three tutorials in and wonder.</p>
+
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is this the official Anthropic certification prep?</summary>
+        <div class="faq-body">
+          <p>No. This is an independent, community-made study resource. It is not affiliated with or endorsed by Anthropic. The CCA-F exam, domain definitions, and certification itself are Anthropic's.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>How long does the full workbook take?</summary>
+        <div class="faq-body">
+          <p>About 6 hours 30 minutes of focused time across all eight tutorials — most people spread that across one or two weeks. Each tutorial posts its own time budget in the chip row at the top, and progress saves automatically to <code class="inline">localStorage</code>.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>How much will the API calls cost?</summary>
+        <div class="faq-body">
+          <p>Approximately <strong>$2–4 on Claude Sonnet 4.6</strong> with the iteration caps shown. Every loop has a termination limit to prevent runaway spend — the point of Tutorial 01 is precisely to watch what happens when you remove it. Set a billing alert before you start.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>How is this different from the study guide?</summary>
+        <div class="faq-body">
+          <p>The <a href="study-guide.html">study guide</a> is the theory — visual maps of the five exam domains, a glossary, a 15-question mock, and six scenario walkthroughs. This workbook is the hands-on half: every domain concept translated into runnable code, with a deliberate failure to trigger so the behaviour is remembered, not memorised.</p>
+          <p>Use both. The study guide tells you <em>what</em>; this workbook shows you <em>how it actually behaves</em>.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>What do I need before I start?</summary>
+        <div class="faq-body">
+          <p>Python 3.11+, Node 20 LTS (for Claude Code), an exported <code class="inline">ANTHROPIC_API_KEY</code>, and comfort with a terminal. The full tooling table with minimum versions is in the <a href="#wrapup">wrap-up</a>. No Docker, no cloud accounts, no cluster — everything runs locally.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Will this workbook alone make me pass the exam?</summary>
+        <div class="faq-body">
+          <p>Honestly? No single resource will. The recipe that works: (1) read the <a href="study-guide.html">study guide</a> for the theory, (2) work through this workbook for the muscle memory, (3) reserve the final week before the exam for the six scenarios and the 15-question mock in the study guide — <em>not</em> more tutorials.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>What if the code breaks or an SDK version ships?</summary>
+        <div class="faq-body">
+          <p>Open an issue on <a href="https://github.com/jamesbuckett/ccaf-claude-certified-architect-practical/issues" target="_blank" rel="noopener noreferrer">the GitHub repo</a>. The freshness stamp at the top of the page shows when the code was last verified against a live SDK and model version.</p>
+        </div>
+      </details>
+    </div>
   </div>
 </section>
 
@@ -1207,14 +1775,14 @@ footer.site-foot {
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         <h3>Setup</h3>
         <span class="sub-pill">≈ 2 min</span>
       </div>
       <div class="codeblock">
         <div class="codeblock-head">
           <span class="codeblock-lang">bash</span>
-          <button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button>
+          <button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button>
         </div>
 <pre>mkdir agentic-loop &amp;&amp; cd agentic-loop
 python -m venv .venv &amp;&amp; source .venv/bin/activate
@@ -1224,7 +1792,7 @@ pip install "anthropic&gt;=0.40"</pre>
       <div class="codeblock">
         <div class="codeblock-head">
           <span class="codeblock-lang">python · loop.py</span>
-          <button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button>
+          <button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button>
         </div>
 <pre>import anthropic, json, os
 
@@ -1280,7 +1848,7 @@ else:
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
         <h3>Walkthrough</h3>
         <span class="sub-pill">≈ 15 min</span>
       </div>
@@ -1288,7 +1856,7 @@ else:
         <li>
           <span class="step-title">Run the loop once.</span>
           <div class="codeblock">
-            <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+            <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>python loop.py</pre>
           </div>
           <p>Expected: two turns with <code class="inline">stop_reason=tool_use</code> (one per city), then a turn with <code class="inline">stop_reason=end_turn</code> and a prose answer.</p>
@@ -1303,7 +1871,7 @@ else:
           <span class="step-title">Trace the message list after run completes.</span>
           <p>Add:</p>
           <div class="codeblock">
-            <div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+            <div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>print(json.dumps([{'role': m['role']} for m in messages], indent=2))</pre>
           </div>
           <p>Expected: <code class="inline">user → assistant → user → assistant → user → assistant</code> with tool_use / tool_result alternating inside the user messages.</p>
@@ -1314,19 +1882,19 @@ else:
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <h3>Build-and-break exercise</h3>
         <span class="sub-pill">≈ 10 min</span>
       </div>
       <div class="callout">
         <div class="callout-head">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
           INTENTIONAL FAILURE
         </div>
         <h4>Starve the loop of iterations</h4>
         <p>Change <code class="inline">MAX_ITERATIONS = 5</code> to <code class="inline">MAX_ITERATIONS = 1</code>, then ask for three cities:</p>
         <div class="codeblock">
-          <div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+          <div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>messages = [{"role": "user",
              "content": "Compare weather in Paris, Tokyo, and Cape Town."}]</pre>
         </div>
@@ -1338,32 +1906,32 @@ else:
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         <h3>Verification checklist</h3>
       </div>
       <ul class="checklist">
-        <li data-key="1.1"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can name the three states of the agentic loop without looking at the diagram.</span></li>
-        <li data-key="1.2"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can point to the line of code that is the termination condition.</span></li>
-        <li data-key="1.3"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've seen <code class="inline">stop_reason</code> flip from <code class="inline">tool_use</code> to <code class="inline">end_turn</code>.</span></li>
-        <li data-key="1.4"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can explain why the model has no memory between <code class="inline">create()</code> calls.</span></li>
-        <li data-key="1.5"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've watched the loop exit because of the cap, not the model.</span></li>
+        <li data-key="1.1"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can name the three states of the agentic loop without looking at the diagram.</span></li>
+        <li data-key="1.2"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can point to the line of code that is the termination condition.</span></li>
+        <li data-key="1.3"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've seen <code class="inline">stop_reason</code> flip from <code class="inline">tool_use</code> to <code class="inline">end_turn</code>.</span></li>
+        <li data-key="1.4"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can explain why the model has no memory between <code class="inline">create()</code> calls.</span></li>
+        <li data-key="1.5"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've watched the loop exit because of the cap, not the model.</span></li>
       </ul>
     </div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
         <h3>Cleanup</h3>
       </div>
       <div class="codeblock">
-        <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+        <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>deactivate &amp;&amp; rm -rf agentic-loop</pre>
       </div>
     </div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         <h3>Further exploration</h3>
       </div>
       <ul>
@@ -1374,7 +1942,7 @@ else:
     </div>
 
     <button class="mark-done" data-tut="1" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       <span class="md-label">Mark tutorial complete</span>
     </button>
   </div>
@@ -1421,12 +1989,12 @@ else:
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         <h3>Setup</h3>
       </div>
       <p>Reuse the <code class="inline">.venv</code> from Tutorial 01. Create <code class="inline">orchestrator.py</code>:</p>
       <div class="codeblock">
-        <div class="codeblock-head"><span class="codeblock-lang">python · orchestrator.py</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+        <div class="codeblock-head"><span class="codeblock-lang">python · orchestrator.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>import anthropic
 client = anthropic.Anthropic()
 MODEL = "claude-sonnet-4-6"
@@ -1471,13 +2039,13 @@ if __name__ == "__main__":
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
         <h3>Walkthrough</h3>
       </div>
       <ol class="steps">
         <li>
           <span class="step-title">Run the orchestrator.</span>
-          <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>python orchestrator.py</pre></div>
+          <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>python orchestrator.py</pre></div>
           <p>Expected: three <code class="inline">[spawn]</code>/<code class="inline">[done]</code> pairs, then an <code class="inline">[orchestrator]</code> token report.</p>
           <div class="step-why"><em>Why it matters:</em> Each sub-agent starts with only its own system prompt and task brief. The parent never sees their internal reasoning.</div>
         </li>
@@ -1496,17 +2064,17 @@ if __name__ == "__main__":
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <h3>Build-and-break exercise</h3>
       </div>
       <div class="callout">
         <div class="callout-head">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
           LEAKY CONTEXT BUG
         </div>
         <h4>Forward the full child transcript up to the parent</h4>
         <p>Change <code class="inline">spawn_subagent</code> to return the full message list and have the orchestrator append it verbatim:</p>
-        <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>def spawn_subagent_LEAKY(task_brief, subagent_name):
+        <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>def spawn_subagent_LEAKY(task_brief, subagent_name):
     resp = client.messages.create(...)
     return {"messages": [{"role": "user", "content": task_brief},
                          {"role": "assistant", "content": resp.content[0].text}]}
@@ -1523,29 +2091,29 @@ flattened = sum((f["messages"] for f in findings), [])
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         <h3>Verification checklist</h3>
       </div>
       <ul class="checklist">
-        <li data-key="2.1"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can explain why sub-agents return summaries, not transcripts.</span></li>
-        <li data-key="2.2"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've seen the parent's token count stay small in the isolated version.</span></li>
-        <li data-key="2.3"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can identify a mesh anti-pattern vs a hub-and-spoke.</span></li>
-        <li data-key="2.4"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've run the same orchestration sequentially vs in parallel (see Further exploration).</span></li>
-        <li data-key="2.5"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I know the first question before splitting: <em>is the work actually independent?</em></span></li>
+        <li data-key="2.1"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can explain why sub-agents return summaries, not transcripts.</span></li>
+        <li data-key="2.2"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've seen the parent's token count stay small in the isolated version.</span></li>
+        <li data-key="2.3"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can identify a mesh anti-pattern vs a hub-and-spoke.</span></li>
+        <li data-key="2.4"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've run the same orchestration sequentially vs in parallel (see Further exploration).</span></li>
+        <li data-key="2.5"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I know the first question before splitting: <em>is the work actually independent?</em></span></li>
       </ul>
     </div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
         <h3>Cleanup</h3>
       </div>
-      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>rm orchestrator.py</pre></div>
+      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>rm orchestrator.py</pre></div>
     </div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         <h3>Further exploration</h3>
       </div>
       <ul>
@@ -1556,7 +2124,7 @@ flattened = sum((f["messages"] for f in findings), [])
     </div>
 
     <button class="mark-done" data-tut="2" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       <span class="md-label">Mark tutorial complete</span>
     </button>
   </div>
@@ -1604,18 +2172,18 @@ flattened = sum((f["messages"] for f in findings), [])
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         <h3>Setup</h3>
       </div>
       <div class="codeblock">
-        <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+        <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>mkdir mcp-triangle &amp;&amp; cd mcp-triangle
 python -m venv .venv &amp;&amp; source .venv/bin/activate
 pip install "mcp&gt;=1.0"</pre>
       </div>
       <p>Create <code class="inline">server.py</code>:</p>
       <div class="codeblock">
-        <div class="codeblock-head"><span class="codeblock-lang">python · server.py</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+        <div class="codeblock-head"><span class="codeblock-lang">python · server.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>from mcp.server.fastmcp import FastMCP
 
 mcp = FastMCP("triangle-demo")
@@ -1647,7 +2215,7 @@ if __name__ == "__main__":
       </div>
       <p>Wire it into Claude Code. Create <code class="inline">.mcp.json</code> in the project root:</p>
       <div class="codeblock">
-        <div class="codeblock-head"><span class="codeblock-lang">json · .mcp.json</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+        <div class="codeblock-head"><span class="codeblock-lang">json · .mcp.json</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>{
   "mcpServers": {
     "triangle": {
@@ -1661,19 +2229,19 @@ if __name__ == "__main__":
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
         <h3>Walkthrough</h3>
       </div>
       <ol class="steps">
         <li>
           <span class="step-title">Verify the server boots.</span>
-          <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>python server.py &lt; /dev/null</pre></div>
+          <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>python server.py &lt; /dev/null</pre></div>
           <p>It should start and wait for stdio input — kill with <code class="inline">Ctrl-C</code>.</p>
           <div class="step-why"><em>Why it matters:</em> Stdio is the transport Claude Code uses for local MCP servers.</div>
         </li>
         <li>
           <span class="step-title">Launch Claude Code at this directory.</span>
-          <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>claude</pre></div>
+          <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>claude</pre></div>
           <p>At the prompt, type <code class="inline">/mcp</code>. Expected: <code class="inline">triangle</code> appears with 1 tool, 1 resource, 1 prompt.</p>
           <div class="step-why"><em>Why it matters:</em> The CLI auto-loads <code class="inline">.mcp.json</code> and introspects the server.</div>
         </li>
@@ -1697,12 +2265,12 @@ if __name__ == "__main__":
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <h3>Build-and-break exercise</h3>
       </div>
       <div class="callout">
         <div class="callout-head">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
           MIS-CATEGORISE A PRIMITIVE
         </div>
         <h4>Convert the shipping-policy Resource into a Tool</h4>
@@ -1721,29 +2289,29 @@ if __name__ == "__main__":
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         <h3>Verification checklist</h3>
       </div>
       <ul class="checklist">
-        <li data-key="3.1"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can state "who initiates?" for each of the three primitives without looking.</span></li>
-        <li data-key="3.2"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've seen a tool mis-used because its description was too loose.</span></li>
-        <li data-key="3.3"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can point to my <code class="inline">.mcp.json</code> and explain stdio vs HTTP/SSE transport.</span></li>
-        <li data-key="3.4"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">My MCP server exposes one of each primitive and all register in <code class="inline">/mcp</code>.</span></li>
-        <li data-key="3.5"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've watched Claude choose (or not) to call a tool based on its description.</span></li>
+        <li data-key="3.1"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can state "who initiates?" for each of the three primitives without looking.</span></li>
+        <li data-key="3.2"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've seen a tool mis-used because its description was too loose.</span></li>
+        <li data-key="3.3"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can point to my <code class="inline">.mcp.json</code> and explain stdio vs HTTP/SSE transport.</span></li>
+        <li data-key="3.4"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">My MCP server exposes one of each primitive and all register in <code class="inline">/mcp</code>.</span></li>
+        <li data-key="3.5"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've watched Claude choose (or not) to call a tool based on its description.</span></li>
       </ul>
     </div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
         <h3>Cleanup</h3>
       </div>
-      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>deactivate &amp;&amp; cd .. &amp;&amp; rm -rf mcp-triangle</pre></div>
+      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>deactivate &amp;&amp; cd .. &amp;&amp; rm -rf mcp-triangle</pre></div>
     </div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         <h3>Further exploration</h3>
       </div>
       <ul>
@@ -1754,7 +2322,7 @@ if __name__ == "__main__":
     </div>
 
     <button class="mark-done" data-tut="3" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       <span class="md-label">Mark tutorial complete</span>
     </button>
   </div>
@@ -1800,12 +2368,12 @@ if __name__ == "__main__":
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         <h3>Setup</h3>
       </div>
       <p>Reuse Tutorial 01's environment. Create <code class="inline">describe.py</code>:</p>
       <div class="codeblock">
-        <div class="codeblock-head"><span class="codeblock-lang">python · describe.py</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+        <div class="codeblock-head"><span class="codeblock-lang">python · describe.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>import anthropic, json
 client = anthropic.Anthropic()
 MODEL = "claude-sonnet-4-6"
@@ -1856,13 +2424,13 @@ run(PRECISE, test_prompts, "PRECISE tool description")</pre>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
         <h3>Walkthrough</h3>
       </div>
       <ol class="steps">
         <li>
           <span class="step-title">Run both versions side by side.</span>
-          <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>python describe.py</pre></div>
+          <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>python describe.py</pre></div>
           <p>Expected: the vague <code class="inline">get_data</code> is either called on everything or nothing — both wrong. The precise tool fires only on the two order-status prompts.</p>
           <div class="step-why"><em>Why it matters:</em> Every spurious tool call is latency and cost — and a context-pollution risk.</div>
         </li>
@@ -1881,12 +2449,12 @@ run(PRECISE, test_prompts, "PRECISE tool description")</pre>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <h3>Build-and-break exercise</h3>
       </div>
       <div class="callout">
         <div class="callout-head">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
           CARGO-CULT RENAME
         </div>
         <h4>Rename the tool to "refresh attention"</h4>
@@ -1899,29 +2467,29 @@ run(PRECISE, test_prompts, "PRECISE tool description")</pre>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         <h3>Verification checklist</h3>
       </div>
       <ul class="checklist">
-        <li data-key="4.1"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I have a side-by-side count of tool calls for vague vs precise.</span></li>
-        <li data-key="4.2"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can list the five elements of a precise tool description.</span></li>
-        <li data-key="4.3"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've seen that renaming a tool does not change model behaviour.</span></li>
-        <li data-key="4.4"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I understand why "gets data" is not a tool description.</span></li>
-        <li data-key="4.5"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can write a description that includes a "DO NOT call when…" clause.</span></li>
+        <li data-key="4.1"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I have a side-by-side count of tool calls for vague vs precise.</span></li>
+        <li data-key="4.2"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can list the five elements of a precise tool description.</span></li>
+        <li data-key="4.3"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've seen that renaming a tool does not change model behaviour.</span></li>
+        <li data-key="4.4"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I understand why "gets data" is not a tool description.</span></li>
+        <li data-key="4.5"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can write a description that includes a "DO NOT call when…" clause.</span></li>
       </ul>
     </div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
         <h3>Cleanup</h3>
       </div>
-      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>rm describe.py</pre></div>
+      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>rm describe.py</pre></div>
     </div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         <h3>Further exploration</h3>
       </div>
       <ul>
@@ -1932,7 +2500,7 @@ run(PRECISE, test_prompts, "PRECISE tool description")</pre>
     </div>
 
     <button class="mark-done" data-tut="4" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       <span class="md-label">Mark tutorial complete</span>
     </button>
   </div>
@@ -1979,17 +2547,17 @@ run(PRECISE, test_prompts, "PRECISE tool description")</pre>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         <h3>Setup</h3>
       </div>
-      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre># Back up existing global CLAUDE.md if any
 cp ~/.claude/CLAUDE.md ~/.claude/CLAUDE.md.bak 2&gt;/dev/null || true
 
 mkdir -p ~/hierarchy-demo/src/payments
 cd ~/hierarchy-demo</pre></div>
       <p>Create three tiered files:</p>
-      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash · tiered CLAUDE.md files</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash · tiered CLAUDE.md files</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>cat &gt; ~/.claude/CLAUDE.md &lt;&lt;'EOF'
 # Personal preferences
 - Always use emoji-free commit messages.
@@ -2011,13 +2579,13 @@ EOF</pre></div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
         <h3>Walkthrough</h3>
       </div>
       <ol class="steps">
         <li>
           <span class="step-title">Launch Claude Code at the project root.</span>
-          <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>cd ~/hierarchy-demo &amp;&amp; claude</pre></div>
+          <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>cd ~/hierarchy-demo &amp;&amp; claude</pre></div>
           <p>Ask: <em>What instructions are loaded for you right now?</em> Expected: Claude cites rules from both global and project CLAUDE.md — but NOT the payments one (you're not in that path).</p>
           <div class="step-why"><em>Why it matters:</em> Subdir CLAUDE.md only loads when Claude is working in that subdir.</div>
         </li>
@@ -2038,16 +2606,16 @@ EOF</pre></div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <h3>Build-and-break exercise</h3>
       </div>
       <div class="callout">
         <div class="callout-head">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
           WRONG-TIER RULE
         </div>
         <h4>Put a personal preference in the project file</h4>
-        <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>cat &gt;&gt; ~/hierarchy-demo/CLAUDE.md &lt;&lt;'EOF'
+        <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>cat &gt;&gt; ~/hierarchy-demo/CLAUDE.md &lt;&lt;'EOF'
 - I like verbose commit messages with rationale in every line.
 EOF</pre></div>
         <p>Commit it. Imagine a teammate cloning the repo — they'd inherit your commit-message preference, never having asked for it. The source's "Don't" explicitly warns against this.</p>
@@ -2058,29 +2626,29 @@ EOF</pre></div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         <h3>Verification checklist</h3>
       </div>
       <ul class="checklist">
-        <li data-key="5.1"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can name what belongs at global / project / subdir tiers.</span></li>
-        <li data-key="5.2"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've seen Claude cite rules from multiple CLAUDE.md files.</span></li>
-        <li data-key="5.3"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've seen a subdir override a project rule.</span></li>
-        <li data-key="5.4"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I understand why "I prefer X" should not go in a checked-in CLAUDE.md.</span></li>
-        <li data-key="5.5"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can explain why this is a hierarchy, not a flat config.</span></li>
+        <li data-key="5.1"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can name what belongs at global / project / subdir tiers.</span></li>
+        <li data-key="5.2"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've seen Claude cite rules from multiple CLAUDE.md files.</span></li>
+        <li data-key="5.3"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've seen a subdir override a project rule.</span></li>
+        <li data-key="5.4"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I understand why "I prefer X" should not go in a checked-in CLAUDE.md.</span></li>
+        <li data-key="5.5"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can explain why this is a hierarchy, not a flat config.</span></li>
       </ul>
     </div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
         <h3>Cleanup</h3>
       </div>
-      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>rm -rf ~/hierarchy-demo</pre></div>
+      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>rm -rf ~/hierarchy-demo</pre></div>
     </div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         <h3>Further exploration</h3>
       </div>
       <ul>
@@ -2091,7 +2659,7 @@ EOF</pre></div>
     </div>
 
     <button class="mark-done" data-tut="5" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       <span class="md-label">Mark tutorial complete</span>
     </button>
   </div>
@@ -2138,14 +2706,14 @@ EOF</pre></div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         <h3>Setup</h3>
       </div>
-      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>mkdir ~/primitives &amp;&amp; cd ~/primitives
 mkdir -p .claude/skills/security-review .claude/commands</pre></div>
       <p>Hook — <code class="inline">.claude/settings.json</code>:</p>
-      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">json · .claude/settings.json</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">json · .claude/settings.json</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>{
   "hooks": {
     "PostToolUse": [{
@@ -2158,7 +2726,7 @@ mkdir -p .claude/skills/security-review .claude/commands</pre></div>
   }
 }</pre></div>
       <p>Skill — <code class="inline">.claude/skills/security-review/SKILL.md</code>:</p>
-      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">markdown · SKILL.md</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">markdown · SKILL.md</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>---
 name: security-review
 description: Use when the user asks to review code for security issues, audit for vulnerabilities, or check for injection/XSS/secrets.
@@ -2174,20 +2742,20 @@ When invoked, scan the target file(s) for:
 
 Report findings as a numbered list with file:line references.</pre></div>
       <p>Slash command — <code class="inline">.claude/commands/log-summary.md</code>:</p>
-      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">markdown · log-summary.md</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">markdown · log-summary.md</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>Summarise the last hour of entries in /tmp/hook.log and print a table of which files were touched most frequently.</pre></div>
     </div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
         <h3>Walkthrough</h3>
       </div>
       <ol class="steps">
         <li>
           <span class="step-title">Trigger the HOOK (harness-initiated).</span>
           <p>Launch <code class="inline">claude</code>. Ask: <em>Create hello.txt containing "hi"</em>. Then:</p>
-          <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>cat /tmp/hook.log</pre></div>
+          <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>cat /tmp/hook.log</pre></div>
           <p>Expected: a <code class="inline">[hook] file touched at …</code> line.</p>
           <div class="step-why"><em>Why it matters:</em> The hook fired because the harness saw a <code class="inline">Write</code> tool call. Claude couldn't skip it — it's deterministic.</div>
         </li>
@@ -2206,12 +2774,12 @@ Report findings as a numbered list with file:line references.</pre></div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <h3>Build-and-break exercise</h3>
       </div>
       <div class="callout">
         <div class="callout-head">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
           FORCE DETERMINISM WHERE IT DOESN'T BELONG
         </div>
         <h4>Try to make a skill fire on every edit</h4>
@@ -2224,29 +2792,29 @@ Report findings as a numbered list with file:line references.</pre></div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         <h3>Verification checklist</h3>
       </div>
       <ul class="checklist">
-        <li data-key="6.1"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've watched one hook, one skill, and one slash command fire.</span></li>
-        <li data-key="6.2"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can name the initiator for each of the three.</span></li>
-        <li data-key="6.3"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've confirmed a skill is non-deterministic by running it multiple times.</span></li>
-        <li data-key="6.4"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I know which one to pick for "run gofmt after every edit" (hook).</span></li>
-        <li data-key="6.5"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I know which one to pick for "review PR when relevant" (skill).</span></li>
+        <li data-key="6.1"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've watched one hook, one skill, and one slash command fire.</span></li>
+        <li data-key="6.2"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can name the initiator for each of the three.</span></li>
+        <li data-key="6.3"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've confirmed a skill is non-deterministic by running it multiple times.</span></li>
+        <li data-key="6.4"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I know which one to pick for "run gofmt after every edit" (hook).</span></li>
+        <li data-key="6.5"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I know which one to pick for "review PR when relevant" (skill).</span></li>
       </ul>
     </div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
         <h3>Cleanup</h3>
       </div>
-      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>cd ~ &amp;&amp; rm -rf ~/primitives /tmp/hook.log</pre></div>
+      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>cd ~ &amp;&amp; rm -rf ~/primitives /tmp/hook.log</pre></div>
     </div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         <h3>Further exploration</h3>
       </div>
       <ul>
@@ -2257,7 +2825,7 @@ Report findings as a numbered list with file:line references.</pre></div>
     </div>
 
     <button class="mark-done" data-tut="6" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       <span class="md-label">Mark tutorial complete</span>
     </button>
   </div>
@@ -2304,15 +2872,15 @@ Report findings as a numbered list with file:line references.</pre></div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         <h3>Setup</h3>
       </div>
-      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>mkdir retry-loop &amp;&amp; cd retry-loop
 python -m venv .venv &amp;&amp; source .venv/bin/activate
 pip install anthropic jsonschema</pre></div>
       <p>Create <code class="inline">extract.py</code>:</p>
-      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python · extract.py</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python · extract.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>import anthropic, json
 from jsonschema import Draft202012Validator
 client = anthropic.Anthropic()
@@ -2375,13 +2943,13 @@ print(json.dumps(extract_with_retry(document), indent=2))</pre></div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
         <h3>Walkthrough</h3>
       </div>
       <ol class="steps">
         <li>
           <span class="step-title">Run a clean extraction.</span>
-          <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>python extract.py</pre></div>
+          <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>python extract.py</pre></div>
           <p>Expected: <code class="inline">✓ valid on attempt 1</code> and a well-formed JSON dump.</p>
           <div class="step-why"><em>Why it matters:</em> The API itself enforces that <code class="inline">tool_use.input</code> is shape-compatible with <code class="inline">input_schema</code> — retries for a clean schema are rare.</div>
         </li>
@@ -2401,16 +2969,16 @@ print(json.dumps(extract_with_retry(document), indent=2))</pre></div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <h3>Build-and-break exercise</h3>
       </div>
       <div class="callout">
         <div class="callout-head">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
           PROSE "RETURN JSON" TRAP
         </div>
         <h4>Replace tool-use with a prose request</h4>
-        <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+        <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>resp = client.messages.create(
     model=MODEL, max_tokens=512,
     messages=[{"role": "user",
@@ -2433,29 +3001,29 @@ data = json.loads(raw)   # this often fails</pre></div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         <h3>Verification checklist</h3>
       </div>
       <ul class="checklist">
-        <li data-key="7.1"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've seen valid JSON returned via <code class="inline">tool_use.input</code>.</span></li>
-        <li data-key="7.2"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've forced a retry and watched the loop self-heal.</span></li>
-        <li data-key="7.3"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've observed the prose-JSON approach fail in a specific way.</span></li>
-        <li data-key="7.4"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">My retry loop has a cap and raises on exhaustion.</span></li>
-        <li data-key="7.5"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I feed the validator's error, not "please try again", back to the model.</span></li>
+        <li data-key="7.1"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've seen valid JSON returned via <code class="inline">tool_use.input</code>.</span></li>
+        <li data-key="7.2"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've forced a retry and watched the loop self-heal.</span></li>
+        <li data-key="7.3"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've observed the prose-JSON approach fail in a specific way.</span></li>
+        <li data-key="7.4"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">My retry loop has a cap and raises on exhaustion.</span></li>
+        <li data-key="7.5"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I feed the validator's error, not "please try again", back to the model.</span></li>
       </ul>
     </div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
         <h3>Cleanup</h3>
       </div>
-      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>deactivate &amp;&amp; cd .. &amp;&amp; rm -rf retry-loop</pre></div>
+      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>deactivate &amp;&amp; cd .. &amp;&amp; rm -rf retry-loop</pre></div>
     </div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         <h3>Further exploration</h3>
       </div>
       <ul>
@@ -2466,7 +3034,7 @@ data = json.loads(raw)   # this often fails</pre></div>
     </div>
 
     <button class="mark-done" data-tut="7" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       <span class="md-label">Mark tutorial complete</span>
     </button>
   </div>
@@ -2513,15 +3081,15 @@ data = json.loads(raw)   # this often fails</pre></div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         <h3>Setup</h3>
       </div>
-      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>mkdir cache-demo &amp;&amp; cd cache-demo
 python -m venv .venv &amp;&amp; source .venv/bin/activate
 pip install anthropic requests</pre></div>
       <p>Fetch a long document with <code class="inline">prep.py</code>:</p>
-      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python · prep.py</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python · prep.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>import requests, pathlib
 text = requests.get(
     "https://www.gutenberg.org/files/2701/2701-0.txt",
@@ -2531,16 +3099,16 @@ text = requests.get(
 body = text.split("CHAPTER 1.")[1].split("CHAPTER 6.")[0]
 pathlib.Path("moby.txt").write_text(body)
 print(f"saved {len(body)} chars")</pre></div>
-      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>python prep.py</pre></div>
+      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>python prep.py</pre></div>
     </div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
         <h3>Walkthrough — Part A · Prompt Caching</h3>
       </div>
       <p>Create <code class="inline">cache.py</code>:</p>
-      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python · cache.py</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python · cache.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>import anthropic, pathlib, time
 client = anthropic.Anthropic()
 MODEL = "claude-sonnet-4-6"
@@ -2573,7 +3141,7 @@ ask("What does Ishmael do when he feels spleen?", use_cache=False)</pre></div>
       <ol class="steps">
         <li>
           <span class="step-title">Run the caching comparison.</span>
-          <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>python cache.py</pre></div>
+          <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>python cache.py</pre></div>
           <p>Expected lines:</p>
           <ul>
             <li>Call 1 — <code class="inline">cache_write≈5000, cache_read=0</code> — cache creation</li>
@@ -2592,11 +3160,11 @@ ask("What does Ishmael do when he feels spleen?", use_cache=False)</pre></div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
         <h3>Walkthrough — Part B · Lost in the Middle</h3>
       </div>
       <p>Create <code class="inline">middle.py</code>:</p>
-      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python · middle.py</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python · middle.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>import anthropic, pathlib
 client = anthropic.Anthropic()
 MODEL = "claude-sonnet-4-6"
@@ -2629,7 +3197,7 @@ for placement in ["start", "middle", "end"]:
       <ol class="steps" style="counter-reset: step 2;">
         <li>
           <span class="step-title">Run the placement test.</span>
-          <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>python middle.py</pre></div>
+          <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>python middle.py</pre></div>
           <p>Expected: <code class="inline">start</code> and <code class="inline">end</code> recall the passphrase reliably. <code class="inline">middle</code> fails some fraction of the time — especially with larger documents.</p>
           <div class="step-why"><em>Why it matters:</em> This is the "lost in the middle" curve from the source, made observable in your own terminal.</div>
         </li>
@@ -2638,12 +3206,12 @@ for placement in ["start", "middle", "end"]:
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <h3>Build-and-break exercise</h3>
       </div>
       <div class="callout">
         <div class="callout-head">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
           CRITICAL RULE IN THE WRONG PLACE
         </div>
         <h4>Bury a critical instruction in the middle</h4>
@@ -2654,29 +3222,29 @@ for placement in ["start", "middle", "end"]:
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         <h3>Verification checklist</h3>
       </div>
       <ul class="checklist">
-        <li data-key="8.1"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've seen <code class="inline">cache_read_input_tokens</code> be non-zero on a repeat call.</span></li>
-        <li data-key="8.2"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I know the default ephemeral cache TTL (5 minutes).</span></li>
-        <li data-key="8.3"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've measured middle-placement recall failing vs start/end.</span></li>
-        <li data-key="8.4"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can explain why system-prompt rules at position 0 aren't always enough.</span></li>
-        <li data-key="8.5"><span class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've used <code class="inline">cache_control</code> on a stable prefix.</span></li>
+        <li data-key="8.1"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've seen <code class="inline">cache_read_input_tokens</code> be non-zero on a repeat call.</span></li>
+        <li data-key="8.2"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I know the default ephemeral cache TTL (5 minutes).</span></li>
+        <li data-key="8.3"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've measured middle-placement recall failing vs start/end.</span></li>
+        <li data-key="8.4"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I can explain why system-prompt rules at position 0 aren't always enough.</span></li>
+        <li data-key="8.5"><span class="check-mark"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">I've used <code class="inline">cache_control</code> on a stable prefix.</span></li>
       </ul>
     </div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
         <h3>Cleanup</h3>
       </div>
-      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>deactivate &amp;&amp; cd .. &amp;&amp; rm -rf cache-demo</pre></div>
+      <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>deactivate &amp;&amp; cd .. &amp;&amp; rm -rf cache-demo</pre></div>
     </div>
 
     <div class="sub">
       <div class="sub-head">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         <h3>Further exploration</h3>
       </div>
       <ul>
@@ -2687,11 +3255,267 @@ for placement in ["start", "middle", "end"]:
     </div>
 
     <button class="mark-done" data-tut="8" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       <span class="md-label">Mark tutorial complete</span>
     </button>
   </div>
 </article>
+
+<!-- ============================================================
+     GLOSSARY
+     ============================================================ -->
+<section class="block" id="glossary" aria-labelledby="glossary-heading">
+  <div class="page">
+    <div class="eyebrow">
+      <span class="eyebrow-num">02 /</span>
+      <span class="eyebrow-label">Glossary</span>
+    </div>
+    <h2 id="glossary-heading">Thirty-three terms you'll meet in the tutorials.</h2>
+    <p class="muted" style="max-width:62ch; margin-top: var(--s-3)">Short, exam-relevant definitions. Filter by term, domain (<code class="inline">D1</code>–<code class="inline">D5</code>), or any phrase in the definition. Use this as a reference while you work through the workbook.</p>
+
+    <div class="glossary-head">
+      <label class="glossary-search" for="glossSearch">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="glossSearch" placeholder="Filter — try &quot;cache&quot; or &quot;D2&quot;" autocomplete="off" spellcheck="false">
+      </label>
+      <div class="glossary-meta"><span id="glossCount">33</span> / 33 terms</div>
+    </div>
+
+    <dl class="gloss-list" id="glossList">
+      <div class="gloss-item" data-term="agent">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Agent</dt>
+          <span class="gloss-domain" style="color:#4F46E5">D1 · Agentic</span>
+        </div>
+        <dd class="gloss-def">A Claude instance wrapped in a loop that calls tools, observes results, and decides the next action. See <a href="#tut-1">Tutorial 01</a>.</dd>
+      </div>
+      <div class="gloss-item" data-term="agentic loop">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Agentic Loop</dt>
+          <span class="gloss-domain" style="color:#4F46E5">D1 · Agentic</span>
+        </div>
+        <dd class="gloss-def">The <strong>think → act → observe</strong> cycle. Terminates on <code class="inline">stop_reason == end_turn</code>, an iteration cap, or an error. Every loop needs a termination condition.</dd>
+      </div>
+      <div class="gloss-item" data-term="anthropic sdk">
+        <div class="gloss-term-row">
+          <dt class="gloss-term"><code>anthropic</code> (Python SDK)</dt>
+        </div>
+        <dd class="gloss-def">Official Anthropic Python client library. Exposes <code class="inline">client.messages.create()</code> and tool-use wiring. Version ≥ 0.40 is assumed throughout this workbook.</dd>
+      </div>
+      <div class="gloss-item" data-term="cache breakpoint">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Cache breakpoint</dt>
+          <span class="gloss-domain" style="color:#0891B2">D5 · Context</span>
+        </div>
+        <dd class="gloss-def">Marker (<code class="inline">cache_control: {type: "ephemeral"}</code>) placed on a content block to tell the API where a cacheable prefix ends.</dd>
+      </div>
+      <div class="gloss-item" data-term="cache read">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Cache read</dt>
+          <span class="gloss-domain" style="color:#0891B2">D5 · Context</span>
+        </div>
+        <dd class="gloss-def">Tokens served from a cached prefix on a subsequent request. Charged at ~10% of standard input cost. The metric that makes caching worth it.</dd>
+      </div>
+      <div class="gloss-item" data-term="cache write">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Cache write</dt>
+          <span class="gloss-domain" style="color:#0891B2">D5 · Context</span>
+        </div>
+        <dd class="gloss-def">First-time creation of a cache entry. Charged at a ~25% premium over standard input, amortised across later cache reads.</dd>
+      </div>
+      <div class="gloss-item" data-term="claude code">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Claude Code</dt>
+          <span class="gloss-domain" style="color:#D97706">D3 · Claude Code</span>
+        </div>
+        <dd class="gloss-def">Anthropic's official CLI agent. Reads <code class="inline">CLAUDE.md</code>, hosts MCP servers, and runs hooks, skills, and slash commands. See <a href="#tut-5">Tutorial 05</a>.</dd>
+      </div>
+      <div class="gloss-item" data-term="claude.md">
+        <div class="gloss-term-row">
+          <dt class="gloss-term"><code>CLAUDE.md</code></dt>
+          <span class="gloss-domain" style="color:#D97706">D3 · Claude Code</span>
+        </div>
+        <dd class="gloss-def">Plain-text instruction file read by Claude Code at session start. Three tiers: <strong>global</strong> (<code class="inline">~/.claude</code>), <strong>project</strong> (repo root), and <strong>subdirectory</strong> — the closest tier wins.</dd>
+      </div>
+      <div class="gloss-item" data-term="compaction">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Compaction</dt>
+          <span class="gloss-domain" style="color:#0891B2">D5 · Context</span>
+        </div>
+        <dd class="gloss-def">Automatic summarisation of earlier conversation turns to free context budget. Mechanics are not yet deterministic — treat as advisory, not guaranteed.</dd>
+      </div>
+      <div class="gloss-item" data-term="context window">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Context window</dt>
+          <span class="gloss-domain" style="color:#0891B2">D5 · Context</span>
+        </div>
+        <dd class="gloss-def">Total token budget the model can attend to in one call. Claude Sonnet 4.6 default is 200K tokens; 1M-token context is opt-in for certain workloads.</dd>
+      </div>
+      <div class="gloss-item" data-term="end_turn">
+        <div class="gloss-term-row">
+          <dt class="gloss-term"><code>end_turn</code></dt>
+          <span class="gloss-domain" style="color:#4F46E5">D1 · Agentic</span>
+        </div>
+        <dd class="gloss-def">Value of <code class="inline">stop_reason</code> that means the model has decided the turn is complete and is not requesting a tool. The healthy exit condition of an agentic loop.</dd>
+      </div>
+      <div class="gloss-item" data-term="ephemeral cache">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Ephemeral cache</dt>
+          <span class="gloss-domain" style="color:#0891B2">D5 · Context</span>
+        </div>
+        <dd class="gloss-def">Default prompt-cache type. <strong>5-minute TTL</strong>, refreshed on every read. Use when back-to-back calls re-use the same prefix.</dd>
+      </div>
+      <div class="gloss-item" data-term="hook">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Hook</dt>
+          <span class="gloss-domain" style="color:#D97706">D3 · Claude Code</span>
+        </div>
+        <dd class="gloss-def">A <strong>deterministic shell command</strong> Claude Code runs at a lifecycle event (<code class="inline">PreToolUse</code>, <code class="inline">PostToolUse</code>, <code class="inline">Stop</code>, etc.). Use when you need guaranteed execution, not model discretion. See <a href="#tut-6">Tutorial 06</a>.</dd>
+      </div>
+      <div class="gloss-item" data-term="hub-and-spoke">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Hub-and-Spoke</dt>
+          <span class="gloss-domain" style="color:#4F46E5">D1 · Agentic</span>
+        </div>
+        <dd class="gloss-def">Orchestration pattern. A parent agent delegates to sub-agents in isolated contexts; sub-agents return only summaries, not their full transcripts. See <a href="#tut-2">Tutorial 02</a>.</dd>
+      </div>
+      <div class="gloss-item" data-term="json schema">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">JSON Schema</dt>
+          <span class="gloss-domain" style="color:#E11D48">D4 · Prompt Eng.</span>
+        </div>
+        <dd class="gloss-def">Contract describing the expected shape of a tool's <code class="inline">input</code> (or a structured output). Paired with tool-use to coerce valid JSON and drive retries on validation failure. See <a href="#tut-7">Tutorial 07</a>.</dd>
+      </div>
+      <div class="gloss-item" data-term="lost in the middle">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Lost in the middle</dt>
+          <span class="gloss-domain" style="color:#0891B2">D5 · Context</span>
+        </div>
+        <dd class="gloss-def">Empirical failure mode: facts placed in the <em>middle</em> of a long context are recalled less reliably than facts near the start or end. Structure long prompts accordingly. See <a href="#tut-8">Tutorial 08</a>.</dd>
+      </div>
+      <div class="gloss-item" data-term="mcp">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">MCP (Model Context Protocol)</dt>
+          <span class="gloss-domain" style="color:#059669">D2 · Tools/MCP</span>
+        </div>
+        <dd class="gloss-def">Open standard for exposing <strong>tools, resources, and prompts</strong> to a model via a standardised transport. See <a href="#tut-3">Tutorial 03</a>.</dd>
+      </div>
+      <div class="gloss-item" data-term="mcp primitives">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">MCP primitives</dt>
+          <span class="gloss-domain" style="color:#059669">D2 · Tools/MCP</span>
+        </div>
+        <dd class="gloss-def">Three kinds a server can expose: <strong>tool</strong> (model-initiated action), <strong>resource</strong> (application-attached read-only data), <strong>prompt</strong> (user-invoked template). Picking the wrong primitive is the most common MCP mistake.</dd>
+      </div>
+      <div class="gloss-item" data-term="memory tool">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Memory tool <span class="caps">beta</span></dt>
+          <span class="gloss-domain" style="color:#0891B2">D5 · Context</span>
+        </div>
+        <dd class="gloss-def">Anthropic's managed persistent memory. Currently beta — exact API surface may still shift, so no dedicated tutorial yet.</dd>
+      </div>
+      <div class="gloss-item" data-term="premium cache">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Premium cache</dt>
+          <span class="gloss-domain" style="color:#0891B2">D5 · Context</span>
+        </div>
+        <dd class="gloss-def">Opt-in cache type with a <strong>1-hour TTL</strong>. Higher write cost; lower read cost amortised over longer reuse windows. Best for stable system prompts and tool catalogues.</dd>
+      </div>
+      <div class="gloss-item" data-term="prompt caching">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Prompt caching</dt>
+          <span class="gloss-domain" style="color:#0891B2">D5 · Context</span>
+        </div>
+        <dd class="gloss-def">Server-side reuse of previously-sent input tokens across calls. Reduces input cost ~90% and cuts time-to-first-token. See <a href="#tut-8">Tutorial 08</a>.</dd>
+      </div>
+      <div class="gloss-item" data-term="skill">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Skill</dt>
+          <span class="gloss-domain" style="color:#D97706">D3 · Claude Code</span>
+        </div>
+        <dd class="gloss-def">Natural-language capability pack loaded into Claude Code. <strong>Non-deterministic by design</strong> — if you need guaranteed execution, use a hook instead. See <a href="#tut-6">Tutorial 06</a>.</dd>
+      </div>
+      <div class="gloss-item" data-term="slash command">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Slash command</dt>
+          <span class="gloss-domain" style="color:#D97706">D3 · Claude Code</span>
+        </div>
+        <dd class="gloss-def">User-invoked shortcut in Claude Code (e.g. <code class="inline">/fix</code>, <code class="inline">/commit</code>). Expands to a prompt template. Deterministic in <em>when</em> it runs — not in what the model does with it.</dd>
+      </div>
+      <div class="gloss-item" data-term="stdio transport">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Stdio transport</dt>
+          <span class="gloss-domain" style="color:#059669">D2 · Tools/MCP</span>
+        </div>
+        <dd class="gloss-def">MCP transport over a subprocess's stdin/stdout. Local-process only, no auth needed. The safe default used in <a href="#tut-3">Tutorial 03</a>.</dd>
+      </div>
+      <div class="gloss-item" data-term="stop_reason">
+        <div class="gloss-term-row">
+          <dt class="gloss-term"><code>stop_reason</code></dt>
+          <span class="gloss-domain" style="color:#4F46E5">D1 · Agentic</span>
+        </div>
+        <dd class="gloss-def">Field on every Messages response telling you why the model stopped. Values: <code class="inline">end_turn</code>, <code class="inline">tool_use</code>, <code class="inline">max_tokens</code>, <code class="inline">stop_sequence</code>, <code class="inline">pause_turn</code>.</dd>
+      </div>
+      <div class="gloss-item" data-term="structured output">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Structured output</dt>
+          <span class="gloss-domain" style="color:#E11D48">D4 · Prompt Eng.</span>
+        </div>
+        <dd class="gloss-def">Forcing the model to return JSON that conforms to a schema. In 2026 this is implemented via <em>tool-use with a single mandatory tool</em>, not prose "please return JSON" prompts.</dd>
+      </div>
+      <div class="gloss-item" data-term="sub-agent">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Sub-agent</dt>
+          <span class="gloss-domain" style="color:#4F46E5">D1 · Agentic</span>
+        </div>
+        <dd class="gloss-def">Child agent spawned by an orchestrator, running in an <strong>isolated context</strong>. Returns a summary, not its full transcript. Core unit of hub-and-spoke.</dd>
+      </div>
+      <div class="gloss-item" data-term="system prompt">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">System prompt</dt>
+          <span class="gloss-domain" style="color:#E11D48">D4 · Prompt Eng.</span>
+        </div>
+        <dd class="gloss-def">Instruction block attached at the top of every call, outside the user/assistant turn structure. Stable across calls → an ideal cache-write target.</dd>
+      </div>
+      <div class="gloss-item" data-term="termination condition">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Termination condition</dt>
+          <span class="gloss-domain" style="color:#4F46E5">D1 · Agentic</span>
+        </div>
+        <dd class="gloss-def">Any bound that causes the agentic loop to exit: <code class="inline">stop_reason == end_turn</code>, an iteration cap, a wall-clock timeout, a spend limit, or an unhandled error. Tutorial 01 makes you remove the cap on purpose.</dd>
+      </div>
+      <div class="gloss-item" data-term="tool description">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Tool description</dt>
+          <span class="gloss-domain" style="color:#059669">D2 · Tools/MCP</span>
+        </div>
+        <dd class="gloss-def">Free-text field the model reads to decide when to call a tool. Small wording changes materially affect routing — vague ("gets data.") is actively harmful. See <a href="#tut-4">Tutorial 04</a>.</dd>
+      </div>
+      <div class="gloss-item" data-term="tool_result">
+        <div class="gloss-term-row">
+          <dt class="gloss-term"><code>tool_result</code></dt>
+          <span class="gloss-domain" style="color:#4F46E5">D1 · Agentic</span>
+        </div>
+        <dd class="gloss-def">Content block type sent back to Claude with the output of a called tool. Matched to the originating <code class="inline">tool_use_id</code>. The "observe" step of the agentic loop.</dd>
+      </div>
+      <div class="gloss-item" data-term="tool_use">
+        <div class="gloss-term-row">
+          <dt class="gloss-term"><code>tool_use</code></dt>
+          <span class="gloss-domain" style="color:#4F46E5">D1 · Agentic</span>
+        </div>
+        <dd class="gloss-def">Both a <code class="inline">stop_reason</code> value and a content-block type. Signals the model wants a tool executed; your code must run it and return a matching <code class="inline">tool_result</code>.</dd>
+      </div>
+      <div class="gloss-item" data-term="transport">
+        <div class="gloss-term-row">
+          <dt class="gloss-term">Transport</dt>
+          <span class="gloss-domain" style="color:#059669">D2 · Tools/MCP</span>
+        </div>
+        <dd class="gloss-def">How an MCP server is reached. Three today: <code class="inline">stdio</code> (local subprocess), <code class="inline">http</code> (remote), <code class="inline">sse</code> (server-sent events). Remote-with-auth is under-specified — stdio is the safe default.</dd>
+      </div>
+    </dl>
+    <div class="gloss-empty" id="glossEmpty">No terms match. Try a broader keyword or clear the filter.</div>
+  </div>
+</section>
 
 <!-- ============================================================
      WRAPUP
@@ -2763,7 +3587,7 @@ for placement in ["start", "middle", "end"]:
 
     <p style="margin-top: var(--s-5)">One-time install:</p>
     <div class="codeblock">
-      <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+      <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>pip install "anthropic&gt;=0.40" "mcp&gt;=1.0" jsonschema requests
 npm i -g @anthropic-ai/claude-code
 export ANTHROPIC_API_KEY="sk-ant-…"</pre>
@@ -2782,6 +3606,7 @@ export ANTHROPIC_API_KEY="sk-ant-…"</pre>
         <ul>
           <li><a href="study-guide.html">Visual study guide</a></li>
           <li><a href="#index">Tutorial index</a></li>
+          <li><a href="#glossary">Glossary · 33 terms</a></li>
           <li><a href="#wrapup">Learning path & tooling</a></li>
         </ul>
       </div>
@@ -2808,12 +3633,20 @@ export ANTHROPIC_API_KEY="sk-ant-…"</pre>
 <script>
 /* theme */
 const root = document.documentElement;
+const themeBtn = document.getElementById('themeToggle');
 const savedTheme = localStorage.getItem('ccaf-theme');
 if (savedTheme) root.setAttribute('data-theme', savedTheme);
-document.getElementById('themeToggle').addEventListener('click', () => {
+function syncThemeButton() {
+  const isDark = root.getAttribute('data-theme') === 'dark';
+  themeBtn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+  themeBtn.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
+}
+syncThemeButton();
+themeBtn.addEventListener('click', () => {
   const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
   root.setAttribute('data-theme', next);
   localStorage.setItem('ccaf-theme', next);
+  syncThemeButton();
 });
 
 /* copy buttons, checklist persistence, mark-done, progress — wired after content injected */
@@ -2864,6 +3697,7 @@ function updateProgress() {
   const pct = (done / total) * 100;
   const pf = document.getElementById('progressFill'); if (pf) pf.style.width = pct + '%';
   const ds = document.getElementById('doneCount'); if (ds) ds.textContent = done;
+  const rb = document.getElementById('resetProgress'); if (rb) rb.hidden = done === 0;
   const mb = document.getElementById('miniBar'); if (mb) mb.style.width = pct + '%';
 }
 
@@ -2917,6 +3751,46 @@ function wireNav() {
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sidebar.classList.contains('open')) shut(); });
 }
 
+function wireGlossary() {
+  const input = document.getElementById('glossSearch');
+  const items = [...document.querySelectorAll('#glossList .gloss-item')];
+  const empty = document.getElementById('glossEmpty');
+  const count = document.getElementById('glossCount');
+  if (!input || !items.length) return;
+  const total = items.length;
+  const corpus = items.map(el => ({
+    el,
+    text: (el.dataset.term + ' ' + el.textContent).toLowerCase()
+  }));
+  function apply(q) {
+    const needle = q.trim().toLowerCase();
+    let shown = 0;
+    corpus.forEach(({ el, text }) => {
+      const hit = !needle || text.includes(needle);
+      el.classList.toggle('is-hidden', !hit);
+      if (hit) shown++;
+    });
+    count.textContent = shown;
+    empty.classList.toggle('is-visible', shown === 0);
+  }
+  input.addEventListener('input', (e) => apply(e.target.value));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement !== input && !e.metaKey && !e.ctrlKey) {
+      const inField = ['INPUT','TEXTAREA'].includes(document.activeElement?.tagName);
+      if (inField) return;
+      e.preventDefault();
+      input.focus();
+      input.select();
+    }
+    if (e.key === 'Escape' && document.activeElement === input) {
+      input.value = '';
+      apply('');
+      input.blur();
+    }
+  });
+  count.textContent = total;
+}
+
 function wireTocActive() {
   const rows = [...document.querySelectorAll('.toc-list .index-row')];
   const map = new Map();
@@ -2943,6 +3817,7 @@ window.addEventListener('DOMContentLoaded', () => {
   wireReveal();
   wireNav();
   wireTocActive();
+  wireGlossary();
 });
 </script>
 
