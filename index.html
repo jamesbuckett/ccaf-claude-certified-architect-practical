@@ -2188,6 +2188,47 @@ if __name__ == "__main__":
 
     <div class="sub">
       <div class="sub-head">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <h3>Code trace — what happens when you run it</h3>
+        <span class="sub-pill">≈ 4 min read</span>
+      </div>
+      <p><code class="inline">orchestrate()</code> fires <strong>four independent <code class="inline">create()</code> calls</strong> — three sub-agent spawns, then one synthesis at the hub. None of the sub-agents share a conversation with each other or with the orchestrator. That isolation is the entire pattern.</p>
+
+      <h4 style="margin-top: var(--s-5); margin-bottom: var(--s-2)">Before any API call</h4>
+      <ul>
+        <li>The <code class="inline">plan</code> list is a static 3-tuple of <em>(role, task_brief)</em>. Sub-agent identity lives in the <code class="inline">system</code> prompt, not in the history — which is why each child starts fresh.</li>
+        <li><code class="inline">findings = {name: spawn_subagent(brief, name) for name, brief in plan}</code> runs the three spawns <strong>sequentially</strong>. To run them in parallel, swap in the async client and <code class="inline">asyncio.gather</code> (see Further exploration).</li>
+      </ul>
+
+      <ol class="steps" style="margin-top: var(--s-5)">
+        <li>
+          <span class="step-title">Call 1 — Researcher spawn.</span>
+          <p><code class="inline">spawn_subagent("Find 3 key facts…", "researcher")</code> makes a fresh <code class="inline">create()</code>. The child's <code class="inline">system</code> is <em>"You are a researcher sub-agent. Do the task briefly and return ONE paragraph…"</em> — that line is the summary contract. <code class="inline">messages</code> contains only the task brief. Response is a one-paragraph <code class="inline">TextBlock</code>; <code class="inline">resp.content[0].text</code> is pulled out and returned as a plain string.</p>
+          <div class="step-why"><em>What doesn't happen:</em> the researcher never sees the user's original goal. It only sees <em>"Find 3 key facts relevant to: Should a startup adopt Kubernetes…"</em>. The parent pre-framed the brief.</div>
+        </li>
+        <li>
+          <span class="step-title">Call 2 — Critic spawn. Call 3 — Synthesizer spawn.</span>
+          <p>Identical shape, different <code class="inline">subagent_name</code> and different task brief. Each gets its own empty <code class="inline">messages</code> list and its own system prompt. The critic has <strong>no idea</strong> what the researcher said; the synthesizer has no idea what either said. Each returns one paragraph (or one sentence, in the synthesizer's case).</p>
+          <div class="step-why"><em>Why that isolation matters:</em> if the critic had seen the researcher's findings, its counter-arguments would be biased <em>toward</em> those specific facts. Fresh context = genuinely independent critique.</div>
+        </li>
+        <li>
+          <span class="step-title">Call 4 — Orchestrator synthesis at the hub.</span>
+          <p>The last <code class="inline">create()</code> uses a different <code class="inline">system</code> prompt (<em>"You are an orchestrator…"</em>) and a constructed user message that concatenates all three <strong>summaries</strong> — not transcripts. The orchestrator never sees how the critic reasoned, only its one-paragraph conclusion.</p>
+          <div class="step-why"><em>Why it matters:</em> this is where the token savings show up. Print <code class="inline">resp.usage.input_tokens</code> and you'll see ~500–700 for the orchestrator — three summaries. If you passed full transcripts, it would be 3× to 10× larger. At <code class="inline">N=10</code> sub-agents, that difference is the whole tutorial.</div>
+        </li>
+      </ol>
+
+      <div class="callout">
+        <div class="callout-head">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          One-line mental model
+        </div>
+        <p>Hub-and-spoke = <strong>N isolated conversations</strong> plus <strong>one synthesis conversation</strong>. Workers never talk to each other; the hub only ever receives summaries. Every deviation from that shape — leaking transcripts, adding worker-to-worker edges — is an anti-pattern from Domain 1.</p>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-head">
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
         <h3>Walkthrough</h3>
       </div>
@@ -2373,6 +2414,48 @@ if __name__ == "__main__":
     }
   }
 }</pre>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-head">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <h3>Code trace — the three initiator paths</h3>
+        <span class="sub-pill">≈ 5 min read</span>
+      </div>
+      <p>Unlike earlier tutorials there is no single linear flow here. <code class="inline">server.py</code> registers <strong>three primitives that are invoked by three different initiators</strong>. Each one follows a completely different path through the system — that's the whole lesson.</p>
+
+      <h4 style="margin-top: var(--s-5); margin-bottom: var(--s-2)">Before any user interaction</h4>
+      <ul>
+        <li><code class="inline">FastMCP("triangle-demo")</code> constructs the server object. The three decorators (<code class="inline">@mcp.tool()</code>, <code class="inline">@mcp.resource(...)</code>, <code class="inline">@mcp.prompt(...)</code>) fire at <strong>import time</strong> — they introspect the Python functions, pull the docstrings out as descriptions, and register each primitive with the server's capability table.</li>
+        <li><code class="inline">mcp.run()</code> starts the stdio event loop. The server now blocks on <code class="inline">stdin</code> waiting for a JSON-RPC frame from Claude Code.</li>
+        <li>When Claude Code launches in this directory, it reads <code class="inline">.mcp.json</code>, spawns <code class="inline">python server.py</code> as a subprocess, and handshakes with it over that subprocess's <code class="inline">stdin</code>/<code class="inline">stdout</code>. After the handshake, Claude Code knows the server offers exactly: 1 tool, 1 resource, 1 prompt — visible when you type <code class="inline">/mcp</code>.</li>
+      </ul>
+
+      <ol class="steps" style="margin-top: var(--s-5)">
+        <li>
+          <span class="step-title">TOOL — <em>the model</em> initiates.</span>
+          <p>You ask <em>"What's the status of order A-100?"</em>. Claude's next response has <code class="inline">stop_reason=tool_use</code> and a <code class="inline">ToolUseBlock(name='lookup_order', input={'order_id': 'A-100'})</code>. Claude Code forwards that to the MCP server over stdio as a <code class="inline">tools/call</code> JSON-RPC frame. The server routes to the decorated Python function, executes it, gets <code class="inline">{'status': 'shipped'}</code>, sends that back as a <code class="inline">tools/call</code> result. Claude Code wraps the result as a <code class="inline">tool_result</code> content block and appends it to the conversation — the standard agentic loop picks up from there.</p>
+          <div class="step-why"><em>Key point:</em> the model chose to call the tool. The description (<em>"Call only when the user references an order ID…"</em>) is the routing signal. Claude Code <em>could not</em> call the tool on its own — it only executes what the model requests.</div>
+        </li>
+        <li>
+          <span class="step-title">RESOURCE — <em>the application</em> initiates.</span>
+          <p>You ask <em>"Explain our shipping timeline."</em>. Claude Code's harness decides that the <code class="inline">docs://shipping-policy</code> resource is relevant to the task and issues a <code class="inline">resources/read</code> JSON-RPC call to the server. The <code class="inline">shipping_policy()</code> function returns its string, Claude Code <strong>inlines it into the prompt context</strong> (as a content block attached to the user message), and the model just reads. The model never emits a tool-use block; it never decided to call anything.</p>
+          <div class="step-why"><em>Key point:</em> resources are <em>attached</em>, not <em>called</em>. That's why "mis-categorising a Resource as a Tool" — the build-and-break exercise — produces wrong-time calls and wasted tokens: you've shifted the initiator from the app to the model.</div>
+        </li>
+        <li>
+          <span class="step-title">PROMPT — <em>the user</em> initiates.</span>
+          <p>You type <code class="inline">/triangle:refund-flow</code>. Claude Code intercepts the slash before it reaches the model, looks up the <code class="inline">refund-flow</code> prompt on the <code class="inline">triangle</code> server via <code class="inline">prompts/get</code>, receives the template string <em>"Start a refund flow for order &lt;id&gt;…"</em>, expands any arguments, and submits the result to Claude <strong>as if you had typed it</strong>. From the model's perspective this is just a user message — it then proceeds normally, likely calling <code class="inline">lookup_order</code> inside the flow.</p>
+          <div class="step-why"><em>Key point:</em> prompts are user-authored shortcuts. They don't change model behaviour — they change <em>what the user has to type</em>. The model's routing logic is unchanged.</div>
+        </li>
+      </ol>
+
+      <div class="callout">
+        <div class="callout-head">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          One-line mental model
+        </div>
+        <p><strong>Tool = model decides. Resource = app decides. Prompt = user decides.</strong> Every MCP design choice reduces to: <em>who should be in control of firing this?</em> The exam trap (and this tutorial's build-and-break) is putting a thing under the wrong initiator.</p>
       </div>
     </div>
 
@@ -2573,6 +2656,55 @@ run(PRECISE, test_prompts, "PRECISE tool description")</pre>
 
     <div class="sub">
       <div class="sub-head">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <h3>Code trace — what the comparison measures</h3>
+        <span class="sub-pill">≈ 3 min read</span>
+      </div>
+      <p>This script is a two-batch experiment. It fires <strong>the same four prompts</strong> against two tool catalogues — one deliberately vague, one deliberately precise — and records which prompt triggers a tool call. Eight API calls total. The single variable is the tool's <em>description</em>.</p>
+
+      <h4 style="margin-top: var(--s-5); margin-bottom: var(--s-2)">Before either batch</h4>
+      <ul>
+        <li>The <code class="inline">test_prompts</code> list is labelled in the source comments: two should call (order-ID lookups), two should not (policy + product questions). That label is the <em>ground truth</em> you'll measure accuracy against.</li>
+        <li><code class="inline">VAGUE</code> has a single sentence description (<em>"Gets data."</em>) and an empty <code class="inline">input_schema</code>. <code class="inline">PRECISE</code> names the domain, the trigger phrases, the anti-cases, the parameter with its own description, and the return shape — <strong>five elements</strong>, each of which is a signal the model can route on.</li>
+        <li><code class="inline">run(tools, prompts, label)</code> is the harness: one <code class="inline">create()</code> per prompt, with a fresh single-turn <code class="inline">messages</code> list each time — no conversation carry-over. The log line extracts <code class="inline">[b.name for b in resp.content if b.type == "tool_use"]</code>, so an empty list means "model decided not to call".</li>
+      </ul>
+
+      <ol class="steps" style="margin-top: var(--s-5)">
+        <li>
+          <span class="step-title">Batch 1 — VAGUE. Four calls, four unreliable outcomes.</span>
+          <p>For each prompt, the model sees a tool named <code class="inline">get_data</code> with no signal about when to use it. Two failure modes appear:</p>
+          <ul style="margin: var(--s-2) 0">
+            <li><strong>Over-calling.</strong> The model guesses <em>"the user is asking something, I have a tool, I should try it"</em> and calls <code class="inline">get_data</code> on the policy and product prompts too.</li>
+            <li><strong>Under-calling.</strong> The model decides the tool is unlikely to help and answers from general knowledge — including the order-status prompts it should have delegated.</li>
+          </ul>
+          <p>Either way, the <code class="inline">tool_calls=</code> column is inconsistent run-to-run. You'll see different outputs on successive runs of the same prompts — the vague description has no anchor.</p>
+          <div class="step-why"><em>Why it matters:</em> unreliable routing is the real cost of vague descriptions — not that the tool "won't fire", but that you can't predict when it will.</div>
+        </li>
+        <li>
+          <span class="step-title">Batch 2 — PRECISE. Four calls, four predictable outcomes.</span>
+          <p>Same four prompts, but now the description contains <code class="inline">"Use ONLY when the user asks about a specific order by ID"</code> and <code class="inline">"DO NOT use for returns, refunds, account info, or general product questions."</code>. The model parses these as explicit routing rules:</p>
+          <ul style="margin: var(--s-2) 0">
+            <li><em>"Where is my order A-100?"</em> — matches the trigger → calls <code class="inline">get_latest_order_status(order_id='A-100')</code>.</li>
+            <li><em>"What's your return policy?"</em> — matches the DO NOT list → no call. Model answers from its own knowledge.</li>
+            <li><em>"Tell me about the Widget Pro specs"</em> — general product question, matches DO NOT → no call.</li>
+            <li><em>"Is my package A-200 on its way?"</em> — matches the "where is my package" trigger phrase verbatim → calls with <code class="inline">order_id='A-200'</code>.</li>
+          </ul>
+          <p>The result table is now stable across runs — the description is doing the routing work.</p>
+          <div class="step-why"><em>Why it matters:</em> the description is effectively your tool's API contract with the model. Vagueness there is the same bug as a vague interface in code.</div>
+        </li>
+      </ol>
+
+      <div class="callout">
+        <div class="callout-head">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          One-line mental model
+        </div>
+        <p>Write tool descriptions the way you'd write instructions for a new hire. Five elements: <strong>domain</strong>, <strong>parameters with descriptions</strong>, <strong>when to use</strong>, <strong>when NOT to use</strong>, <strong>return shape</strong>. Skip any of them and the model fills the gap with a guess.</p>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-head">
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
         <h3>Walkthrough</h3>
       </div>
@@ -2724,6 +2856,49 @@ cat &gt; ~/hierarchy-demo/src/payments/CLAUDE.md &lt;&lt;'EOF'
 - This module uses 2-space indentation (legacy).
 - Never log raw card numbers, even in tests.
 EOF</pre></div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-head">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <h3>Code trace — how Claude Code resolves the hierarchy</h3>
+        <span class="sub-pill">≈ 3 min read</span>
+      </div>
+      <p>There's no Python to execute here — but Claude Code runs a deterministic <strong>scope-walk algorithm</strong> every time it starts a session and every time its working scope changes. Once you know that algorithm, the "which rule wins?" question answers itself.</p>
+
+      <h4 style="margin-top: var(--s-5); margin-bottom: var(--s-2)">The three files you just created</h4>
+      <ul>
+        <li><code class="inline">~/.claude/CLAUDE.md</code> (<strong>global tier</strong>) — personal preferences. Follows <em>you</em>, not the repo.</li>
+        <li><code class="inline">~/hierarchy-demo/CLAUDE.md</code> (<strong>project tier</strong>) — team rules. Checked into source control; every clone inherits them.</li>
+        <li><code class="inline">~/hierarchy-demo/src/payments/CLAUDE.md</code> (<strong>subdirectory tier</strong>) — local overrides for a specific module. Only in effect while Claude is working inside that subtree.</li>
+      </ul>
+
+      <ol class="steps" style="margin-top: var(--s-5)">
+        <li>
+          <span class="step-title">Phase 1 — session start at the project root.</span>
+          <p>When you run <code class="inline">claude</code> inside <code class="inline">~/hierarchy-demo</code>, Claude Code walks <em>from the current working directory up to home</em> looking for <code class="inline">CLAUDE.md</code> files, then adds the global one. Each file found is loaded into the session's instruction context. The <code class="inline">src/payments/CLAUDE.md</code> file is <strong>not</strong> loaded yet — the harness hasn't been asked to look inside that subdirectory.</p>
+          <div class="step-why"><em>So right now:</em> two tiers are active. Claude knows <em>"emoji-free commits, 4-space indent, type hints required, ask before adding dependencies."</em> That's the state when you ask <em>"What instructions are loaded for you right now?"</em></div>
+        </li>
+        <li>
+          <span class="step-title">Phase 2 — you ask for an edit in <code class="inline">src/payments/</code>.</span>
+          <p>The moment Claude Code's file-op scope shifts into <code class="inline">src/payments/</code> — typically because of an <code class="inline">Edit</code> or <code class="inline">Write</code> tool call targeting a file there — the harness re-walks and finds <code class="inline">src/payments/CLAUDE.md</code>. It gets added to the context as the <strong>most specific</strong> tier.</p>
+          <p>Now there's a conflict: global says 4-space, subdir says 2-space. The resolution rule is <strong>most specific wins for this scope</strong> — subdir &gt; project &gt; global. Claude uses 2-space inside <code class="inline">src/payments/</code>, 4-space everywhere else.</p>
+          <div class="step-why"><em>Why it's scope-based, not merge-at-startup:</em> a monorepo can have dozens of subdirectory CLAUDE.md files. Loading all of them at session start would bloat context. They're loaded on demand as Claude actually works in those paths.</div>
+        </li>
+        <li>
+          <span class="step-title">Phase 3 — you move back to the repo root.</span>
+          <p>Edit a file outside <code class="inline">src/payments/</code>. The subdir rules lose scope; project + global remain. The 2-space rule no longer applies, and <em>"Never log raw card numbers"</em> is no longer in-context either — which is exactly what you want. A local rule about one module shouldn't bleed into unrelated files.</p>
+          <div class="step-why"><em>Wrong-tier failure mode:</em> the build-and-break exercise puts <em>"I like verbose commit messages"</em> into the <strong>project</strong> file. Because that tier is checked in, every teammate inherits your preference. The pyramid's "Don't" — personal preferences must never leave the global tier.</div>
+        </li>
+      </ol>
+
+      <div class="callout">
+        <div class="callout-head">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          One-line mental model
+        </div>
+        <p>Closest-CLAUDE.md-to-the-work wins. <strong>Global</strong> follows you. <strong>Project</strong> follows the repo. <strong>Subdir</strong> follows a specific path. Content belongs at the tier whose audience matches the rule's scope — that's the only design rule, and every anti-pattern violates it.</p>
+      </div>
     </div>
 
     <div class="sub">
@@ -2893,6 +3068,48 @@ Report findings as a numbered list with file:line references.</pre></div>
       <p>Slash command — <code class="inline">.claude/commands/log-summary.md</code>:</p>
       <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">markdown · log-summary.md</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>Summarise the last hour of entries in /tmp/hook.log and print a table of which files were touched most frequently.</pre></div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-head">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <h3>Code trace — three primitives, three initiators</h3>
+        <span class="sub-pill">≈ 4 min read</span>
+      </div>
+      <p>Just like the MCP tutorial, there is no single runtime flow. <code class="inline">.claude/settings.json</code>, <code class="inline">SKILL.md</code>, and the slash-command file each wire a different <strong>initiator</strong> into Claude Code. Same harness, three different trigger surfaces.</p>
+
+      <h4 style="margin-top: var(--s-5); margin-bottom: var(--s-2)">What happens at session start</h4>
+      <ul>
+        <li>Claude Code reads <code class="inline">.claude/settings.json</code> and registers the <code class="inline">PostToolUse</code> hook — a declaration of "run this shell command whenever a tool matching <code class="inline">Edit|Write</code> finishes". Nothing runs yet.</li>
+        <li>It scans <code class="inline">.claude/skills/*/SKILL.md</code> and loads the frontmatter (<code class="inline">name</code> + <code class="inline">description</code>) into the skill catalogue the model will see as routing signals each turn. The body of <code class="inline">SKILL.md</code> stays on disk — only loaded when the skill is invoked.</li>
+        <li>It indexes <code class="inline">.claude/commands/*.md</code> as slash-command templates. The command body is a prompt stub, not executable code.</li>
+      </ul>
+
+      <ol class="steps" style="margin-top: var(--s-5)">
+        <li>
+          <span class="step-title">HOOK — the <em>harness</em> initiates.</span>
+          <p>You ask <em>"Create hello.txt containing 'hi'"</em>. Turn flow: model emits a <code class="inline">Write</code> tool_use block → harness executes the write → <strong>before returning control to the model</strong>, Claude Code iterates its PostToolUse hooks, finds the one whose <code class="inline">matcher</code> regex matches <code class="inline">Write</code>, and runs its shell command. <code class="inline">/tmp/hook.log</code> gets a new line appended. Then the tool_result is returned to the model.</p>
+          <div class="step-why"><em>Key point:</em> the model cannot skip the hook. It didn't even know it ran. That's why the exam says "deterministic → hook". Hooks are enforcement, not advice.</div>
+        </li>
+        <li>
+          <span class="step-title">SKILL — the <em>model</em> initiates.</span>
+          <p>You ask <em>"Review hello.txt for security issues"</em>. At the top of that turn, Claude's planner sees every skill's frontmatter description as part of its routing prompt. The matcher in this case is the <em>description</em> — <em>"Use when the user asks to review code for security issues…"</em> — which matches the user's phrasing. The model <strong>chooses</strong> to invoke the skill by treating its body as a mini-instruction prompt. The skill's four-step checklist becomes the model's plan for this turn.</p>
+          <div class="step-why"><em>Key point:</em> every step between "user said something" and "skill fires" involves a model decision. Change the wording of the user's request and the skill may not fire — that's the probabilistic nature the build-and-break exercise exposes.</div>
+        </li>
+        <li>
+          <span class="step-title">SLASH COMMAND — the <em>user</em> initiates.</span>
+          <p>You type <code class="inline">/log-summary</code>. The CLI intercepts the slash before the text reaches the model, looks up <code class="inline">.claude/commands/log-summary.md</code>, takes its body verbatim (<em>"Summarise the last hour…"</em>) and submits it as a user message. The model then proceeds normally — it will likely call <code class="inline">Read</code> on <code class="inline">/tmp/hook.log</code>, parse it, and produce the table. No model decision on <em>whether</em> to fire — you already decided by typing the slash.</p>
+          <div class="step-why"><em>Key point:</em> the model's subsequent behaviour <em>is</em> non-deterministic, but the <em>firing</em> was deterministic. Slash commands move the "when" decision to the user while leaving the "how" to the model.</div>
+        </li>
+      </ol>
+
+      <div class="callout">
+        <div class="callout-head">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          One-line mental model
+        </div>
+        <p>Three automation mechanisms differ on <strong>one axis: who initiates</strong>. Hook = harness (deterministic). Skill = model (probabilistic match on description). Slash = user (deterministic on firing, probabilistic on execution). "What should this <em>do</em>?" is a second-order question — pick the initiator first.</p>
+      </div>
     </div>
 
     <div class="sub">
@@ -3092,6 +3309,57 @@ print(json.dumps(extract_with_retry(document), indent=2))</pre></div>
 
     <div class="sub">
       <div class="sub-head">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <h3>Code trace — the self-healing retry loop</h3>
+        <span class="sub-pill">≈ 4 min read</span>
+      </div>
+      <p>This loop turns a <strong>schema validator into a training signal</strong>. Whenever <code class="inline">jsonschema</code> rejects the model's output, the failing message becomes the next turn's input — the model reads its own mistake and corrects it. Three design choices make that work.</p>
+
+      <h4 style="margin-top: var(--s-5); margin-bottom: var(--s-2)">Three design choices before the loop</h4>
+      <ul>
+        <li><strong>Tool-use, not prose.</strong> The tool catalogue has exactly one tool (<code class="inline">record_contact</code>) whose <code class="inline">input_schema</code> is the target JSON shape. The API itself ensures <code class="inline">tool_use.input</code> is shape-compatible at the type level — you don't need to parse JSON out of prose.</li>
+        <li><strong>Forced tool use.</strong> <code class="inline">tool_choice={"type": "tool", "name": "record_contact"}</code> removes the model's option to reply with prose. Every response <em>must</em> contain a <code class="inline">tool_use</code> block.</li>
+        <li><strong>Schema-level validation on top.</strong> The API enforces types and required fields; <code class="inline">jsonschema</code> enforces everything else — <code class="inline">format: email</code>, <code class="inline">minLength</code>, <code class="inline">minimum</code>/<code class="inline">maximum</code>, <code class="inline">additionalProperties: false</code>. That gap is what retries close.</li>
+      </ul>
+
+      <ol class="steps" style="margin-top: var(--s-5)">
+        <li>
+          <span class="step-title">Attempt 1 — the happy path.</span>
+          <p><code class="inline">messages</code> starts with a single user turn: the extraction prompt. <code class="inline">create()</code> returns a response whose <code class="inline">content</code> contains a <code class="inline">ToolUseBlock(name='record_contact', input={...})</code>. <code class="inline">next(b for b in resp.content if b.type == "tool_use")</code> pulls it out. <code class="inline">validator.iter_errors(tool_block.input)</code> returns an empty list — success. The loop returns <code class="inline">tool_block.input</code> on attempt 1 and never runs again.</p>
+          <div class="step-why"><em>Why it works:</em> the input schema <em>is</em> the target shape. The API and model cooperate to produce JSON matching it; the validator is just a belt-and-braces check.</div>
+        </li>
+        <li>
+          <span class="step-title">Attempt 1 — the sad path. Error becomes a message.</span>
+          <p>Suppose the source text said <em>"I'm about thirty-something"</em>. The model guesses <code class="inline">age=35</code> — type-valid but semantically unsupported — or it may emit a string like <code class="inline">"thirty-something"</code>. <code class="inline">validator.iter_errors</code> returns an <code class="inline">ValidationError</code> with a human-readable <code class="inline">.message</code> and a JSON-pointer <code class="inline">.path</code>. The loop does three things in sequence:</p>
+          <ul style="margin: var(--s-2) 0">
+            <li>Appends the <strong>assistant</strong> turn (<code class="inline">resp.content</code> as-is) — so the next <code class="inline">create()</code> call sees what the model just said.</li>
+            <li>Appends a <strong>user</strong> turn containing a <code class="inline">tool_result</code> with <code class="inline">is_error: True</code> and the validator's error text.</li>
+            <li>Loops back to the top of <code class="inline">for attempt in range(MAX_RETRIES)</code> for another <code class="inline">create()</code>.</li>
+          </ul>
+          <div class="step-why"><em>Why <code class="inline">is_error: True</code> matters:</em> it tells the model "this wasn't a normal tool result — fix the thing that failed." Without that flag, the model tends to treat the message as data and carry on.</div>
+        </li>
+        <li>
+          <span class="step-title">Attempt 2 — the model reads its own error.</span>
+          <p>The next <code class="inline">create()</code> sees the full message history: <em>user prompt → assistant tool_use (wrong) → user tool_result (<code class="inline">is_error</code>, validator message) → assistant ???</em>. The model has enough context to recognise that its previous input violated a specific constraint at a specific path, and emits a new <code class="inline">tool_use</code> with the fix. Validator re-runs — usually passes on attempt 2.</p>
+          <div class="step-why"><em>Generic "try again" wastes this turn.</em> Feed a pointer to what failed — <em>"Validation failed: 'age' is a required property. Path: []."</em> — or the model has no signal and guesses a different wrong thing.</div>
+        </li>
+        <li>
+          <span class="step-title">Attempt 3 — the hard cap.</span>
+          <p>If attempt 3 still fails, <code class="inline">for</code> exits normally (no <code class="inline">break</code> needed — <code class="inline">return</code> is the exit) and the trailing <code class="inline">raise RuntimeError("max retries exceeded")</code> fires. That's the seatbelt: you never silently return bad data, and you never spin forever.</p>
+        </li>
+      </ol>
+
+      <div class="callout">
+        <div class="callout-head">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          One-line mental model
+        </div>
+        <p>Structured output is <strong>tool_use + schema + retry</strong>. The tool forces shape at the type level, the schema closes the semantic gap, the retry loop turns validation failures into corrections. Anything prose-based — "please return JSON" — skips all three.</p>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-head">
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
         <h3>Walkthrough</h3>
       </div>
@@ -3287,6 +3555,23 @@ print("--- second call (cache hit expected) ---")
 ask("Name one ship mentioned.", use_cache=True)
 print("--- control: no cache ---")
 ask("What does Ishmael do when he feels spleen?", use_cache=False)</pre></div>
+
+      <div style="margin: var(--s-5) 0; padding: var(--s-5); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: var(--radius); background: var(--surface);">
+        <div class="sub-head" style="border: 0; margin-bottom: var(--s-3); padding: 0;">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <h4 style="margin: 0">Code trace — three calls, three cache states</h4>
+        </div>
+        <p>The system prompt is split into <strong>two content blocks</strong>: a short role statement and the full Moby Dick chapters. The <code class="inline">cache_control: {"type": "ephemeral"}</code> marker on the document block tells the API <em>"everything up to and including this block is a stable prefix — cache it under a key derived from the token contents."</em> Three calls exercise three different cache states.</p>
+
+        <p style="margin-top: var(--s-4)"><strong>Call 1 — <code class="inline">use_cache=True</code>, cache miss (cache write).</strong> First call with this prefix. The API computes the hash of the system tokens, finds no entry, processes the full input, and writes the prefix to an ephemeral cache with a 5-minute TTL. Usage reports <code class="inline">cache_creation_input_tokens ≈ 5000</code> (the doc being indexed), <code class="inline">cache_read_input_tokens = 0</code>, and a small <code class="inline">input_tokens</code> for the question itself. You pay a <strong>~25% premium</strong> over normal input for the write.</p>
+
+        <p><strong>Call 2 — <code class="inline">use_cache=True</code>, cache hit (cache read).</strong> Different question, <em>same</em> system prefix. Hash matches. The API serves ~5000 tokens from cache and only re-processes the 10-or-so tokens of the new question. Usage flips: <code class="inline">cache_creation_input_tokens = 0</code>, <code class="inline">cache_read_input_tokens ≈ 5000</code>. Those cached tokens are billed at <strong>~10% of normal input</strong> — that's the whole reason to cache.</p>
+
+        <p><strong>Call 3 — <code class="inline">use_cache=False</code>, control.</strong> Same prefix, but the <code class="inline">cache_control</code> marker is absent. The API treats every token as fresh input. Both cache counters are zero; <code class="inline">input_tokens ≈ 5000</code> at the full rate. This is your baseline for measuring the savings.</p>
+
+        <p style="margin-top: var(--s-4)"><strong>What actually drives the hit.</strong> The cache key is a hash of the <em>exact</em> prefix tokens. Any change — a punctuation edit, a blank line, a different role description — produces a different key and a cache miss. That's why the 5-minute TTL step (<code class="inline">time.sleep(310)</code>) also forces a rewrite: the prefix is the same, but the entry has expired, so it's effectively a new key.</p>
+      </div>
+
       <ol class="steps">
         <li>
           <span class="step-title">Run the caching comparison.</span>
@@ -3343,6 +3628,28 @@ def ask_with_placement(placement):
 for placement in ["start", "middle", "end"]:
     for trial in range(3):
         ask_with_placement(placement)</pre></div>
+
+      <div style="margin: var(--s-5) 0; padding: var(--s-5); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: var(--radius); background: var(--surface);">
+        <div class="sub-head" style="border: 0; margin-bottom: var(--s-3); padding: 0;">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <h4 style="margin: 0">Code trace — nine trials across three placements</h4>
+        </div>
+        <p>Same document, same question, same model — the only variable is <strong>where the target fact lives inside the context</strong>. The outer <code class="inline">for placement</code> loop crossed with the inner <code class="inline">for trial</code> loop fires 9 <code class="inline">create()</code> calls total, three per placement, so you can see the recall rate as a ratio rather than a single data point.</p>
+
+        <p style="margin-top: var(--s-4)"><strong>What each placement produces in the system prompt.</strong></p>
+        <ul>
+          <li><code class="inline">start</code>: <code class="inline">f"{SECRET_FACT}\n\n" + doc</code> — the target sentence is the first thing the model sees after the instruction. Attention curve is strong here.</li>
+          <li><code class="inline">middle</code>: <code class="inline">doc[:mid] + f"\n\n{SECRET_FACT}\n\n" + doc[mid:]</code> — the fact is buried roughly halfway through ~5000 tokens of narrative. Attention curve is weakest here.</li>
+          <li><code class="inline">end</code>: <code class="inline">doc + f"\n\n{SECRET_FACT}\n"</code> — the target is the last thing the model reads before the user's question. Recency makes this position almost as strong as <code class="inline">start</code>.</li>
+        </ul>
+
+        <p><strong>What <code class="inline">hit</code> is measuring.</strong> <code class="inline">"SPERMACETI-7" in answer</code> is a substring check against the model's reply. A ✓ means the model recovered the exact passphrase; a ✗ means it either hedged, guessed a plausible-but-wrong phrase from <em>Moby-Dick</em>, or refused.</p>
+
+        <p><strong>Expected shape of the output.</strong> <code class="inline">start</code> rows: three ✓. <code class="inline">end</code> rows: three ✓. <code class="inline">middle</code> rows: some mix — often two ✓ and one ✗, sometimes worse with bigger documents. That's the U-shaped attention curve from the Domain 5 source, now a number on your terminal rather than a diagram in a slide.</p>
+
+        <p style="margin-top: var(--s-4)"><strong>Why three trials.</strong> The model is probabilistic — a single run can coincidentally succeed or fail on any placement. Three trials lets you distinguish <em>"always fails"</em> from <em>"fails sometimes"</em>, which is the whole point: lost-in-the-middle is an <em>unreliability</em> pattern, not a hard failure. If middle recall were always-fail, the workaround would be obvious; because it's sometimes-fail, teams ship the bug.</p>
+      </div>
+
       <ol class="steps" style="counter-reset: step 2;">
         <li>
           <span class="step-title">Run the placement test.</span>
