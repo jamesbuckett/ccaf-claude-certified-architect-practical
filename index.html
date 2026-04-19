@@ -16,6 +16,8 @@
   --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
   --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px;
 
+  --toc-w: 288px;
+
   --bg:          #FAFAF7;
   --surface:     #FFFFFF;
   --surface-2:   #F4F4EF;
@@ -118,6 +120,279 @@ hr { border: 0; border-top: 1px solid var(--border); margin: var(--s-7) 0; }
   padding: 0 var(--s-5);
 }
 @media (min-width: 900px) { .page { padding: 0 var(--s-7); } }
+
+/* ============================================================
+   LEFT TOC SIDEBAR
+   ============================================================ */
+@media (min-width: 1080px) {
+  body { padding-left: var(--toc-w); }
+}
+
+.toc-sidebar {
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  width: var(--toc-w);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  transition: transform 220ms ease;
+}
+.toc-sidebar::-webkit-scrollbar { width: 6px; }
+.toc-sidebar::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+.toc-sidebar::-webkit-scrollbar-track { background: transparent; }
+
+@media (max-width: 1079px) {
+  .toc-sidebar {
+    transform: translateX(-100%);
+    box-shadow: 8px 0 40px -12px rgba(10, 10, 10, 0.18);
+  }
+  .toc-sidebar.open { transform: translateX(0); }
+}
+
+.toc-inner {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: var(--s-5) var(--s-4) var(--s-4);
+}
+
+.toc-top {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--s-3);
+  margin-bottom: var(--s-3);
+}
+.toc-eyebrow {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+.toc-eyebrow-num { color: var(--accent); }
+.toc-close {
+  display: none;
+  width: 32px; height: 32px;
+  align-items: center; justify-content: center;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: color 120ms, border-color 120ms, background 120ms;
+}
+.toc-close:hover { color: var(--text); border-color: var(--border-strong); background: var(--surface-2); }
+.toc-close svg { width: 14px; height: 14px; }
+@media (max-width: 1079px) { .toc-close { display: inline-flex; } }
+
+.toc-title {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+  margin: 0 0 var(--s-2);
+  color: var(--text);
+}
+.toc-intro {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+  margin: 0 0 var(--s-4);
+}
+
+.toc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0;
+  margin: 0 0 var(--s-4);
+}
+.toc-list .index-row {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: var(--s-3);
+  align-items: center;
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: var(--text);
+  transition: background 120ms, border-color 120ms;
+  scroll-margin-top: 8px;
+}
+.toc-list .index-row:hover { background: var(--surface-2); border-color: var(--border); }
+.toc-list .index-row:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.toc-list .index-row.active { background: var(--accent-soft); border-color: var(--accent); }
+.toc-list .index-row.active .idx-title { color: var(--accent); }
+
+.toc-list .idx-num {
+  position: relative;
+  width: 34px; height: 34px;
+  padding: 0;
+  display: grid; place-items: center;
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 0.76rem;
+  color: var(--text-faint);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  grid-row: unset;
+  transition: background 120ms, border-color 120ms, color 120ms;
+}
+.toc-list .index-row:hover .idx-num { border-color: var(--border-strong); color: var(--text-dim); }
+.toc-list .index-row[data-done="true"] .idx-num {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+.toc-list .index-row[data-done="true"] .idx-num span { opacity: 0; }
+.toc-list .index-row[data-done="true"] .idx-num::before {
+  content: "";
+  position: static;
+  inset: auto;
+  display: none;
+}
+.toc-list .index-row[data-done="true"] .idx-num::after {
+  content: "✓";
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--accent-ink);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.toc-list .idx-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  padding: 0;
+}
+.toc-list .idx-title {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text);
+  display: block;
+  line-height: 1.35;
+  padding: 0;
+  text-decoration: none;
+}
+.toc-list .index-row:hover .idx-title { color: var(--accent); }
+.toc-list .idx-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.toc-list .idx-domain {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  font-size: 0.66rem;
+  font-family: var(--mono);
+}
+.toc-list .idx-domain-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 1;
+}
+.toc-list .idx-time {
+  padding: 0;
+  font-size: 0.66rem;
+  font-family: var(--mono);
+  color: var(--text-faint);
+}
+
+.toc-footer {
+  margin-top: auto;
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--border-soft);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+.toc-progress-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.toc-progress-row strong { color: var(--text); font-weight: 600; }
+.toc-footer .mini-bar {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.toc-footer .mini-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  width: 0;
+  transition: width 300ms ease;
+}
+.toc-footer .reset-btn {
+  align-self: flex-start;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: var(--s-1) var(--s-3);
+  border-radius: var(--radius);
+  color: var(--text-dim);
+  cursor: pointer;
+  margin-top: var(--s-1);
+}
+.toc-footer .reset-btn:hover { color: var(--text); border-color: var(--border-strong); }
+
+/* Mobile backdrop */
+.toc-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.35);
+  z-index: 45;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+}
+.toc-backdrop.open { opacity: 1; pointer-events: auto; }
+@media (min-width: 1080px) { .toc-backdrop { display: none; } }
+
+/* Mobile nav toggle (hamburger) */
+.nav-toggle {
+  width: 36px; height: 36px;
+  display: none;
+  align-items: center; justify-content: center;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 120ms, border-color 120ms;
+}
+.nav-toggle:hover { background: var(--surface-2); border-color: var(--border-strong); }
+.nav-toggle svg { width: 16px; height: 16px; }
+@media (max-width: 1079px) { .nav-toggle { display: inline-grid; } }
 
 .shell {
   display: grid;
@@ -700,8 +975,9 @@ footer.site-foot {
    PRINT
    ============================================================ */
 @media print {
-  .site-head, .head-actions, .copy-btn, .mark-done, .reset-btn, .site-foot, .progress-rail { display: none !important; }
-  body { background: white; color: black; font-size: 10pt; }
+  .site-head, .head-actions, .copy-btn, .mark-done, .reset-btn, .site-foot, .progress-rail,
+  .toc-sidebar, .toc-backdrop, .nav-toggle { display: none !important; }
+  body { background: white; color: black; font-size: 10pt; padding-left: 0 !important; }
   .tut, section.block { page-break-inside: avoid; border-bottom: 1px solid #ccc; }
   .codeblock { border: 1px solid #ccc; background: #f5f5f5; }
   a { text-decoration: none; color: black; }
@@ -710,6 +986,112 @@ footer.site-foot {
 </style>
 </head>
 <body>
+
+<aside class="toc-sidebar" id="index" aria-label="Tutorial index">
+  <div class="toc-inner">
+    <div class="toc-top">
+      <span class="toc-eyebrow"><span class="toc-eyebrow-num">01 /</span> Tutorial Index</span>
+      <button class="toc-close" id="tocClose" aria-label="Close navigation" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+    <h2 class="toc-title">Pick a tutorial.</h2>
+    <p class="toc-intro">Ordered so each builds on the last. Tutorial 1 is the foundation for every subsequent session. Progress saves locally.</p>
+
+    <nav class="toc-list" aria-label="Tutorials">
+      <a class="index-row" data-tut="1" href="#tut-1">
+        <span class="idx-num"><span>01</span></span>
+        <span class="idx-body">
+          <span class="idx-title">The Agentic Loop</span>
+          <span class="idx-meta">
+            <span class="idx-domain" style="color:#4F46E5"><span class="idx-domain-dot"></span>D1 · Agentic</span>
+            <span class="idx-time">45m</span>
+          </span>
+        </span>
+      </a>
+      <a class="index-row" data-tut="2" href="#tut-2">
+        <span class="idx-num"><span>02</span></span>
+        <span class="idx-body">
+          <span class="idx-title">Hub-and-Spoke Orchestration</span>
+          <span class="idx-meta">
+            <span class="idx-domain" style="color:#4F46E5"><span class="idx-domain-dot"></span>D1 · Agentic</span>
+            <span class="idx-time">60m</span>
+          </span>
+        </span>
+      </a>
+      <a class="index-row" data-tut="3" href="#tut-3">
+        <span class="idx-num"><span>03</span></span>
+        <span class="idx-body">
+          <span class="idx-title">Build an MCP Server</span>
+          <span class="idx-meta">
+            <span class="idx-domain" style="color:#059669"><span class="idx-domain-dot"></span>D2 · Tools/MCP</span>
+            <span class="idx-time">75m</span>
+          </span>
+        </span>
+      </a>
+      <a class="index-row" data-tut="4" href="#tut-4">
+        <span class="idx-num"><span>04</span></span>
+        <span class="idx-body">
+          <span class="idx-title">Tool Description Discipline</span>
+          <span class="idx-meta">
+            <span class="idx-domain" style="color:#059669"><span class="idx-domain-dot"></span>D2 · Tools/MCP</span>
+            <span class="idx-time">30m</span>
+          </span>
+        </span>
+      </a>
+      <a class="index-row" data-tut="5" href="#tut-5">
+        <span class="idx-num"><span>05</span></span>
+        <span class="idx-body">
+          <span class="idx-title">CLAUDE.md Hierarchy</span>
+          <span class="idx-meta">
+            <span class="idx-domain" style="color:#D97706"><span class="idx-domain-dot"></span>D3 · Claude Code</span>
+            <span class="idx-time">40m</span>
+          </span>
+        </span>
+      </a>
+      <a class="index-row" data-tut="6" href="#tut-6">
+        <span class="idx-num"><span>06</span></span>
+        <span class="idx-body">
+          <span class="idx-title">Hooks vs Skills vs Slash</span>
+          <span class="idx-meta">
+            <span class="idx-domain" style="color:#D97706"><span class="idx-domain-dot"></span>D3 · Claude Code</span>
+            <span class="idx-time">45m</span>
+          </span>
+        </span>
+      </a>
+      <a class="index-row" data-tut="7" href="#tut-7">
+        <span class="idx-num"><span>07</span></span>
+        <span class="idx-body">
+          <span class="idx-title">Structured Output Retry</span>
+          <span class="idx-meta">
+            <span class="idx-domain" style="color:#E11D48"><span class="idx-domain-dot"></span>D4 · Prompt Eng.</span>
+            <span class="idx-time">50m</span>
+          </span>
+        </span>
+      </a>
+      <a class="index-row" data-tut="8" href="#tut-8">
+        <span class="idx-num"><span>08</span></span>
+        <span class="idx-body">
+          <span class="idx-title">Prompt Caching & Lost-in-Middle</span>
+          <span class="idx-meta">
+            <span class="idx-domain" style="color:#0891B2"><span class="idx-domain-dot"></span>D5 · Context</span>
+            <span class="idx-time">45m</span>
+          </span>
+        </span>
+      </a>
+    </nav>
+
+    <div class="toc-footer">
+      <div class="toc-progress-row">
+        <span><strong id="doneCount">0</strong> / 8 complete</span>
+        <span>progress</span>
+      </div>
+      <div class="mini-bar"><span id="miniBar"></span></div>
+      <button class="reset-btn" id="resetProgress" type="button">Reset progress</button>
+    </div>
+  </div>
+</aside>
+<div class="toc-backdrop" id="tocBackdrop"></div>
 
 <header class="site-head">
   <div class="page">
@@ -722,6 +1104,9 @@ footer.site-foot {
         </span>
       </a>
       <div class="head-actions">
+        <button class="nav-toggle" id="navToggle" aria-label="Open tutorial index" aria-controls="index" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/></svg>
+        </button>
         <a class="head-link hide-sm" href="#index">Index</a>
         <a class="head-link hide-sm" href="study-guide.html">Study guide</a>
         <a class="head-link hide-sm" href="#wrapup">Wrap-up</a>
@@ -777,116 +1162,6 @@ footer.site-foot {
     </div>
 
     <p class="hero-note">Companion to the <a href="study-guide.html">visual study guide</a>. Independent study resource — not affiliated with or endorsed by Anthropic. All code is runnable on a clean laptop with an <code class="inline">ANTHROPIC_API_KEY</code> exported.</p>
-  </div>
-</section>
-
-<!-- ============================================================
-     TUTORIAL INDEX
-     ============================================================ -->
-<section class="block" id="index">
-  <div class="page">
-    <div class="eyebrow">
-      <span class="eyebrow-num">01 /</span>
-      <span class="eyebrow-label">Tutorial Index</span>
-    </div>
-    <h2>Pick a tutorial. Progress is saved locally.</h2>
-    <p class="muted" style="max-width:58ch; margin-top: var(--s-3)">Ordered so each builds on the last. You can skip around, but Tutorial 1 is the foundation for every subsequent session.</p>
-
-    <div class="index-wrap">
-      <div class="index-row" data-tut="1">
-        <div class="idx-num"><span>01</span></div>
-        <div class="idx-main">
-          <a class="idx-title" href="#tut-1">The Agentic Loop — think/act/observe</a>
-          <div class="idx-sub">Build a single-agent loop from scratch; break it by removing the termination cap.</div>
-        </div>
-        <div class="idx-domain" style="color:#4F46E5"><span class="idx-domain-dot"></span>D1 · Agentic</div>
-        <div class="idx-time">45 min</div>
-        <div class="idx-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></div>
-      </div>
-
-      <div class="index-row" data-tut="2">
-        <div class="idx-num"><span>02</span></div>
-        <div class="idx-main">
-          <a class="idx-title" href="#tut-2">Hub-and-Spoke Orchestration</a>
-          <div class="idx-sub">Parent delegates to sub-agents in isolated contexts; sub-agents return summaries.</div>
-        </div>
-        <div class="idx-domain" style="color:#4F46E5"><span class="idx-domain-dot"></span>D1 · Agentic</div>
-        <div class="idx-time">60 min</div>
-        <div class="idx-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></div>
-      </div>
-
-      <div class="index-row" data-tut="3">
-        <div class="idx-num"><span>03</span></div>
-        <div class="idx-main">
-          <a class="idx-title" href="#tut-3">Build an MCP Server</a>
-          <div class="idx-sub">Expose a tool, a resource, and a prompt; wire into Claude Code; pick the wrong primitive on purpose.</div>
-        </div>
-        <div class="idx-domain" style="color:#059669"><span class="idx-domain-dot"></span>D2 · Tools/MCP</div>
-        <div class="idx-time">75 min</div>
-        <div class="idx-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></div>
-      </div>
-
-      <div class="index-row" data-tut="4">
-        <div class="idx-num"><span>04</span></div>
-        <div class="idx-main">
-          <a class="idx-title" href="#tut-4">Tool Description Discipline</a>
-          <div class="idx-sub">Count wrong-time calls for "gets data." vs a precise description; test the rename anti-pattern.</div>
-        </div>
-        <div class="idx-domain" style="color:#059669"><span class="idx-domain-dot"></span>D2 · Tools/MCP</div>
-        <div class="idx-time">30 min</div>
-        <div class="idx-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></div>
-      </div>
-
-      <div class="index-row" data-tut="5">
-        <div class="idx-num"><span>05</span></div>
-        <div class="idx-main">
-          <a class="idx-title" href="#tut-5">CLAUDE.md Hierarchy in Claude Code</a>
-          <div class="idx-sub">Watch global / project / subdir tiers compete; see subdir win.</div>
-        </div>
-        <div class="idx-domain" style="color:#D97706"><span class="idx-domain-dot"></span>D3 · Claude Code</div>
-        <div class="idx-time">40 min</div>
-        <div class="idx-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></div>
-      </div>
-
-      <div class="index-row" data-tut="6">
-        <div class="idx-num"><span>06</span></div>
-        <div class="idx-main">
-          <a class="idx-title" href="#tut-6">Hooks vs Skills vs Slash Commands</a>
-          <div class="idx-sub">One each — then prove a skill cannot be made deterministic.</div>
-        </div>
-        <div class="idx-domain" style="color:#D97706"><span class="idx-domain-dot"></span>D3 · Claude Code</div>
-        <div class="idx-time">45 min</div>
-        <div class="idx-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></div>
-      </div>
-
-      <div class="index-row" data-tut="7">
-        <div class="idx-num"><span>07</span></div>
-        <div class="idx-main">
-          <a class="idx-title" href="#tut-7">Structured Output — Tool-Use + JSON Schema Retry</a>
-          <div class="idx-sub">Self-healing extraction loop; compare with the prose "return JSON" anti-pattern.</div>
-        </div>
-        <div class="idx-domain" style="color:#E11D48"><span class="idx-domain-dot"></span>D4 · Prompt Eng.</div>
-        <div class="idx-time">50 min</div>
-        <div class="idx-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></div>
-      </div>
-
-      <div class="index-row" data-tut="8">
-        <div class="idx-num"><span>08</span></div>
-        <div class="idx-main">
-          <a class="idx-title" href="#tut-8">Prompt Caching & "Lost in the Middle"</a>
-          <div class="idx-sub">Measure cache-read savings; plant a fact mid-context and watch recall fail.</div>
-        </div>
-        <div class="idx-domain" style="color:#0891B2"><span class="idx-domain-dot"></span>D5 · Context</div>
-        <div class="idx-time">45 min</div>
-        <div class="idx-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></div>
-      </div>
-    </div>
-
-    <div class="index-summary">
-      <span><span id="doneCount">0</span> / 8 tutorials complete</span>
-      <div class="mini-bar"><span id="miniBar"></span></div>
-      <button class="reset-btn" id="resetProgress" type="button">Reset progress</button>
-    </div>
   </div>
 </section>
 
@@ -2622,6 +2897,42 @@ function wireReveal() {
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 }
 
+function wireNav() {
+  const sidebar = document.getElementById('index');
+  const toggle = document.getElementById('navToggle');
+  const closeBtn = document.getElementById('tocClose');
+  const backdrop = document.getElementById('tocBackdrop');
+  if (!sidebar) return;
+  const isMobile = () => window.matchMedia('(max-width: 1079px)').matches;
+  const open = () => { sidebar.classList.add('open'); backdrop?.classList.add('open'); };
+  const shut = () => { sidebar.classList.remove('open'); backdrop?.classList.remove('open'); };
+  toggle?.addEventListener('click', open);
+  closeBtn?.addEventListener('click', shut);
+  backdrop?.addEventListener('click', shut);
+  sidebar.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', () => { if (isMobile()) shut(); }));
+  document.querySelectorAll('a[href="#index"]').forEach(a => {
+    if (sidebar.contains(a)) return;
+    a.addEventListener('click', (e) => { if (isMobile()) { e.preventDefault(); open(); } });
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sidebar.classList.contains('open')) shut(); });
+}
+
+function wireTocActive() {
+  const rows = [...document.querySelectorAll('.toc-list .index-row')];
+  const map = new Map();
+  rows.forEach(r => { const t = document.querySelector(r.getAttribute('href')); if (t) map.set(t, r); });
+  if (!map.size) return;
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        rows.forEach(r => r.classList.remove('active'));
+        map.get(e.target)?.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
+  map.forEach((_, section) => io.observe(section));
+}
+
 /* single init run after DOM is fully loaded */
 window.addEventListener('DOMContentLoaded', () => {
   wireCopyButtons();
@@ -2630,6 +2941,8 @@ window.addEventListener('DOMContentLoaded', () => {
   wireReset();
   updateProgress();
   wireReveal();
+  wireNav();
+  wireTocActive();
 });
 </script>
 
