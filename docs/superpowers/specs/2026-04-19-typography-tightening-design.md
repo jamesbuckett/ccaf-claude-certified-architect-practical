@@ -70,11 +70,13 @@ The implementation step will start from `grep -n "font-family: var(--mono)"` and
 
 ### 5. Mono preserved (code-only)
 
-These keep `font-family: var(--mono)`:
+These keep `font-family: var(--mono)` because they render code or terminal output:
 
 - `code.inline` — inline code spans in prose
 - `.codeblock pre` — fenced code blocks
 - `.mono` utility class — escape hatch for incidental inline code-like content
+- `.gloss-term code` — `<code>` elements inside glossary terms (the term *is* code)
+- `.trouble-symptom` — renders terminal/error output (e.g., `ImportError: No module named 'anthropic'`), which the A1 principle explicitly treats as a code-rendering surface
 
 Nothing else.
 
