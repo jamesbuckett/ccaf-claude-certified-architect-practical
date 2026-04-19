@@ -1917,6 +1917,81 @@ else:
 
     <div class="sub">
       <div class="sub-head">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <h3>Code trace — what happens when you run it</h3>
+        <span class="sub-pill">≈ 5 min read</span>
+      </div>
+      <p>Before you run the script, walk through it in your head. The user asks <em>"Compare the weather in Paris and Tokyo right now."</em> A single <code class="inline">get_weather</code> tool is available. The model cannot answer without calling it — twice, once per city — and this is how the three-turn conversation unfolds.</p>
+
+      <h4 style="margin-top: var(--s-5); margin-bottom: var(--s-2)">Before the loop</h4>
+      <ul>
+        <li><code class="inline">anthropic.Anthropic()</code> reads <code class="inline">ANTHROPIC_API_KEY</code> from env and constructs an HTTP client. <strong>No network call yet.</strong></li>
+        <li><code class="inline">MAX_ITERATIONS = 5</code> is the <strong>termination cap</strong> — the single most important line in the file. Without it, <code class="inline">for turn in range(MAX_ITERATIONS)</code> becomes <code class="inline">while True:</code> and your bill grows without bound. Tutorial 01's build-and-break exercise deletes exactly this line on purpose.</li>
+        <li><code class="inline">tools = [...]</code> is the <strong>catalogue the model sees</strong>. Three fields matter: <code class="inline">name</code> (identifier the model emits), <code class="inline">description</code> (free text it reads to decide <em>when</em> to call), and <code class="inline">input_schema</code> (JSON Schema enforced server-side on the argument payload).</li>
+        <li><code class="inline">run_tool(...)</code> is a pure-Python dispatcher. <strong>The model never executes this</strong> — you do. The model only asks you to.</li>
+        <li><code class="inline">messages</code> starts with a single user turn. Everything below gets <strong>appended</strong> to it; state lives in your Python process, not on Anthropic's side.</li>
+      </ul>
+
+      <ol class="steps" style="margin-top: var(--s-5)">
+        <li>
+          <span class="step-title">Turn 0 — "Think". Model requests the Paris tool call.</span>
+          <p><code class="inline">client.messages.create(...)</code> is HTTP call #1. The model reads the user prompt plus the tool catalogue, decides it cannot answer directly, and returns:</p>
+          <div class="codeblock">
+            <div class="codeblock-head"><span class="codeblock-lang">response</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>stop_reason = "tool_use"
+content     = [ ToolUseBlock(id='toolu_01A…', name='get_weather',
+                             input={'city': 'Paris'}) ]</pre>
+          </div>
+          <p>The loop appends the assistant turn, then — because <code class="inline">stop_reason</code> is <em>not</em> <code class="inline">end_turn</code> — falls through into the tool-dispatch block. "Act" and "observe" happen in the same Python iteration: <code class="inline">run_tool</code> runs, a <code class="inline">tool_result</code> block is built, and it's appended as a new <strong>user</strong> message.</p>
+          <div class="step-why"><em>Two subtle things.</em> <code class="inline">tool_use_id</code> must match the <code class="inline">id</code> the model gave you — that's the correlation key. And <code class="inline">content</code> has to be a <strong>string</strong> (or a list of content blocks) — passing a raw dict here is the <a href="#troubleshooting">BadRequestError</a> readers hit first.</div>
+        </li>
+        <li>
+          <span class="step-title">Turn 1 — model now knows Paris, still needs Tokyo.</span>
+          <p>Same <code class="inline">create()</code> call, but <code class="inline">messages</code> now carries the Paris <code class="inline">tool_result</code>. The model returns another <code class="inline">ToolUseBlock(city='Tokyo')</code>. Loop dispatches it, appends the Tokyo result, moves on.</p>
+          <div class="step-why"><em>Parallel tool use.</em> Sonnet sometimes returns <em>both</em> tool-use blocks in turn 0 as an optimisation. The <code class="inline">for block in resp.content</code> loop handles that identically — it just dispatches both before the next <code class="inline">create()</code> call, and turn 1 never happens.</div>
+        </li>
+        <li>
+          <span class="step-title">Turn 2 — "End". Model has both temperatures, composes the answer.</span>
+          <p>HTTP call #3. The conversation history now contains both tool results. No tool is needed. The model returns:</p>
+          <div class="codeblock">
+            <div class="codeblock-head"><span class="codeblock-lang">response</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>stop_reason = "end_turn"
+content     = [ TextBlock(text='Paris is currently 14 °C while Tokyo
+                               is 22 °C, so Tokyo is 8 °C warmer…') ]</pre>
+          </div>
+          <p>Now the <code class="inline">if resp.stop_reason == "end_turn":</code> branch fires. <code class="inline">resp.content[-1].text</code> grabs the prose answer (the <em>last</em> block, because earlier blocks might be thinking text), prints it, and <code class="inline">break</code> exits the loop entirely — meaning the <code class="inline">for/else</code> clause is <strong>not</strong> executed. <code class="inline">else</code> on a <code class="inline">for</code> only fires when the loop exhausts <em>without</em> <code class="inline">break</code>.</p>
+          <div class="step-why"><em>Why it matters:</em> <code class="inline">end_turn</code> is the healthy exit. Iteration-cap exit (the <code class="inline">else</code> branch) means something went wrong.</div>
+        </li>
+      </ol>
+
+      <h4 style="margin-top: var(--s-6); margin-bottom: var(--s-3)">The final <code class="inline">messages</code> ledger</h4>
+      <p>When the loop breaks, <code class="inline">messages</code> is a 6-element record of the whole conversation:</p>
+      <div class="codeblock">
+        <div class="codeblock-head"><span class="codeblock-lang">messages state</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>[0] user       "Compare the weather in Paris and Tokyo right now."
+[1] assistant  [ToolUseBlock(name='get_weather', input={'city': 'Paris'})]
+[2] user       [tool_result(Paris → {'temp_c': 14})]
+[3] assistant  [ToolUseBlock(name='get_weather', input={'city': 'Tokyo'})]
+[4] user       [tool_result(Tokyo → {'temp_c': 22})]
+[5] assistant  [TextBlock("Paris is 14 °C while Tokyo is 22 °C…")]</pre>
+      </div>
+      <p>Two things worth internalising from this shape:</p>
+      <ul>
+        <li>The model has <strong>no memory between calls</strong>. Every <code class="inline">create()</code> re-sends the full <code class="inline">messages</code> list. That's why the loop's job is really just to <em>accrete history</em>.</li>
+        <li>Tool results ride inside <strong>user</strong> messages, not a third role. From the model's perspective, "you told me something" and "the tool told me something" are both inputs from the user role.</li>
+      </ul>
+
+      <div class="callout">
+        <div class="callout-head">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          One-line mental model
+        </div>
+        <p>The agentic loop is a three-state machine — <strong>think</strong> (the <code class="inline">create()</code> call), <strong>act</strong> (your <code class="inline">run_tool</code>), <strong>observe</strong> (appending a <code class="inline">tool_result</code> back into <code class="inline">messages</code>) — that terminates on <code class="inline">stop_reason == "end_turn"</code>, an iteration cap, or an error. Every line in <code class="inline">loop.py</code> exists to implement one of those three states.</p>
+      </div>
+    </div>
+
+    <div class="sub">
+      <div class="sub-head">
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
         <h3>Walkthrough</h3>
         <span class="sub-pill">≈ 15 min</span>
