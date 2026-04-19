@@ -2018,10 +2018,12 @@ content     = [ TextBlock(text='Paris is currently 14 °C while Tokyo
         </li>
         <li>
           <span class="step-title">Trace the message list after run completes.</span>
-          <p>Add:</p>
+          <p>Append one line to the <strong>bottom of <code class="inline">loop.py</code></strong>, after the <code class="inline">for/else</code> block:</p>
           <div class="codeblock">
-            <div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>print(json.dumps([{'role': m['role']} for m in messages], indent=2))</pre>
+            <div class="codeblock-head"><span class="codeblock-lang">python · loop.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>else:
+    print("!! loop exhausted without end_turn — safety cap hit")
+print(json.dumps([{'role': m['role']} for m in messages], indent=2))   # ← add this at the end</pre>
           </div>
           <p>Expected: <code class="inline">user → assistant → user → assistant → user → assistant</code> with tool_use / tool_result alternating inside the user messages.</p>
           <div class="step-why"><em>Why it matters:</em> The loop builds the history — the model has no memory between <code class="inline">create()</code> calls except what you pass.</div>
@@ -2041,11 +2043,24 @@ content     = [ TextBlock(text='Paris is currently 14 °C while Tokyo
           INTENTIONAL FAILURE
         </div>
         <h4>Starve the loop of iterations</h4>
-        <p>Change <code class="inline">MAX_ITERATIONS = 5</code> to <code class="inline">MAX_ITERATIONS = 1</code>, then ask for three cities:</p>
+        <p>Two small edits to <code class="inline">loop.py</code>. First, near the top of the file, lower the iteration cap:</p>
         <div class="codeblock">
-          <div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>messages = [{"role": "user",
-             "content": "Compare weather in Paris, Tokyo, and Cape Town."}]</pre>
+          <div class="codeblock-head"><span class="codeblock-lang">python · loop.py · near the top</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>client = anthropic.Anthropic()
+MODEL = "claude-sonnet-4-6"
+MAX_ITERATIONS = 1          # ← was 5
+
+tools = [{</pre>
+        </div>
+        <p>Second, further down, widen the prompt to three cities so the model needs more than one tool-use turn:</p>
+        <div class="codeblock">
+          <div class="codeblock-head"><span class="codeblock-lang">python · loop.py · before the for loop</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>    raise ValueError(f"unknown tool {name}")
+
+messages = [{"role": "user",
+             "content": "Compare weather in Paris, Tokyo, and Cape Town."}]   # ← was two cities
+
+for turn in range(MAX_ITERATIONS):</pre>
         </div>
         <p><strong>Expected failure:</strong> the loop exits via the <code class="inline">else</code> branch with <code class="inline">!! loop exhausted without end_turn</code>. The model wanted another turn; you cut it off.</p>
         <p><strong>Confirm:</strong> the printed <code class="inline">stop_reason</code> on the final turn is <code class="inline">tool_use</code>, not <code class="inline">end_turn</code>.</p>
@@ -2241,7 +2256,15 @@ if __name__ == "__main__":
         </li>
         <li>
           <span class="step-title">Compare token budgets.</span>
-          <p>Print <code class="inline">resp.usage.input_tokens</code> inside <code class="inline">spawn_subagent</code>. You'll see each sub-agent uses 50–150 input tokens; the orchestrator uses ~600 (three summaries).</p>
+          <p>Extend the existing <code class="inline">[done]</code> line inside <code class="inline">spawn_subagent</code> so it also reports <code class="inline">input_tokens</code>. Show one line before and after so you can locate the change:</p>
+          <div class="codeblock">
+            <div class="codeblock-head"><span class="codeblock-lang">python · orchestrator.py · inside spawn_subagent</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>    summary = resp.content[0].text
+    print(f"  [done]  {subagent_name}: {len(summary)} chars, "
+          f"in={resp.usage.input_tokens} out={resp.usage.output_tokens} tokens")   # ← added in=
+    return summary</pre>
+          </div>
+          <p>Re-run and watch the numbers: each sub-agent uses 50–150 input tokens; the orchestrator's <code class="inline">[orchestrator]</code> line shows ~600 (three summaries).</p>
           <div class="step-why"><em>Why it matters:</em> Without the hub-and-spoke boundary, passing full transcripts up would 3–10× the parent's token bill.</div>
         </li>
         <li>
@@ -2263,16 +2286,30 @@ if __name__ == "__main__":
           LEAKY CONTEXT BUG
         </div>
         <h4>Forward the full child transcript up to the parent</h4>
-        <p>Change <code class="inline">spawn_subagent</code> to return the full message list and have the orchestrator append it verbatim:</p>
-        <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>def spawn_subagent_LEAKY(task_brief, subagent_name):
-    resp = client.messages.create(...)
+        <p>Two edits to <code class="inline">orchestrator.py</code>. First, add a new leaky variant of <code class="inline">spawn_subagent</code> alongside the original — keep the original so you can revert easily:</p>
+        <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python · orchestrator.py · after spawn_subagent</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>    return summary   # ← last line of the ORIGINAL spawn_subagent
+
+def spawn_subagent_LEAKY(task_brief, subagent_name):                              # ← new function
+    resp = client.messages.create(
+        model=MODEL, max_tokens=512,
+        system=f"You are a {subagent_name} sub-agent. Do the task briefly.",
+        messages=[{"role": "user", "content": task_brief}],
+    )
     return {"messages": [{"role": "user", "content": task_brief},
                          {"role": "assistant", "content": resp.content[0].text}]}
 
-# and in orchestrate():
-findings = [spawn_subagent_LEAKY(brief, name) for name, brief in plan]
-flattened = sum((f["messages"] for f in findings), [])
-# then pass flattened as the orchestrator's messages</pre></div>
+def orchestrate(user_goal: str) -&gt; str:   # ← unchanged line that follows</pre></div>
+        <p>Second, swap the orchestrator's <code class="inline">findings</code> line so it uses the leaky variant and flattens the transcripts into the parent's history:</p>
+        <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python · orchestrator.py · inside orchestrate()</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>        ("synthesizer",f"Suggest a 1-sentence thesis for: {user_goal}"),
+    ]
+    # findings = {name: spawn_subagent(brief, name) for name, brief in plan}      # ← comment out
+    findings = [spawn_subagent_LEAKY(brief, name) for name, brief in plan]        # ← new
+    flattened = sum((f["messages"] for f in findings), [])                        # ← new
+    resp = client.messages.create(
+        model=MODEL, max_tokens=512,
+        system="You are an orchestrator. Combine sub-agent findings into a brief.",
+        messages=flattened,                                                       # ← was the findings dict
+    )</pre></div>
         <p><strong>Expected failure:</strong> the orchestrator's <code class="inline">input_tokens</code> roughly triples. With <code class="inline">N=10</code> sub-agents, the parent explodes its budget and starts losing information in the middle (Domain 5's failure mode).</p>
         <p><strong>Confirm:</strong> print <code class="inline">resp.usage.input_tokens</code> in both versions and compare.</p>
         <p><strong>Revert:</strong> restore the original <code class="inline">spawn_subagent</code>.</p>
@@ -3149,7 +3186,14 @@ Report findings as a numbered list with file:line references.</pre></div>
           FORCE DETERMINISM WHERE IT DOESN'T BELONG
         </div>
         <h4>Try to make a skill fire on every edit</h4>
-        <p>Change the skill description to: <code class="inline">"Use after every edit, no exceptions"</code>. Create five files in a row and count skill invocations.</p>
+        <p>Edit <code class="inline">.claude/skills/security-review/SKILL.md</code> — change <em>only</em> the <code class="inline">description:</code> line in the frontmatter, keep the body untouched. Lines before and after are shown so you can locate the change:</p>
+        <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">markdown · .claude/skills/security-review/SKILL.md</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>---
+name: security-review
+description: Use after every edit, no exceptions    # ← was the security-review sentence
+---
+
+# Security Review</pre></div>
+        <p>Now create five files in a row and count the skill invocations in the transcript.</p>
         <p><strong>Expected failure:</strong> the model may invoke it 0, 1, or 5 times — not deterministic. If you need "always runs", you need a hook, not a skill.</p>
         <p><strong>Confirm:</strong> inspect <code class="inline">/tmp/hook.log</code> (5 entries) vs the number of skill invocations in the transcript (variable). This is the answer to Quiz Q3: deterministic → hook.</p>
         <p><strong>Revert:</strong> remove the "use after every edit" language from the skill description.</p>
@@ -3586,7 +3630,16 @@ ask("What does Ishmael do when he feels spleen?", use_cache=False)</pre></div>
         </li>
         <li>
           <span class="step-title">Test the 5-minute TTL.</span>
-          <p>Add <code class="inline">time.sleep(310)</code> between calls 1 and 2. Expected: call 2 shows <code class="inline">cache_write≈5000</code> again — the cache expired.</p>
+          <p>At the bottom of <code class="inline">cache.py</code>, insert one <code class="inline">time.sleep(310)</code> between the first and second calls. Show one line before and after:</p>
+          <div class="codeblock">
+            <div class="codeblock-head"><span class="codeblock-lang">python · cache.py · bottom</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>print("--- first call (cache miss) ---")
+ask("What does Ishmael do when he feels spleen?", use_cache=True)
+time.sleep(310)   # ← add this — forces the 5-minute ephemeral TTL to expire
+print("--- second call (cache hit expected) ---")
+ask("Name one ship mentioned.", use_cache=True)</pre>
+          </div>
+          <p>Expected: call 2 now shows <code class="inline">cache_write≈5000</code> again — the cache expired.</p>
           <div class="step-why"><em>Why it matters:</em> Ephemeral caches live 5 minutes (standard) or 1 hour (premium). Plan your wake-up intervals.</div>
         </li>
       </ol>
