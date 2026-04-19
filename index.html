@@ -911,12 +911,24 @@ code.inline {
 }
 .step-title { font-weight: 600; margin-bottom: var(--s-2); display: block; }
 .step-why {
-  font-size: 0.9rem; color: var(--text-dim);
-  padding-left: var(--s-4);
-  border-left: 2px solid var(--accent);
   margin-top: var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  background: var(--accent-soft);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  color: var(--text);
+  line-height: 1.55;
 }
-.step-why em { color: var(--text); font-style: italic; font-weight: 500; }
+.step-why em { color: var(--text); font-style: italic; font-weight: 400; }
+.step-why em:first-child {
+  color: var(--accent);
+  font-style: normal;
+  font-weight: 600;
+  margin-right: var(--s-1);
+}
+.step-why strong { font-weight: 600; }
 
 /* ============================================================
    CALLOUT / BUILD-AND-BREAK
