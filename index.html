@@ -1825,7 +1825,7 @@ details.trace-inline > :last-child { padding-bottom: var(--s-4); }
       <div><span style="color:var(--text-faint)"># Ubuntu / Debian (skip on macOS):</span></div>
       <div>sudo apt update &amp;&amp; sudo apt install -y python3 python3-venv python3-pip</div>
       <div><span style="color:var(--text-faint)"># All platforms:</span></div>
-      <div>npm i -g @anthropic-ai/claude-code</div>
+      <div>sudo npm i -g @anthropic-ai/claude-code</div>
       <div>export ANTHROPIC_API_KEY="sk-ant-…"</div>
     </div>
   </div>
@@ -2671,7 +2671,7 @@ if __name__ == "__main__":
         <ul>
           <li>Python 3.11+</li>
           <li><code class="inline">mcp</code> package (official Model Context Protocol SDK): <code class="inline">pip install mcp</code></li>
-          <li>Claude Code CLI installed (<code class="inline">npm i -g @anthropic-ai/claude-code</code>)</li>
+          <li>Claude Code CLI installed (<code class="inline">sudo npm i -g @anthropic-ai/claude-code</code>)</li>
           <li>Basic familiarity with JSON Schema</li>
         </ul>
       </div>
@@ -4549,7 +4549,7 @@ python3 -c "import anthropic; [print(m.id) for m in anthropic.Anthropic().models
       <article class="trouble-item">
         <p class="trouble-symptom">
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <span><code>claude: command not found</code> after <code>npm i -g @anthropic-ai/claude-code</code></span>
+          <span><code>claude: command not found</code> after <code>sudo npm i -g @anthropic-ai/claude-code</code></span>
         </p>
         <p class="trouble-cause"><strong>Cause.</strong> npm's global bin directory is not on your PATH. On Ubuntu with a system-packaged Node, this happens because the default prefix is <code class="inline">/usr/local</code> but shells installed earlier may not include it; with nvm, each version has its own bin dir that must be sourced.</p>
         <div class="trouble-fix">
@@ -4663,7 +4663,7 @@ python3 server.py  # Ctrl-C once it reports "ready" or prints a traceback</pre>
 sudo apt update &amp;&amp; sudo apt install -y python3 python3-venv python3-pip
 
 # All platforms:
-npm i -g @anthropic-ai/claude-code
+sudo npm i -g @anthropic-ai/claude-code
 export ANTHROPIC_API_KEY="sk-ant-…"</pre>
     </div>
     <p class="muted" style="margin-top: var(--s-4)">Budget ~$2–4 of API spend on Sonnet 4.6 with the retry caps set as shown.</p>
