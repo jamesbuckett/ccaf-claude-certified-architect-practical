@@ -3806,11 +3806,11 @@ python3 -m venv .venv &amp;&amp; source .venv/bin/activate
 pip install anthropic jsonschema</pre></div>
       <p>Create <code class="inline">extract.py</code>:</p>
       <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python · extract.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>import anthropic, json
-from jsonschema import Draft202012Validator
-client = anthropic.Anthropic()
-MODEL = "claude-sonnet-4-6"
-MAX_RETRIES = 3
+<pre><span class="ccaf-line">import anthropic, json</span>
+<span class="ccaf-line">from jsonschema import Draft202012Validator</span>
+<span class="ccaf-line">client = anthropic.Anthropic()</span>
+<span class="ccaf-line">MODEL = "claude-sonnet-4-6"</span>
+<span class="ccaf-line">MAX_RETRIES = 3</span>
 
 schema = {
     "type": "object",
@@ -3823,13 +3823,13 @@ schema = {
     "required": ["name", "email", "age", "topics"],
     "additionalProperties": False,
 }
-validator = Draft202012Validator(schema)
+<span class="ccaf-line">validator = Draft202012Validator(schema)</span>
 
-tools = [{
-    "name": "record_contact",
-    "description": "Record an extracted contact. All fields required.",
-    "input_schema": schema,
-}]
+<span class="ccaf-line">tools = [{</span>
+<span class="ccaf-line">    "name": "record_contact",</span>
+<span class="ccaf-line">    "description": "Record an extracted contact. All fields required.",</span>
+<span class="ccaf-line">    "input_schema": schema,</span>
+<span class="ccaf-line">}]</span>
 
 document = """
 Hi, I'm Nadia Okafor. Email: nadia@example.com.
@@ -3837,30 +3837,30 @@ I'm 34 and interested in MCP, agent patterns, and prompt caching.
 """
 
 def extract_with_retry(doc: str) -&gt; dict:
-    messages = [{"role": "user",
-                 "content": f"Extract the contact from:\n&lt;doc&gt;{doc}&lt;/doc&gt;"}]
-    for attempt in range(MAX_RETRIES):
-        resp = client.messages.create(
-            model=MODEL, max_tokens=512, tools=tools, messages=messages,
-            tool_choice={"type": "tool", "name": "record_contact"},
-        )
-        tool_block = next(b for b in resp.content if b.type == "tool_use")
-        errors = list(validator.iter_errors(tool_block.input))
+<span class="ccaf-line">    messages = [{"role": "user",</span>
+<span class="ccaf-line">                 "content": f"Extract the contact from:\n&lt;doc&gt;{doc}&lt;/doc&gt;"}]</span>
+<span class="ccaf-line">    for attempt in range(MAX_RETRIES):</span>
+<span class="ccaf-line">        resp = client.messages.create(</span>
+<span class="ccaf-line">            model=MODEL, max_tokens=512, tools=tools, messages=messages,</span>
+<span class="ccaf-line">            tool_choice={"type": "tool", "name": "record_contact"},</span>
+<span class="ccaf-line">        )</span>
+<span class="ccaf-line">        tool_block = next(b for b in resp.content if b.type == "tool_use")</span>
+<span class="ccaf-line">        errors = list(validator.iter_errors(tool_block.input))</span>
         if not errors:
             print(f"✓ valid on attempt {attempt+1}")
-            return tool_block.input
+<span class="ccaf-line">            return tool_block.input</span>
         print(f"✗ attempt {attempt+1} failed: {errors[0].message}")
-        messages.append({"role": "assistant", "content": resp.content})
-        messages.append({
-            "role": "user",
-            "content": [{
-                "type": "tool_result",
-                "tool_use_id": tool_block.id,
-                "content": f"Validation failed: {errors[0].message}. "
-                           f"Path: {list(errors[0].path)}. Please retry.",
-                "is_error": True,
-            }],
-        })
+<span class="ccaf-line">        messages.append({"role": "assistant", "content": resp.content})</span>
+<span class="ccaf-line">        messages.append({</span>
+<span class="ccaf-line">            "role": "user",</span>
+<span class="ccaf-line">            "content": [{</span>
+<span class="ccaf-line">                "type": "tool_result",</span>
+<span class="ccaf-line">                "tool_use_id": tool_block.id,</span>
+<span class="ccaf-line">                "content": f"Validation failed: {errors[0].message}. "</span>
+<span class="ccaf-line">                           f"Path: {list(errors[0].path)}. Please retry.",</span>
+<span class="ccaf-line">                "is_error": True,</span>
+<span class="ccaf-line">            }],</span>
+<span class="ccaf-line">        })</span>
     raise RuntimeError("max retries exceeded")
 
 print(json.dumps(extract_with_retry(document), indent=2))</pre></div>
@@ -3955,12 +3955,12 @@ print(json.dumps(extract_with_retry(document), indent=2))</pre></div>
         </div>
         <h4>Replace tool-use with a prose request</h4>
         <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>resp = client.messages.create(
-    model=MODEL, max_tokens=512,
-    messages=[{"role": "user",
-               "content": f"Extract this as JSON matching {schema}:\n{document}"}],
-)
-raw = resp.content[0].text
+<pre><span class="ccaf-line">resp = client.messages.create(</span>
+<span class="ccaf-line">    model=MODEL, max_tokens=512,</span>
+<span class="ccaf-line">    messages=[{"role": "user",</span>
+<span class="ccaf-line">               "content": f"Extract this as JSON matching {schema}:\n{document}"}],</span>
+<span class="ccaf-line">)</span>
+<span class="ccaf-line">raw = resp.content[0].text</span>
 # Try to parse:
 data = json.loads(raw)   # this often fails</pre></div>
         <p>Run 5–10 times. <strong>Expected failure modes:</strong></p>
@@ -4017,7 +4017,7 @@ data = json.loads(raw)   # this often fails</pre></div>
         <p><strong style="color:var(--text)">Optional in-code tally.</strong> Drop this line after each <code class="inline">client.messages.create(&hellip;)</code> call to see per-request token counts in your terminal:</p>
         <div class="codeblock">
           <div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>print(f"[usage] in={resp.usage.input_tokens} out={resp.usage.output_tokens}")</pre>
+<pre><span class="ccaf-line">print(f"[usage] in={resp.usage.input_tokens} out={resp.usage.output_tokens}")</span></pre>
         </div>
       </div>
     </div>
