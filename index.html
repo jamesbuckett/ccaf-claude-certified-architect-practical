@@ -2440,7 +2440,7 @@ def run_tool(name, args):
         <p><strong style="color:var(--text)">Optional in-code tally.</strong> Drop this line after each <code class="inline">client.messages.create(&hellip;)</code> call to see per-request token counts in your terminal:</p>
         <div class="codeblock">
           <div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>print(f"[usage] in={resp.usage.input_tokens} out={resp.usage.output_tokens}")</pre>
+<pre><span class="ccaf-line">print(f"[usage] in={resp.usage.input_tokens} out={resp.usage.output_tokens}")</span></pre>
         </div>
       </div>
     </div>
