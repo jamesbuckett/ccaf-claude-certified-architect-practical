@@ -1209,6 +1209,53 @@ footer.site-foot {
 .prestart-install strong { color: var(--text); font-weight: 600; }
 
 /* ============================================================
+   API-USAGE CALLOUT (per-tutorial baseline / delta)
+   ============================================================ */
+.usage-callout {
+  display: flex;
+  gap: var(--s-4);
+  align-items: flex-start;
+  margin: var(--s-5) 0 var(--s-6);
+  padding: var(--s-4) var(--s-5);
+  background: var(--accent-soft);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+}
+.usage-callout-icon {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  color: var(--accent);
+  margin-top: 2px;
+}
+.usage-callout-body { flex: 1 1 auto; min-width: 0; }
+.usage-callout-label {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: var(--s-1);
+}
+.usage-callout h4 {
+  margin: 0 0 var(--s-2);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+}
+.usage-callout p {
+  margin: 0 0 var(--s-2);
+  font-size: 0.92rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.usage-callout p:last-child { margin-bottom: 0; }
+.usage-callout .codeblock { margin-top: var(--s-3); }
+
+/* ============================================================
    FAQ
    ============================================================ */
 .faq-list {
@@ -1991,6 +2038,15 @@ source .venv/bin/activate     # re-enter, no re-install needed</pre>
       </div>
     </div>
 
+    <div class="usage-callout" role="note">
+      <svg class="usage-callout-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <div class="usage-callout-body">
+        <span class="usage-callout-label">Before you start · API usage</span>
+        <h4>Record your spend baseline</h4>
+        <p>Open <a href="https://console.anthropic.com/usage" target="_blank" rel="noopener noreferrer">console.anthropic.com/usage</a>, filter to today, and note the current dollar amount (or screenshot the chart). You'll check the delta at the end of this tutorial so you know exactly what this one exercise cost.</p>
+      </div>
+    </div>
+
     <div class="sub">
       <div class="sub-head">
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -2394,6 +2450,20 @@ else:
       </ul>
     </div>
 
+    <div class="usage-callout" role="note">
+      <svg class="usage-callout-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+      <div class="usage-callout-body">
+        <span class="usage-callout-label">After you finish · API usage</span>
+        <h4>Check your spend delta</h4>
+        <p>Refresh <a href="https://console.anthropic.com/usage" target="_blank" rel="noopener noreferrer">console.anthropic.com/usage</a>. The difference from your baseline is what this tutorial actually cost on Sonnet 4.6 &mdash; add it to a running tally so you can compare against the ~$2&ndash;4 total budget for the whole workbook.</p>
+        <p><strong style="color:var(--text)">Optional in-code tally.</strong> Drop this line after each <code class="inline">client.messages.create(&hellip;)</code> call to see per-request token counts in your terminal:</p>
+        <div class="codeblock">
+          <div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>print(f"[usage] in={resp.usage.input_tokens} out={resp.usage.output_tokens}")</pre>
+        </div>
+      </div>
+    </div>
+
     <button class="mark-done" data-tut="1" type="button">
       <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       <span class="md-label">Mark tutorial complete</span>
@@ -2437,6 +2507,15 @@ else:
           <li>Trigger the leaky-context bug by forwarding a child's full history</li>
           <li>Measure token counts on parent vs child to see the isolation boundary</li>
         </ul>
+      </div>
+    </div>
+
+    <div class="usage-callout" role="note">
+      <svg class="usage-callout-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <div class="usage-callout-body">
+        <span class="usage-callout-label">Before you start · API usage</span>
+        <h4>Record your spend baseline</h4>
+        <p>Open <a href="https://console.anthropic.com/usage" target="_blank" rel="noopener noreferrer">console.anthropic.com/usage</a>, filter to today, and note the current dollar amount (or screenshot the chart). You'll check the delta at the end of this tutorial so you know exactly what this one exercise cost.</p>
       </div>
     </div>
 
@@ -2699,6 +2778,20 @@ if __name__ == "__main__":
       </ul>
     </div>
 
+    <div class="usage-callout" role="note">
+      <svg class="usage-callout-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+      <div class="usage-callout-body">
+        <span class="usage-callout-label">After you finish · API usage</span>
+        <h4>Check your spend delta</h4>
+        <p>Refresh <a href="https://console.anthropic.com/usage" target="_blank" rel="noopener noreferrer">console.anthropic.com/usage</a>. The difference from your baseline is what this tutorial actually cost on Sonnet 4.6 &mdash; add it to a running tally so you can compare against the ~$2&ndash;4 total budget for the whole workbook.</p>
+        <p><strong style="color:var(--text)">Optional in-code tally.</strong> Drop this line after each <code class="inline">client.messages.create(&hellip;)</code> call to see per-request token counts in your terminal:</p>
+        <div class="codeblock">
+          <div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>print(f"[usage] in={resp.usage.input_tokens} out={resp.usage.output_tokens}")</pre>
+        </div>
+      </div>
+    </div>
+
     <button class="mark-done" data-tut="2" type="button">
       <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       <span class="md-label">Mark tutorial complete</span>
@@ -2743,6 +2836,15 @@ if __name__ == "__main__":
           <li>Invoke each primitive and see which initiator triggers it (model / app / user)</li>
           <li>Deliberately mis-categorise a feature to see the model pick the wrong primitive</li>
         </ul>
+      </div>
+    </div>
+
+    <div class="usage-callout" role="note">
+      <svg class="usage-callout-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <div class="usage-callout-body">
+        <span class="usage-callout-label">Before you start · API usage</span>
+        <h4>Record your spend baseline</h4>
+        <p>Open <a href="https://console.anthropic.com/usage" target="_blank" rel="noopener noreferrer">console.anthropic.com/usage</a>, filter to today, and note the current dollar amount (or screenshot the chart). You'll check the delta at the end of this tutorial so you know exactly what this one exercise cost.</p>
       </div>
     </div>
 
@@ -2939,6 +3041,15 @@ if __name__ == "__main__":
       </ul>
     </div>
 
+    <div class="usage-callout" role="note">
+      <svg class="usage-callout-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+      <div class="usage-callout-body">
+        <span class="usage-callout-label">After you finish · API usage</span>
+        <h4>Check your spend delta</h4>
+        <p>Refresh <a href="https://console.anthropic.com/usage" target="_blank" rel="noopener noreferrer">console.anthropic.com/usage</a>. This tutorial doesn't call the Anthropic API directly from Python &mdash; Claude Code makes the requests on your behalf &mdash; so the Console is your only live signal for spend. Note the delta and add it to the running tally.</p>
+      </div>
+    </div>
+
     <button class="mark-done" data-tut="3" type="button">
       <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       <span class="md-label">Mark tutorial complete</span>
@@ -2981,6 +3092,15 @@ if __name__ == "__main__":
           <li>Observe how "when NOT to call" guidance reduces false positives</li>
           <li>Recognise the anti-pattern of renaming a tool to "refresh attention"</li>
         </ul>
+      </div>
+    </div>
+
+    <div class="usage-callout" role="note">
+      <svg class="usage-callout-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <div class="usage-callout-body">
+        <span class="usage-callout-label">Before you start · API usage</span>
+        <h4>Record your spend baseline</h4>
+        <p>Open <a href="https://console.anthropic.com/usage" target="_blank" rel="noopener noreferrer">console.anthropic.com/usage</a>, filter to today, and note the current dollar amount (or screenshot the chart). You'll check the delta at the end of this tutorial so you know exactly what this one exercise cost.</p>
       </div>
     </div>
 
@@ -3166,6 +3286,20 @@ run(PRECISE, test_prompts, "PRECISE tool description")</pre>
       </ul>
     </div>
 
+    <div class="usage-callout" role="note">
+      <svg class="usage-callout-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+      <div class="usage-callout-body">
+        <span class="usage-callout-label">After you finish · API usage</span>
+        <h4>Check your spend delta</h4>
+        <p>Refresh <a href="https://console.anthropic.com/usage" target="_blank" rel="noopener noreferrer">console.anthropic.com/usage</a>. The difference from your baseline is what this tutorial actually cost on Sonnet 4.6 &mdash; add it to a running tally so you can compare against the ~$2&ndash;4 total budget for the whole workbook.</p>
+        <p><strong style="color:var(--text)">Optional in-code tally.</strong> Drop this line after each <code class="inline">client.messages.create(&hellip;)</code> call to see per-request token counts in your terminal:</p>
+        <div class="codeblock">
+          <div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>print(f"[usage] in={resp.usage.input_tokens} out={resp.usage.output_tokens}")</pre>
+        </div>
+      </div>
+    </div>
+
     <button class="mark-done" data-tut="4" type="button">
       <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       <span class="md-label">Mark tutorial complete</span>
@@ -3209,6 +3343,15 @@ run(PRECISE, test_prompts, "PRECISE tool description")</pre>
           <li>Identify what belongs at each tier (team / personal / local)</li>
           <li>Break the hierarchy by putting a user preference in a project file</li>
         </ul>
+      </div>
+    </div>
+
+    <div class="usage-callout" role="note">
+      <svg class="usage-callout-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <div class="usage-callout-body">
+        <span class="usage-callout-label">Before you start · API usage</span>
+        <h4>Record your spend baseline</h4>
+        <p>Open <a href="https://console.anthropic.com/usage" target="_blank" rel="noopener noreferrer">console.anthropic.com/usage</a>, filter to today, and note the current dollar amount (or screenshot the chart). You'll check the delta at the end of this tutorial so you know exactly what this one exercise cost.</p>
       </div>
     </div>
 
@@ -3368,6 +3511,15 @@ EOF</pre></div>
       </ul>
     </div>
 
+    <div class="usage-callout" role="note">
+      <svg class="usage-callout-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+      <div class="usage-callout-body">
+        <span class="usage-callout-label">After you finish · API usage</span>
+        <h4>Check your spend delta</h4>
+        <p>Refresh <a href="https://console.anthropic.com/usage" target="_blank" rel="noopener noreferrer">console.anthropic.com/usage</a>. This tutorial doesn't call the Anthropic API directly from Python &mdash; Claude Code makes the requests on your behalf &mdash; so the Console is your only live signal for spend. Note the delta and add it to the running tally.</p>
+      </div>
+    </div>
+
     <button class="mark-done" data-tut="5" type="button">
       <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       <span class="md-label">Mark tutorial complete</span>
@@ -3411,6 +3563,15 @@ EOF</pre></div>
           <li>See a hook fire even when the model didn't "want" it to</li>
           <li>Try to get a skill to fire deterministically (it can't)</li>
         </ul>
+      </div>
+    </div>
+
+    <div class="usage-callout" role="note">
+      <svg class="usage-callout-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <div class="usage-callout-body">
+        <span class="usage-callout-label">Before you start · API usage</span>
+        <h4>Record your spend baseline</h4>
+        <p>Open <a href="https://console.anthropic.com/usage" target="_blank" rel="noopener noreferrer">console.anthropic.com/usage</a>, filter to today, and note the current dollar amount (or screenshot the chart). You'll check the delta at the end of this tutorial so you know exactly what this one exercise cost.</p>
       </div>
     </div>
 
@@ -3591,6 +3752,15 @@ Report findings as a numbered list with file:line references.</pre></div>
       </ul>
     </div>
 
+    <div class="usage-callout" role="note">
+      <svg class="usage-callout-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+      <div class="usage-callout-body">
+        <span class="usage-callout-label">After you finish · API usage</span>
+        <h4>Check your spend delta</h4>
+        <p>Refresh <a href="https://console.anthropic.com/usage" target="_blank" rel="noopener noreferrer">console.anthropic.com/usage</a>. This tutorial doesn't call the Anthropic API directly from Python &mdash; Claude Code makes the requests on your behalf &mdash; so the Console is your only live signal for spend. Note the delta and add it to the running tally.</p>
+      </div>
+    </div>
+
     <button class="mark-done" data-tut="6" type="button">
       <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       <span class="md-label">Mark tutorial complete</span>
@@ -3634,6 +3804,15 @@ Report findings as a numbered list with file:line references.</pre></div>
           <li>On failure, feed the validator's error back and retry</li>
           <li>Compare with the "please return JSON" prose approach</li>
         </ul>
+      </div>
+    </div>
+
+    <div class="usage-callout" role="note">
+      <svg class="usage-callout-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <div class="usage-callout-body">
+        <span class="usage-callout-label">Before you start · API usage</span>
+        <h4>Record your spend baseline</h4>
+        <p>Open <a href="https://console.anthropic.com/usage" target="_blank" rel="noopener noreferrer">console.anthropic.com/usage</a>, filter to today, and note the current dollar amount (or screenshot the chart). You'll check the delta at the end of this tutorial so you know exactly what this one exercise cost.</p>
       </div>
     </div>
 
@@ -3851,6 +4030,20 @@ data = json.loads(raw)   # this often fails</pre></div>
       </ul>
     </div>
 
+    <div class="usage-callout" role="note">
+      <svg class="usage-callout-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+      <div class="usage-callout-body">
+        <span class="usage-callout-label">After you finish · API usage</span>
+        <h4>Check your spend delta</h4>
+        <p>Refresh <a href="https://console.anthropic.com/usage" target="_blank" rel="noopener noreferrer">console.anthropic.com/usage</a>. The difference from your baseline is what this tutorial actually cost on Sonnet 4.6 &mdash; add it to a running tally so you can compare against the ~$2&ndash;4 total budget for the whole workbook.</p>
+        <p><strong style="color:var(--text)">Optional in-code tally.</strong> Drop this line after each <code class="inline">client.messages.create(&hellip;)</code> call to see per-request token counts in your terminal:</p>
+        <div class="codeblock">
+          <div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>print(f"[usage] in={resp.usage.input_tokens} out={resp.usage.output_tokens}")</pre>
+        </div>
+      </div>
+    </div>
+
     <button class="mark-done" data-tut="7" type="button">
       <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       <span class="md-label">Mark tutorial complete</span>
@@ -3894,6 +4087,15 @@ data = json.loads(raw)   # this often fails</pre></div>
           <li>Plant a test fact in the middle vs end of a long context and see recall differ</li>
           <li>Observe the performance cliff at the 5-minute cache TTL</li>
         </ul>
+      </div>
+    </div>
+
+    <div class="usage-callout" role="note">
+      <svg class="usage-callout-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <div class="usage-callout-body">
+        <span class="usage-callout-label">Before you start · API usage</span>
+        <h4>Record your spend baseline</h4>
+        <p>Open <a href="https://console.anthropic.com/usage" target="_blank" rel="noopener noreferrer">console.anthropic.com/usage</a>, filter to today, and note the current dollar amount (or screenshot the chart). You'll check the delta at the end of this tutorial so you know exactly what this one exercise cost.</p>
       </div>
     </div>
 
@@ -4143,6 +4345,21 @@ for placement in ["start", "middle", "end"]:
         <li>Try the same middle-vs-end test with Haiku 4.5 and compare attention curves.</li>
         <li>Re-read Quiz Q10 and Q15 and reason through which primitive each maps to.</li>
       </ul>
+    </div>
+
+    <div class="usage-callout" role="note">
+      <svg class="usage-callout-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+      <div class="usage-callout-body">
+        <span class="usage-callout-label">After you finish · API usage</span>
+        <h4>Check your spend delta</h4>
+        <p>Refresh <a href="https://console.anthropic.com/usage" target="_blank" rel="noopener noreferrer">console.anthropic.com/usage</a>. The difference from your baseline is what this tutorial cost &mdash; the cache-hit run should be dramatically cheaper than the cold-cache run, which is exactly the observation this exercise is built around.</p>
+        <p><strong style="color:var(--text)">In-code tally with cache fields.</strong> Caching splits <code class="inline">input_tokens</code> across three counters &mdash; print all four to see what the cache actually paid for:</p>
+        <div class="codeblock">
+          <div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>u = resp.usage
+print(f"[usage] in={u.input_tokens} cache_read={u.cache_read_input_tokens} cache_create={u.cache_creation_input_tokens} out={u.output_tokens}")</pre>
+        </div>
+      </div>
     </div>
 
     <button class="mark-done" data-tut="8" type="button">
