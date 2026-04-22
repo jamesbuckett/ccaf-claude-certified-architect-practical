@@ -2059,21 +2059,21 @@ pip install "anthropic&gt;=0.40"</pre>
           <span class="codeblock-lang">python · loop.py</span>
           <button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button>
         </div>
-<pre>import anthropic, json, os
+<pre><span class="ccaf-line">import anthropic, json, os</span>
 
-client = anthropic.Anthropic()
-MODEL = "claude-sonnet-4-6"
-MAX_ITERATIONS = 5
+<span class="ccaf-line">client = anthropic.Anthropic()</span>
+<span class="ccaf-line">MODEL = "claude-sonnet-4-6"</span>
+<span class="ccaf-line">MAX_ITERATIONS = 5</span>
 
-tools = [{
-    "name": "get_weather",
-    "description": "Return the current temperature in Celsius for a given city.",
-    "input_schema": {
-        "type": "object",
-        "properties": {"city": {"type": "string"}},
-        "required": ["city"],
-    },
-}]
+<span class="ccaf-line">tools = [{</span>
+<span class="ccaf-line">    "name": "get_weather",</span>
+<span class="ccaf-line">    "description": "Return the current temperature in Celsius for a given city.",</span>
+<span class="ccaf-line">    "input_schema": {</span>
+<span class="ccaf-line">        "type": "object",</span>
+<span class="ccaf-line">        "properties": {"city": {"type": "string"}},</span>
+<span class="ccaf-line">        "required": ["city"],</span>
+<span class="ccaf-line">    },</span>
+<span class="ccaf-line">}]</span>
 
 def run_tool(name, args):
     if name == "get_weather":
@@ -2081,32 +2081,32 @@ def run_tool(name, args):
         return {"temp_c": fake.get(args["city"], 20)}
     raise ValueError(f"unknown tool {name}")
 
-messages = [{"role": "user",
-             "content": "Compare the weather in Paris and Tokyo right now."}]
+<span class="ccaf-line">messages = [{"role": "user",</span>
+<span class="ccaf-line">             "content": "Compare the weather in Paris and Tokyo right now."}]</span>
 
-for turn in range(MAX_ITERATIONS):
-    resp = client.messages.create(
-        model=MODEL, max_tokens=1024, tools=tools, messages=messages
-    )
+<span class="ccaf-line">for turn in range(MAX_ITERATIONS):</span>
+<span class="ccaf-line">    resp = client.messages.create(</span>
+<span class="ccaf-line">        model=MODEL, max_tokens=1024, tools=tools, messages=messages</span>
+<span class="ccaf-line">    )</span>
     print(f"--- turn {turn} · stop_reason={resp.stop_reason} ---")
-    messages.append({"role": "assistant", "content": resp.content})
+<span class="ccaf-line">    messages.append({"role": "assistant", "content": resp.content})</span>
 
-    if resp.stop_reason == "end_turn":
+<span class="ccaf-line">    if resp.stop_reason == "end_turn":</span>
         print("FINAL:", resp.content[-1].text)
-        break
+<span class="ccaf-line">        break</span>
 
-    tool_results = []
-    for block in resp.content:
-        if block.type == "tool_use":
-            result = run_tool(block.name, block.input)
+<span class="ccaf-line">    tool_results = []</span>
+<span class="ccaf-line">    for block in resp.content:</span>
+<span class="ccaf-line">        if block.type == "tool_use":</span>
+<span class="ccaf-line">            result = run_tool(block.name, block.input)</span>
             print(f"  → {block.name}({block.input}) = {result}")
-            tool_results.append({
-                "type": "tool_result",
-                "tool_use_id": block.id,
-                "content": json.dumps(result),
-            })
-    messages.append({"role": "user", "content": tool_results})
-else:
+<span class="ccaf-line">            tool_results.append({</span>
+<span class="ccaf-line">                "type": "tool_result",</span>
+<span class="ccaf-line">                "tool_use_id": block.id,</span>
+<span class="ccaf-line">                "content": json.dumps(result),</span>
+<span class="ccaf-line">            })</span>
+<span class="ccaf-line">    messages.append({"role": "user", "content": tool_results})</span>
+<span class="ccaf-line">else:</span>
     print("!! loop exhausted without end_turn — safety cap hit")</pre>
       </div>
     </div>
@@ -2207,21 +2207,21 @@ content     = [ TextBlock(text='Paris is currently 14 °C while Tokyo
           <p>Inside the <code class="inline">for turn</code> loop, right after the turn-header <code class="inline">print</code>, add one line. The full file now looks like this (the new line is highlighted):</p>
           <div class="codeblock">
             <div class="codeblock-head"><span class="codeblock-lang">python · loop.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>import anthropic, json, os
+<pre><span class="ccaf-line">import anthropic, json, os</span>
 
-client = anthropic.Anthropic()
-MODEL = "claude-sonnet-4-6"
-MAX_ITERATIONS = 5
+<span class="ccaf-line">client = anthropic.Anthropic()</span>
+<span class="ccaf-line">MODEL = "claude-sonnet-4-6"</span>
+<span class="ccaf-line">MAX_ITERATIONS = 5</span>
 
-tools = [{
-    "name": "get_weather",
-    "description": "Return the current temperature in Celsius for a given city.",
-    "input_schema": {
-        "type": "object",
-        "properties": {"city": {"type": "string"}},
-        "required": ["city"],
-    },
-}]
+<span class="ccaf-line">tools = [{</span>
+<span class="ccaf-line">    "name": "get_weather",</span>
+<span class="ccaf-line">    "description": "Return the current temperature in Celsius for a given city.",</span>
+<span class="ccaf-line">    "input_schema": {</span>
+<span class="ccaf-line">        "type": "object",</span>
+<span class="ccaf-line">        "properties": {"city": {"type": "string"}},</span>
+<span class="ccaf-line">        "required": ["city"],</span>
+<span class="ccaf-line">    },</span>
+<span class="ccaf-line">}]</span>
 
 def run_tool(name, args):
     if name == "get_weather":
@@ -2229,33 +2229,33 @@ def run_tool(name, args):
         return {"temp_c": fake.get(args["city"], 20)}
     raise ValueError(f"unknown tool {name}")
 
-messages = [{"role": "user",
-             "content": "Compare the weather in Paris and Tokyo right now."}]
+<span class="ccaf-line">messages = [{"role": "user",</span>
+<span class="ccaf-line">             "content": "Compare the weather in Paris and Tokyo right now."}]</span>
 
-for turn in range(MAX_ITERATIONS):
-    resp = client.messages.create(
-        model=MODEL, max_tokens=1024, tools=tools, messages=messages
-    )
+<span class="ccaf-line">for turn in range(MAX_ITERATIONS):</span>
+<span class="ccaf-line">    resp = client.messages.create(</span>
+<span class="ccaf-line">        model=MODEL, max_tokens=1024, tools=tools, messages=messages</span>
+<span class="ccaf-line">    )</span>
     print(f"--- turn {turn} · stop_reason={resp.stop_reason} ---")
 <span class="added">    print(resp.content[0])   # ← added: inspect first content block</span>
-    messages.append({"role": "assistant", "content": resp.content})
+<span class="ccaf-line">    messages.append({"role": "assistant", "content": resp.content})</span>
 
-    if resp.stop_reason == "end_turn":
+<span class="ccaf-line">    if resp.stop_reason == "end_turn":</span>
         print("FINAL:", resp.content[-1].text)
-        break
+<span class="ccaf-line">        break</span>
 
-    tool_results = []
-    for block in resp.content:
-        if block.type == "tool_use":
-            result = run_tool(block.name, block.input)
+<span class="ccaf-line">    tool_results = []</span>
+<span class="ccaf-line">    for block in resp.content:</span>
+<span class="ccaf-line">        if block.type == "tool_use":</span>
+<span class="ccaf-line">            result = run_tool(block.name, block.input)</span>
             print(f"  → {block.name}({block.input}) = {result}")
-            tool_results.append({
-                "type": "tool_result",
-                "tool_use_id": block.id,
-                "content": json.dumps(result),
-            })
-    messages.append({"role": "user", "content": tool_results})
-else:
+<span class="ccaf-line">            tool_results.append({</span>
+<span class="ccaf-line">                "type": "tool_result",</span>
+<span class="ccaf-line">                "tool_use_id": block.id,</span>
+<span class="ccaf-line">                "content": json.dumps(result),</span>
+<span class="ccaf-line">            })</span>
+<span class="ccaf-line">    messages.append({"role": "user", "content": tool_results})</span>
+<span class="ccaf-line">else:</span>
     print("!! loop exhausted without end_turn — safety cap hit")</pre>
           </div>
           <p>Re-run the script. On turns where <code class="inline">stop_reason=tool_use</code> you'll see a structured block — <code class="inline">ToolUseBlock(id='toolu_…', input={'city': 'Paris'}, name='get_weather', type='tool_use')</code> — and on the final <code class="inline">end_turn</code> turn you'll see a <code class="inline">TextBlock(text='…', type='text')</code> instead.</p>
@@ -2266,21 +2266,21 @@ else:
           <p>Append one line to the <strong>bottom of <code class="inline">loop.py</code></strong>, after the <code class="inline">for/else</code> block. Full file (both instrumentation lines from steps 2 and 3 are highlighted):</p>
           <div class="codeblock">
             <div class="codeblock-head"><span class="codeblock-lang">python · loop.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>import anthropic, json, os
+<pre><span class="ccaf-line">import anthropic, json, os</span>
 
-client = anthropic.Anthropic()
-MODEL = "claude-sonnet-4-6"
-MAX_ITERATIONS = 5
+<span class="ccaf-line">client = anthropic.Anthropic()</span>
+<span class="ccaf-line">MODEL = "claude-sonnet-4-6"</span>
+<span class="ccaf-line">MAX_ITERATIONS = 5</span>
 
-tools = [{
-    "name": "get_weather",
-    "description": "Return the current temperature in Celsius for a given city.",
-    "input_schema": {
-        "type": "object",
-        "properties": {"city": {"type": "string"}},
-        "required": ["city"],
-    },
-}]
+<span class="ccaf-line">tools = [{</span>
+<span class="ccaf-line">    "name": "get_weather",</span>
+<span class="ccaf-line">    "description": "Return the current temperature in Celsius for a given city.",</span>
+<span class="ccaf-line">    "input_schema": {</span>
+<span class="ccaf-line">        "type": "object",</span>
+<span class="ccaf-line">        "properties": {"city": {"type": "string"}},</span>
+<span class="ccaf-line">        "required": ["city"],</span>
+<span class="ccaf-line">    },</span>
+<span class="ccaf-line">}]</span>
 
 def run_tool(name, args):
     if name == "get_weather":
@@ -2288,33 +2288,33 @@ def run_tool(name, args):
         return {"temp_c": fake.get(args["city"], 20)}
     raise ValueError(f"unknown tool {name}")
 
-messages = [{"role": "user",
-             "content": "Compare the weather in Paris and Tokyo right now."}]
+<span class="ccaf-line">messages = [{"role": "user",</span>
+<span class="ccaf-line">             "content": "Compare the weather in Paris and Tokyo right now."}]</span>
 
-for turn in range(MAX_ITERATIONS):
-    resp = client.messages.create(
-        model=MODEL, max_tokens=1024, tools=tools, messages=messages
-    )
+<span class="ccaf-line">for turn in range(MAX_ITERATIONS):</span>
+<span class="ccaf-line">    resp = client.messages.create(</span>
+<span class="ccaf-line">        model=MODEL, max_tokens=1024, tools=tools, messages=messages</span>
+<span class="ccaf-line">    )</span>
     print(f"--- turn {turn} · stop_reason={resp.stop_reason} ---")
 <span class="added">    print(resp.content[0])   # ← added in step 2: inspect first content block</span>
-    messages.append({"role": "assistant", "content": resp.content})
+<span class="ccaf-line">    messages.append({"role": "assistant", "content": resp.content})</span>
 
-    if resp.stop_reason == "end_turn":
+<span class="ccaf-line">    if resp.stop_reason == "end_turn":</span>
         print("FINAL:", resp.content[-1].text)
-        break
+<span class="ccaf-line">        break</span>
 
-    tool_results = []
-    for block in resp.content:
-        if block.type == "tool_use":
-            result = run_tool(block.name, block.input)
+<span class="ccaf-line">    tool_results = []</span>
+<span class="ccaf-line">    for block in resp.content:</span>
+<span class="ccaf-line">        if block.type == "tool_use":</span>
+<span class="ccaf-line">            result = run_tool(block.name, block.input)</span>
             print(f"  → {block.name}({block.input}) = {result}")
-            tool_results.append({
-                "type": "tool_result",
-                "tool_use_id": block.id,
-                "content": json.dumps(result),
-            })
-    messages.append({"role": "user", "content": tool_results})
-else:
+<span class="ccaf-line">            tool_results.append({</span>
+<span class="ccaf-line">                "type": "tool_result",</span>
+<span class="ccaf-line">                "tool_use_id": block.id,</span>
+<span class="ccaf-line">                "content": json.dumps(result),</span>
+<span class="ccaf-line">            })</span>
+<span class="ccaf-line">    messages.append({"role": "user", "content": tool_results})</span>
+<span class="ccaf-line">else:</span>
     print("!! loop exhausted without end_turn — safety cap hit")
 <span class="added">print(json.dumps([{'role': m['role']} for m in messages], indent=2))   # ← added in step 3: trace message roles</span></pre>
           </div>
@@ -2339,21 +2339,21 @@ else:
         <p>Two small edits to <code class="inline">loop.py</code>: lower the iteration cap near the top, and widen the prompt to three cities so the model needs more than one tool-use turn. Full file with both edits highlighted — save over your existing <code class="inline">loop.py</code> to run the exercise:</p>
         <div class="codeblock">
           <div class="codeblock-head"><span class="codeblock-lang">python · loop.py · build-and-break variant</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>import anthropic, json, os
+<pre><span class="ccaf-line">import anthropic, json, os</span>
 
-client = anthropic.Anthropic()
-MODEL = "claude-sonnet-4-6"
-<span class="added">MAX_ITERATIONS = 1          # ← was 5 — deliberately too low</span>
+<span class="ccaf-line">client = anthropic.Anthropic()</span>
+<span class="ccaf-line">MODEL = "claude-sonnet-4-6"</span>
+<span class="ccaf-line"><span class="added">MAX_ITERATIONS = 1          # ← was 5 — deliberately too low</span></span>
 
-tools = [{
-    "name": "get_weather",
-    "description": "Return the current temperature in Celsius for a given city.",
-    "input_schema": {
-        "type": "object",
-        "properties": {"city": {"type": "string"}},
-        "required": ["city"],
-    },
-}]
+<span class="ccaf-line">tools = [{</span>
+<span class="ccaf-line">    "name": "get_weather",</span>
+<span class="ccaf-line">    "description": "Return the current temperature in Celsius for a given city.",</span>
+<span class="ccaf-line">    "input_schema": {</span>
+<span class="ccaf-line">        "type": "object",</span>
+<span class="ccaf-line">        "properties": {"city": {"type": "string"}},</span>
+<span class="ccaf-line">        "required": ["city"],</span>
+<span class="ccaf-line">    },</span>
+<span class="ccaf-line">}]</span>
 
 def run_tool(name, args):
     if name == "get_weather":
@@ -2361,32 +2361,32 @@ def run_tool(name, args):
         return {"temp_c": fake.get(args["city"], 20)}
     raise ValueError(f"unknown tool {name}")
 
-messages = [{"role": "user",
-<span class="added">             "content": "Compare weather in Paris, Tokyo, and Cape Town."}]   # ← was two cities</span>
+<span class="ccaf-line">messages = [{"role": "user",</span>
+<span class="ccaf-line"><span class="added">             "content": "Compare weather in Paris, Tokyo, and Cape Town."}]   # ← was two cities</span></span>
 
-for turn in range(MAX_ITERATIONS):
-    resp = client.messages.create(
-        model=MODEL, max_tokens=1024, tools=tools, messages=messages
-    )
+<span class="ccaf-line">for turn in range(MAX_ITERATIONS):</span>
+<span class="ccaf-line">    resp = client.messages.create(</span>
+<span class="ccaf-line">        model=MODEL, max_tokens=1024, tools=tools, messages=messages</span>
+<span class="ccaf-line">    )</span>
     print(f"--- turn {turn} · stop_reason={resp.stop_reason} ---")
-    messages.append({"role": "assistant", "content": resp.content})
+<span class="ccaf-line">    messages.append({"role": "assistant", "content": resp.content})</span>
 
-    if resp.stop_reason == "end_turn":
+<span class="ccaf-line">    if resp.stop_reason == "end_turn":</span>
         print("FINAL:", resp.content[-1].text)
-        break
+<span class="ccaf-line">        break</span>
 
-    tool_results = []
-    for block in resp.content:
-        if block.type == "tool_use":
-            result = run_tool(block.name, block.input)
+<span class="ccaf-line">    tool_results = []</span>
+<span class="ccaf-line">    for block in resp.content:</span>
+<span class="ccaf-line">        if block.type == "tool_use":</span>
+<span class="ccaf-line">            result = run_tool(block.name, block.input)</span>
             print(f"  → {block.name}({block.input}) = {result}")
-            tool_results.append({
-                "type": "tool_result",
-                "tool_use_id": block.id,
-                "content": json.dumps(result),
-            })
-    messages.append({"role": "user", "content": tool_results})
-else:
+<span class="ccaf-line">            tool_results.append({</span>
+<span class="ccaf-line">                "type": "tool_result",</span>
+<span class="ccaf-line">                "tool_use_id": block.id,</span>
+<span class="ccaf-line">                "content": json.dumps(result),</span>
+<span class="ccaf-line">            })</span>
+<span class="ccaf-line">    messages.append({"role": "user", "content": tool_results})</span>
+<span class="ccaf-line">else:</span>
     print("!! loop exhausted without end_turn — safety cap hit")</pre>
         </div>
         <p><strong>Expected failure:</strong> the loop exits via the <code class="inline">else</code> branch with <code class="inline">!! loop exhausted without end_turn</code>. The model wanted another turn; you cut it off.</p>
