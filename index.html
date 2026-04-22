@@ -2129,7 +2129,7 @@ else:
           <span class="step-title">Turn 0 — "Think". Model requests the Paris tool call.</span>
           <p><code class="inline">client.messages.create(...)</code> is HTTP call #1. The model reads the user prompt plus the tool catalogue, decides it cannot answer directly, and returns:</p>
           <div class="codeblock">
-            <div class="codeblock-head"><span class="codeblock-lang">response</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+            <div class="codeblock-head"><span class="codeblock-lang">response</span><span class="codeblock-badge">CCAF</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>stop_reason = "tool_use"
 content     = [ ToolUseBlock(id='toolu_01A…', name='get_weather',
                              input={'city': 'Paris'}) ]</pre>
@@ -2146,7 +2146,7 @@ content     = [ ToolUseBlock(id='toolu_01A…', name='get_weather',
           <span class="step-title">Turn 2 — "End". Model has both temperatures, composes the answer.</span>
           <p>HTTP call #3. The conversation history now contains both tool results. No tool is needed. The model returns:</p>
           <div class="codeblock">
-            <div class="codeblock-head"><span class="codeblock-lang">response</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+            <div class="codeblock-head"><span class="codeblock-lang">response</span><span class="codeblock-badge">CCAF</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>stop_reason = "end_turn"
 content     = [ TextBlock(text='Paris is currently 14 °C while Tokyo
                                is 22 °C, so Tokyo is 8 °C warmer…') ]</pre>
@@ -2159,7 +2159,7 @@ content     = [ TextBlock(text='Paris is currently 14 °C while Tokyo
       <h4 style="margin-top: var(--s-6); margin-bottom: var(--s-3)">The final <code class="inline">messages</code> ledger</h4>
       <p>When the loop breaks, <code class="inline">messages</code> is a 6-element record of the whole conversation:</p>
       <div class="codeblock">
-        <div class="codeblock-head"><span class="codeblock-lang">messages state</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+        <div class="codeblock-head"><span class="codeblock-lang">messages state</span><span class="codeblock-badge">CCAF</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>[0] user       "Compare the weather in Paris and Tokyo right now."
 [1] assistant  [ToolUseBlock(name='get_weather', input={'city': 'Paris'})]
 [2] user       [tool_result(Paris → {'temp_c': 14})]
