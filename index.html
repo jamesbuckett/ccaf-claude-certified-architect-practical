@@ -1821,10 +1821,11 @@ details.trace-inline > :last-child { padding-bottom: var(--s-4); }
     </div>
 
     <div class="prestart-install">
-      <p style="margin:0 0 var(--s-2)"><strong>One-time install</strong> (~2 minutes) — each tutorial creates its own <code style="font-family:var(--mono);font-size:0.8rem">.venv</code>, so Python packages get installed per tutorial. Only these are truly global:</p>
+      <p style="margin:0 0 var(--s-2)"><strong>One-time install</strong> (~3 minutes) — Python packages install globally with <code style="font-family:var(--mono);font-size:0.8rem">--break-system-packages</code>, so every tutorial just needs a fresh project directory afterwards:</p>
       <div><span style="color:var(--text-faint)"># Ubuntu / Debian (skip on macOS):</span></div>
-      <div>sudo apt update &amp;&amp; sudo apt install -y python3 python3-venv python3-pip</div>
+      <div>sudo apt update &amp;&amp; sudo apt install -y python3 python3-pip</div>
       <div><span style="color:var(--text-faint)"># All platforms:</span></div>
+      <div>sudo pip3 install --break-system-packages "anthropic&gt;=0.40" "mcp&gt;=1.0" jsonschema requests</div>
       <div>sudo npm i -g @anthropic-ai/claude-code</div>
       <div>export ANTHROPIC_API_KEY="sk-ant-…"</div>
     </div>
@@ -1937,23 +1938,14 @@ details.trace-inline > :last-child { padding-bottom: var(--s-4); }
         <h3>Setup</h3>
         <span class="sub-pill">≈ 2 min</span>
       </div>
-      <p class="muted" style="font-size:0.88rem"><strong style="color:var(--text)">Ubuntu / Debian users:</strong> the stdlib <code class="inline">venv</code> module needs a one-time package install — run this once, then skip it for every later tutorial:</p>
-      <div class="codeblock">
-        <div class="codeblock-head">
-          <span class="codeblock-lang">bash · Ubuntu one-time</span>
-          <button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button>
-        </div>
-<pre>sudo apt update &amp;&amp; sudo apt install -y python3 python3-venv python3-pip</pre>
-      </div>
-      <p>Now create the project directory and a fresh virtualenv. On macOS and most Linux distros, <code class="inline">python3</code> is the canonical binary — <code class="inline">python</code> on its own is not reliable across systems.</p>
+      <p>Create the project directory. The <code class="inline">anthropic</code> SDK is already installed globally from the pre-start block — the <code class="inline">pip3</code> line below is a safe no-op if you ran it there, and still works if you're jumping straight into this tutorial. On macOS and most Linux distros, <code class="inline">python3</code> is the canonical binary — <code class="inline">python</code> on its own is not reliable across systems.</p>
       <div class="codeblock">
         <div class="codeblock-head">
           <span class="codeblock-lang">bash</span>
           <button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button>
         </div>
 <pre>mkdir agentic-loop &amp;&amp; cd agentic-loop
-python3 -m venv .venv &amp;&amp; source .venv/bin/activate
-pip install "anthropic&gt;=0.40"</pre>
+sudo pip3 install --break-system-packages "anthropic&gt;=0.40"</pre>
       </div>
       <p>Create <code class="inline">loop.py</code>:</p>
       <div class="codeblock">
@@ -2385,7 +2377,7 @@ else:
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         <h3>Setup</h3>
       </div>
-      <p>Reuse the <code class="inline">.venv</code> from Tutorial 01. Create <code class="inline">orchestrator.py</code>:</p>
+      <p>The <code class="inline">anthropic</code> package is already installed globally from Tutorial 01. Stay in the project directory and create <code class="inline">orchestrator.py</code>:</p>
       <div class="codeblock">
         <div class="codeblock-head"><span class="codeblock-lang">python · orchestrator.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>import anthropic
@@ -2694,8 +2686,7 @@ if __name__ == "__main__":
       <div class="codeblock">
         <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>mkdir mcp-triangle &amp;&amp; cd mcp-triangle
-python3 -m venv .venv &amp;&amp; source .venv/bin/activate
-pip install "mcp&gt;=1.0"</pre>
+sudo pip3 install --break-system-packages "mcp&gt;=1.0"</pre>
       </div>
       <p>Create <code class="inline">server.py</code>:</p>
       <div class="codeblock">
@@ -3584,8 +3575,7 @@ Report findings as a numbered list with file:line references.</pre></div>
       </div>
       <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>mkdir retry-loop &amp;&amp; cd retry-loop
-python3 -m venv .venv &amp;&amp; source .venv/bin/activate
-pip install anthropic jsonschema</pre></div>
+sudo pip3 install --break-system-packages anthropic jsonschema</pre></div>
       <p>Create <code class="inline">extract.py</code>:</p>
       <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python · extract.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>import anthropic, json
@@ -3844,8 +3834,7 @@ data = json.loads(raw)   # this often fails</pre></div>
       </div>
       <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>mkdir cache-demo &amp;&amp; cd cache-demo
-python3 -m venv .venv &amp;&amp; source .venv/bin/activate
-pip install anthropic requests</pre></div>
+sudo pip3 install --break-system-packages anthropic requests</pre></div>
       <p>Fetch a long document with <code class="inline">prep.py</code>:</p>
       <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python · prep.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
 <pre>import requests, pathlib
@@ -4418,22 +4407,6 @@ python3 loop.py</pre>
       <article class="trouble-item">
         <p class="trouble-symptom">
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <span><code>The virtual environment was not created successfully because ensurepip is not available</code></span>
-        </p>
-        <p class="trouble-cause"><strong>Cause.</strong> Ubuntu and Debian ship a minimal Python 3 by default — the stdlib <code class="inline">venv</code> module needs the separate <code class="inline">python3-venv</code> package to actually bootstrap a virtualenv.</p>
-        <div class="trouble-fix">
-          <span class="trouble-fix-label">Fix</span>
-          <div class="codeblock">
-            <div class="codeblock-head"><span class="codeblock-lang">bash · one-time</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>sudo apt update &amp;&amp; sudo apt install -y python3 python3-venv python3-pip</pre>
-          </div>
-          <p>Then re-run the venv step from the tutorial setup.</p>
-        </div>
-      </article>
-
-      <article class="trouble-item">
-        <p class="trouble-symptom">
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           <span><code>python: command not found</code> (Ubuntu)</span>
         </p>
         <p class="trouble-cause"><strong>Cause.</strong> On Ubuntu 20.04+ the binary on PATH is <code class="inline">python3</code>, not <code class="inline">python</code>. This workbook uses <code class="inline">python3</code> throughout for that reason.</p>
@@ -4452,17 +4425,15 @@ python3 loop.py</pre>
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           <span><code>error: externally-managed-environment</code> from <code>pip install</code></span>
         </p>
-        <p class="trouble-cause"><strong>Cause.</strong> Ubuntu 23.04+ and current Homebrew Python enforce <a href="https://peps.python.org/pep-0668/" target="_blank" rel="noopener noreferrer">PEP 668</a> — the system Python refuses global <code class="inline">pip install</code> to protect OS packages. This workbook assumes you install Python packages <em>inside</em> each tutorial's venv, which sidesteps the problem entirely.</p>
+        <p class="trouble-cause"><strong>Cause.</strong> Ubuntu 23.04+ and current Homebrew Python enforce <a href="https://peps.python.org/pep-0668/" target="_blank" rel="noopener noreferrer">PEP 668</a> — the system Python refuses plain <code class="inline">pip install</code> to protect OS packages. This workbook installs packages globally on purpose (one install, every tutorial works), so you override PEP 668 explicitly with <code class="inline">--break-system-packages</code>.</p>
         <div class="trouble-fix">
           <span class="trouble-fix-label">Fix</span>
-          <p>Activate the venv before <code class="inline">pip install</code>:</p>
+          <p>Re-run the install with both <code class="inline">sudo</code> (to write into the system site-packages) and the override flag:</p>
           <div class="codeblock">
             <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>source .venv/bin/activate
-which pip  # should point inside .venv, not /usr/bin/pip
-pip install "anthropic&gt;=0.40"</pre>
+<pre>sudo pip3 install --break-system-packages "anthropic&gt;=0.40"</pre>
           </div>
-          <p>For CLIs you genuinely want globally (like a linter), use <code class="inline">pipx</code> instead of <code class="inline">pip</code>.</p>
+          <p>If you'd rather not touch system packages, install into your user site instead: <code class="inline">pip3 install --user --break-system-packages "anthropic&gt;=0.40"</code>. Either works for this workbook — pick one and stay consistent.</p>
         </div>
       </article>
 
@@ -4471,17 +4442,16 @@ pip install "anthropic&gt;=0.40"</pre>
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           <span><code>ModuleNotFoundError: No module named 'anthropic'</code></span>
         </p>
-        <p class="trouble-cause"><strong>Cause.</strong> You installed the package into a different Python than the one running the script. Nearly always: venv not activated, or you opened a new terminal and forgot to re-activate.</p>
+        <p class="trouble-cause"><strong>Cause.</strong> You installed the package into a different Python than the one running the script. With a global install this usually means either <code class="inline">pip3</code> and <code class="inline">python3</code> point at different interpreters (common with Homebrew + system Python, or pyenv shims), or you installed with <code class="inline">--user</code> into a site the running shell can't see.</p>
         <div class="trouble-fix">
           <span class="trouble-fix-label">Fix</span>
-          <p>Verify which Python and which pip the shell is using — both should live inside <code class="inline">.venv</code>:</p>
+          <p>Check that <code class="inline">python3</code> and the <code class="inline">pip3</code> you installed with agree on the same site-packages:</p>
           <div class="codeblock">
             <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>source .venv/bin/activate
-which python3 pip
+<pre>which python3 pip3
 python3 -c "import anthropic, sys; print(anthropic.__version__, sys.executable)"</pre>
           </div>
-          <p>If <code class="inline">which</code> points to <code class="inline">/usr/bin/</code>, activation didn't run — re-run <code class="inline">source .venv/bin/activate</code> and re-install.</p>
+          <p>If the two binaries live in different prefixes (e.g. <code class="inline">/usr/bin/python3</code> but <code class="inline">/opt/homebrew/bin/pip3</code>), call pip through the running Python instead: <code class="inline">sudo python3 -m pip install --break-system-packages "anthropic&gt;=0.40"</code> — this always installs into the same interpreter that runs your script.</p>
         </div>
       </article>
 
@@ -4575,8 +4545,7 @@ source ~/.bashrc</pre>
           <p>Run the server directly before registering it with Claude Code — any traceback surfaces immediately:</p>
           <div class="codeblock">
             <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>source .venv/bin/activate
-python3 server.py  # Ctrl-C once it reports "ready" or prints a traceback</pre>
+<pre>python3 server.py  # Ctrl-C once it reports "ready" or prints a traceback</pre>
           </div>
           <p>If it says "ready", the server itself is fine — check the Claude Code <code class="inline">mcp.json</code> config path is absolute and the working directory is correct.</p>
         </div>
@@ -4656,13 +4625,14 @@ python3 server.py  # Ctrl-C once it reports "ready" or prints a traceback</pre>
       </table>
     </div>
 
-    <p style="margin-top: var(--s-5)">One-time install — each tutorial creates its own <code class="inline">.venv</code> and installs the Python packages from the table above. Only the system tooling, the Claude Code CLI, and the API key export are genuinely global:</p>
+    <p style="margin-top: var(--s-5)">One-time install — every Python package from the table above goes into the system site-packages with <code class="inline">--break-system-packages</code>, so each tutorial just needs a project directory afterwards. The Claude Code CLI and the API key export are global too:</p>
     <div class="codeblock">
       <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre># Ubuntu / Debian only — skip if you have python3-venv already:
-sudo apt update &amp;&amp; sudo apt install -y python3 python3-venv python3-pip
+<pre># Ubuntu / Debian only — skip on macOS:
+sudo apt update &amp;&amp; sudo apt install -y python3 python3-pip
 
 # All platforms:
+sudo pip3 install --break-system-packages "anthropic&gt;=0.40" "mcp&gt;=1.0" jsonschema requests
 sudo npm i -g @anthropic-ai/claude-code
 export ANTHROPIC_API_KEY="sk-ant-…"</pre>
     </div>
