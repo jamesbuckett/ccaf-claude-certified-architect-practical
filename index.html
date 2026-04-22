@@ -4792,11 +4792,11 @@ python3 -c "import anthropic; [print(m.id) for m in anthropic.Anthropic().models
           <span class="trouble-fix-label">Fix</span>
           <div class="codeblock">
             <div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>tool_results.append({
-    "type": "tool_result",
-    "tool_use_id": block.id,
-    "content": json.dumps(result),   # &lt;- stringify here
-})</pre>
+<pre><span class="ccaf-line">tool_results.append({</span>
+<span class="ccaf-line">    "type": "tool_result",</span>
+<span class="ccaf-line">    "tool_use_id": block.id,</span>
+<span class="ccaf-line">    "content": json.dumps(result),   # &lt;- stringify here</span>
+<span class="ccaf-line">})</span></pre>
           </div>
         </div>
       </article>
@@ -4870,45 +4870,45 @@ Reads ANTHROPIC_API_KEY from the environment, same as every tutorial.
     python3 usage.py --prompt "your text"     # estimate input cost
     python3 usage.py --file prompt.txt        # estimate from a file
 """
-import argparse, anthropic
+<span class="ccaf-line">import argparse, anthropic</span>
 
 # (input $ per 1M tokens, output $ per 1M tokens) &mdash; verify on the
 # Anthropic pricing page before you trust the cost column.
-PRICING = {
-    "claude-sonnet-4-6":         ( 3.00, 15.00),
-    "claude-haiku-4-5-20251001": ( 1.00,  5.00),
-    "claude-opus-4-7":           (15.00, 75.00),
-}
+<span class="ccaf-line">PRICING = {</span>
+<span class="ccaf-line">    "claude-sonnet-4-6":         ( 3.00, 15.00),</span>
+<span class="ccaf-line">    "claude-haiku-4-5-20251001": ( 1.00,  5.00),</span>
+<span class="ccaf-line">    "claude-opus-4-7":           (15.00, 75.00),</span>
+<span class="ccaf-line">}</span>
 
 def estimate(text: str) -&gt; None:
     """Report per-model input tokens + estimated input cost. Free."""
-    client = anthropic.Anthropic()
+<span class="ccaf-line">    client = anthropic.Anthropic()</span>
     header = f"{'model':&lt;30}{'input tokens':&gt;14}{'input $':&gt;12}{'$/1k out':&gt;12}"
     print(header)
     print("-" * len(header))
     for model, (in_p, out_p) in PRICING.items():
-        c = client.messages.count_tokens(
-            model=model,
-            messages=[{"role": "user", "content": text}],
-        )
-        in_cost = c.input_tokens / 1_000_000 * in_p
-        print(f"{model:&lt;30}{c.input_tokens:&gt;14,}{'$' + format(in_cost, '.5f'):&gt;12}{'$' + format(out_p/1000, '.5f'):&gt;12}")
+<span class="ccaf-line">        c = client.messages.count_tokens(</span>
+<span class="ccaf-line">            model=model,</span>
+<span class="ccaf-line">            messages=[{"role": "user", "content": text}],</span>
+<span class="ccaf-line">        )</span>
+<span class="ccaf-line">        in_cost = c.input_tokens / 1_000_000 * in_p</span>
+<span class="ccaf-line">        print(f"{model:&lt;30}{c.input_tokens:&gt;14,}{'$' + format(in_cost, '.5f'):&gt;12}{'$' + format(out_p/1000, '.5f'):&gt;12}")</span>
 
 def smoke_test() -&gt; None:
     """Make one tiny real call so you see live .usage fields."""
-    client = anthropic.Anthropic()
-    resp = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=8,
-        messages=[{"role": "user", "content": "Say exactly: OK"}],
-    )
-    u = resp.usage
+<span class="ccaf-line">    client = anthropic.Anthropic()</span>
+<span class="ccaf-line">    resp = client.messages.create(</span>
+<span class="ccaf-line">        model="claude-sonnet-4-6",</span>
+<span class="ccaf-line">        max_tokens=8,</span>
+<span class="ccaf-line">        messages=[{"role": "user", "content": "Say exactly: OK"}],</span>
+<span class="ccaf-line">    )</span>
+<span class="ccaf-line">    u = resp.usage</span>
     in_p, out_p = PRICING["claude-sonnet-4-6"]
-    cost = u.input_tokens / 1_000_000 * in_p + u.output_tokens / 1_000_000 * out_p
-    print(f"[ok] API key works &mdash; model={resp.model}")
-    print(f"     response={resp.content[0].text!r}")
-    print(f"     usage: input={u.input_tokens} output={u.output_tokens}")
-    print(f"            cache_read={u.cache_read_input_tokens or 0} cache_create={u.cache_creation_input_tokens or 0}")
+<span class="ccaf-line">    cost = u.input_tokens / 1_000_000 * in_p + u.output_tokens / 1_000_000 * out_p</span>
+<span class="ccaf-line">    print(f"[ok] API key works &mdash; model={resp.model}")</span>
+<span class="ccaf-line">    print(f"     response={resp.content[0].text!r}")</span>
+<span class="ccaf-line">    print(f"     usage: input={u.input_tokens} output={u.output_tokens}")</span>
+<span class="ccaf-line">    print(f"            cache_read={u.cache_read_input_tokens or 0} cache_create={u.cache_creation_input_tokens or 0}")</span>
     print(f"     cost=${cost:.6f}")
 
 def main() -&gt; None:
