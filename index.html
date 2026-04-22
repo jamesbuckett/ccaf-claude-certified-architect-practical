@@ -1244,6 +1244,117 @@ footer.site-foot {
 .usage-callout .codeblock { margin-top: var(--s-3); }
 
 /* ============================================================
+   CONCEPT DIAGRAMS (per-tutorial visual aids)
+   ============================================================ */
+.concept-diagram {
+  margin: var(--s-5) 0 var(--s-6);
+  padding: var(--s-5) var(--s-5) var(--s-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.concept-diagram-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  margin-bottom: var(--s-4);
+  padding-bottom: var(--s-3);
+  border-bottom: 1px dashed var(--border);
+}
+.concept-diagram-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+.concept-diagram-label::before {
+  content: "";
+  display: inline-block;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+}
+.concept-diagram-title {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+.concept-diagram-svg-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+.concept-diagram svg.concept-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-width: 520px;
+  max-width: 100%;
+}
+.concept-diagram-caption {
+  margin-top: var(--s-3);
+  padding-top: var(--s-3);
+  border-top: 1px dashed var(--border);
+  font-size: 0.84rem;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+.concept-diagram-caption code {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  background: var(--surface-2);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: var(--text);
+}
+.concept-diagram-legend {
+  display: flex; flex-wrap: wrap; gap: var(--s-4);
+  margin-top: var(--s-3);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+.concept-diagram-legend span {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+}
+.concept-diagram-legend i {
+  width: 12px; height: 12px; border-radius: 2px;
+  display: inline-block; flex-shrink: 0;
+  border: 1px solid var(--border-strong);
+}
+/* SVG styling hooks — themed via CSS variables for light/dark */
+.concept-svg .d-box      { fill: var(--surface);    stroke: var(--border-strong); stroke-width: 1.4; }
+.concept-svg .d-box-2    { fill: var(--surface-2);  stroke: var(--border-strong); stroke-width: 1.4; }
+.concept-svg .d-box-ac   { fill: var(--accent-soft);stroke: var(--accent);        stroke-width: 1.4; }
+.concept-svg .d-box-ok   { fill: color-mix(in srgb, var(--ok) 10%, var(--surface)); stroke: var(--ok); stroke-width: 1.4; }
+.concept-svg .d-box-bad  { fill: color-mix(in srgb, var(--bad) 10%, var(--surface)); stroke: var(--bad); stroke-width: 1.4; }
+.concept-svg .d-box-ind  { fill: color-mix(in srgb, var(--ccaf-stripe) 10%, var(--surface)); stroke: var(--ccaf-stripe); stroke-width: 1.4; }
+.concept-svg .d-edge     { stroke: var(--border-strong); stroke-width: 1.4; fill: none; }
+.concept-svg .d-edge-ac  { stroke: var(--accent);        stroke-width: 1.6; fill: none; }
+.concept-svg .d-edge-dash{ stroke: var(--text-faint); stroke-width: 1.2; stroke-dasharray: 4 4; fill: none; }
+.concept-svg .d-edge-ok  { stroke: var(--ok);  stroke-width: 1.6; fill: none; }
+.concept-svg .d-edge-bad { stroke: var(--bad); stroke-width: 1.6; fill: none; }
+.concept-svg .d-fill-ac  { fill: var(--accent); }
+.concept-svg .d-fill-dim { fill: var(--text-dim); }
+.concept-svg .d-fill-ok  { fill: var(--ok); }
+.concept-svg .d-fill-bad { fill: var(--bad); }
+.concept-svg .d-fill-ind { fill: var(--ccaf-stripe); }
+.concept-svg text { font-family: var(--sans); fill: var(--text); }
+.concept-svg .d-t      { font-size: 13px; font-weight: 600; }
+.concept-svg .d-t-sm   { font-size: 11px; font-weight: 500; fill: var(--text-dim); }
+.concept-svg .d-t-xs   { font-size: 10px; font-weight: 500; fill: var(--text-faint); letter-spacing: 0.08em; text-transform: uppercase; }
+.concept-svg .d-mono   { font-family: var(--mono); font-size: 11px; fill: var(--text-dim); }
+.concept-svg .d-mono-ac{ font-family: var(--mono); font-size: 11px; fill: var(--accent); font-weight: 600; }
+.concept-svg .d-divider{ stroke: var(--border); stroke-width: 1; stroke-dasharray: 2 3; }
+.concept-svg .d-arrow  { fill: var(--border-strong); }
+.concept-svg .d-arrow-ac{ fill: var(--accent); }
+.concept-svg .d-arrow-ok{ fill: var(--ok); }
+.concept-svg .d-arrow-bad{ fill: var(--bad); }
+
+/* ============================================================
    FAQ
    ============================================================ */
 .faq-list {
@@ -1995,6 +2106,73 @@ source .venv/bin/activate     # re-enter, no re-install needed</pre>
       </div>
     </div>
 
+    <div class="concept-diagram" aria-label="Agentic loop diagram">
+      <div class="concept-diagram-head">
+        <span class="concept-diagram-label">Concept diagram</span>
+        <span class="concept-diagram-title">think / act / observe cycle</span>
+      </div>
+      <div class="concept-diagram-svg-wrap">
+        <svg class="concept-svg" viewBox="0 0 720 320" role="img" aria-labelledby="t1-dia-title t1-dia-desc">
+          <title id="t1-dia-title">Agentic loop: user prompt enters a think / act / observe cycle, exits on stop_reason=end_turn or the MAX_ITERATIONS guard.</title>
+          <desc id="t1-dia-desc">A user prompt feeds the THINK node. When stop_reason is tool_use, ACT runs the tool, OBSERVE appends the result to messages, and control returns to THINK. When stop_reason is end_turn, THINK exits to the Final answer.</desc>
+          <defs>
+            <marker id="t1-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" class="d-arrow"/>
+            </marker>
+            <marker id="t1-arr-ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" class="d-arrow-ac"/>
+            </marker>
+            <marker id="t1-arr-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" class="d-arrow-ok"/>
+            </marker>
+          </defs>
+
+          <rect x="136" y="10" width="432" height="280" rx="10" class="d-edge-dash"/>
+          <text x="148" y="28" class="d-t-xs">MAX_ITERATIONS · runaway guard</text>
+
+          <rect x="12" y="134" width="100" height="56" rx="4" class="d-box-2"/>
+          <text x="62" y="160" text-anchor="middle" class="d-t">User</text>
+          <text x="62" y="176" text-anchor="middle" class="d-t-sm">prompt</text>
+
+          <rect x="280" y="38" width="160" height="70" rx="4" class="d-box-ac"/>
+          <text x="360" y="64" text-anchor="middle" class="d-t">THINK</text>
+          <text x="360" y="82" text-anchor="middle" class="d-mono-ac">messages.create()</text>
+          <text x="360" y="98" text-anchor="middle" class="d-t-sm">returns stop_reason</text>
+
+          <rect x="170" y="190" width="140" height="70" rx="4" class="d-box"/>
+          <text x="240" y="216" text-anchor="middle" class="d-t">ACT</text>
+          <text x="240" y="234" text-anchor="middle" class="d-mono">run_tool(name, args)</text>
+          <text x="240" y="250" text-anchor="middle" class="d-t-sm">your side</text>
+
+          <rect x="410" y="190" width="160" height="70" rx="4" class="d-box"/>
+          <text x="490" y="216" text-anchor="middle" class="d-t">OBSERVE</text>
+          <text x="490" y="234" text-anchor="middle" class="d-mono">tool_result block</text>
+          <text x="490" y="250" text-anchor="middle" class="d-t-sm">append to messages</text>
+
+          <rect x="588" y="38" width="120" height="70" rx="4" class="d-box-ok"/>
+          <text x="648" y="64" text-anchor="middle" class="d-t">Final</text>
+          <text x="648" y="82" text-anchor="middle" class="d-t">answer</text>
+          <text x="648" y="100" text-anchor="middle" class="d-t-sm">break</text>
+
+          <path d="M112,162 C190,140 230,110 280,84" class="d-edge" marker-end="url(#t1-arr)"/>
+          <text x="188" y="108" class="d-mono" text-anchor="middle">user turn</text>
+
+          <path d="M330,108 C300,140 275,170 255,190" class="d-edge-ac" marker-end="url(#t1-arr-ac)"/>
+          <text x="252" y="150" class="d-mono-ac" text-anchor="end">stop = tool_use</text>
+
+          <path d="M310,225 L402,225" class="d-edge" marker-end="url(#t1-arr)"/>
+          <text x="356" y="218" text-anchor="middle" class="d-mono">invoke</text>
+
+          <path d="M462,190 C434,168 412,140 392,108" class="d-edge" marker-end="url(#t1-arr)"/>
+          <text x="478" y="150" class="d-mono" text-anchor="start">tool_result</text>
+
+          <path d="M440,72 L580,72" class="d-edge-ok" marker-end="url(#t1-arr-ok)"/>
+          <text x="510" y="64" text-anchor="middle" class="d-mono" style="fill: var(--ok); font-weight: 600;">stop = end_turn</text>
+        </svg>
+      </div>
+      <p class="concept-diagram-caption">Each turn is one <code>client.messages.create()</code> call. The <code>stop_reason</code> is the gate — <code>tool_use</code> sends you back around the loop, <code>end_turn</code> exits. The outer <code>MAX_ITERATIONS</code> bound is your last-resort seatbelt against runaway spend.</p>
+    </div>
+
     <div class="tut-meta">
       <div class="tut-meta-block">
         <div class="tut-meta-label">Prerequisites</div>
@@ -2471,6 +2649,74 @@ def run_tool(name, args):
       </div>
     </div>
 
+    <div class="concept-diagram" aria-label="Hub and spoke orchestration diagram">
+      <div class="concept-diagram-head">
+        <span class="concept-diagram-label">Concept diagram</span>
+        <span class="concept-diagram-title">orchestrator + isolated sub-agent contexts</span>
+      </div>
+      <div class="concept-diagram-svg-wrap">
+        <svg class="concept-svg" viewBox="0 0 720 340" role="img" aria-labelledby="t2-dia-title t2-dia-desc">
+          <title id="t2-dia-title">Hub-and-spoke: the orchestrator dispatches tasks to sub-agents in isolated context windows and receives summaries back.</title>
+          <desc id="t2-dia-desc">A central orchestrator holds the full plan. Three sub-agents, each with its own isolated context window, receive task strings and return summaries (not full transcripts). There are no edges between sub-agents.</desc>
+          <defs>
+            <marker id="t2-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" class="d-arrow"/>
+            </marker>
+            <marker id="t2-arr-ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" class="d-arrow-ac"/>
+            </marker>
+            <marker id="t2-arr-bad" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" class="d-arrow-bad"/>
+            </marker>
+          </defs>
+
+          <rect x="20" y="120" width="210" height="104" rx="4" class="d-box-ac"/>
+          <text x="125" y="146" text-anchor="middle" class="d-t">Orchestrator</text>
+          <text x="125" y="164" text-anchor="middle" class="d-mono-ac">plan · routing · stitch</text>
+          <rect x="36" y="178" width="178" height="12" rx="2" fill="var(--accent)" opacity="0.22"/>
+          <rect x="36" y="178" width="178" height="12" rx="2" fill="none" stroke="var(--accent)" stroke-width="1"/>
+          <text x="125" y="208" text-anchor="middle" class="d-t-sm">holds the full history</text>
+
+          <rect x="420" y="14" width="286" height="82" rx="4" class="d-box-ind"/>
+          <text x="432" y="34" class="d-t-xs">sub-agent · isolated context</text>
+          <text x="563" y="58" text-anchor="middle" class="d-t">news-searcher</text>
+          <rect x="436" y="70" width="254" height="10" rx="2" fill="var(--ccaf-stripe)" opacity="0.18"/>
+          <rect x="436" y="70" width="42" height="10" rx="2" fill="var(--ccaf-stripe)" opacity="0.55"/>
+
+          <rect x="420" y="128" width="286" height="82" rx="4" class="d-box-ind"/>
+          <text x="432" y="148" class="d-t-xs">sub-agent · isolated context</text>
+          <text x="563" y="172" text-anchor="middle" class="d-t">pdf-summarizer</text>
+          <rect x="436" y="184" width="254" height="10" rx="2" fill="var(--ccaf-stripe)" opacity="0.18"/>
+          <rect x="436" y="184" width="62" height="10" rx="2" fill="var(--ccaf-stripe)" opacity="0.55"/>
+
+          <rect x="420" y="242" width="286" height="82" rx="4" class="d-box-ind"/>
+          <text x="432" y="262" class="d-t-xs">sub-agent · isolated context</text>
+          <text x="563" y="286" text-anchor="middle" class="d-t">table-extractor</text>
+          <rect x="436" y="298" width="254" height="10" rx="2" fill="var(--ccaf-stripe)" opacity="0.18"/>
+          <rect x="436" y="298" width="30" height="10" rx="2" fill="var(--ccaf-stripe)" opacity="0.55"/>
+
+          <path d="M232,148 C310,90 360,64 418,52" class="d-edge-ac" marker-end="url(#t2-arr-ac)"/>
+          <text x="322" y="86" text-anchor="middle" class="d-mono-ac">task</text>
+          <path d="M418,74 C360,108 310,140 232,162" class="d-edge" marker-end="url(#t2-arr)"/>
+          <text x="322" y="134" text-anchor="middle" class="d-mono">summary</text>
+
+          <path d="M232,172 L418,170" class="d-edge-ac" marker-end="url(#t2-arr-ac)"/>
+          <path d="M418,184 L232,186" class="d-edge" marker-end="url(#t2-arr)"/>
+
+          <path d="M232,194 C310,250 360,278 418,290" class="d-edge-ac" marker-end="url(#t2-arr-ac)"/>
+          <path d="M418,264 C360,234 310,210 232,208" class="d-edge" marker-end="url(#t2-arr)"/>
+
+          <path d="M455,96 L495,128" class="d-edge-bad" stroke-dasharray="4 4" marker-end="url(#t2-arr-bad)"/>
+          <g transform="translate(468, 108)">
+            <circle r="11" fill="var(--bg)" stroke="var(--bad)" stroke-width="1.4"/>
+            <path d="M-4,-4 L4,4 M-4,4 L4,-4" stroke="var(--bad)" stroke-width="1.6" stroke-linecap="round"/>
+          </g>
+          <text x="504" y="118" class="d-mono" style="fill: var(--bad); font-weight: 600;">no worker-to-worker edges</text>
+        </svg>
+      </div>
+      <p class="concept-diagram-caption">The orchestrator sees everything; each sub-agent sees only the slice it was given. Sub-agents return <strong>summaries, not transcripts</strong> — that's how the hub's context stays bounded. Direct edges between workers break the pattern and reintroduce the context-bloat problem hub-and-spoke was built to solve.</p>
+    </div>
+
     <div class="tut-meta">
       <div class="tut-meta-block">
         <div class="tut-meta-label">Prerequisites</div>
@@ -2798,6 +3044,72 @@ if __name__ == "__main__":
       </div>
     </div>
 
+    <div class="concept-diagram" aria-label="MCP architecture diagram">
+      <div class="concept-diagram-head">
+        <span class="concept-diagram-label">Concept diagram</span>
+        <span class="concept-diagram-title">host · protocol · server with the three primitives</span>
+      </div>
+      <div class="concept-diagram-svg-wrap">
+        <svg class="concept-svg" viewBox="0 0 720 340" role="img" aria-labelledby="t3-dia-title t3-dia-desc">
+          <title id="t3-dia-title">MCP architecture: an LLM host speaks JSON-RPC to an MCP server that exposes Tools, Resources, and Prompts.</title>
+          <desc id="t3-dia-desc">The host (Claude Code or Claude Desktop) connects via JSON-RPC over stdio or HTTP to an MCP server that exposes three primitives: Tools (callable), Resources (readable), and Prompts (templates).</desc>
+          <defs>
+            <marker id="t3-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" class="d-arrow"/>
+            </marker>
+            <marker id="t3-arr-ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" class="d-arrow-ac"/>
+            </marker>
+          </defs>
+
+          <rect x="20" y="90" width="210" height="160" rx="4" class="d-box-ac"/>
+          <text x="125" y="116" text-anchor="middle" class="d-t">Host</text>
+          <text x="125" y="134" text-anchor="middle" class="d-t-sm">LLM application</text>
+          <rect x="36" y="150" width="178" height="34" rx="3" class="d-box"/>
+          <text x="125" y="172" text-anchor="middle" class="d-mono">Claude Code</text>
+          <rect x="36" y="192" width="178" height="34" rx="3" class="d-box"/>
+          <text x="125" y="214" text-anchor="middle" class="d-mono">Claude Desktop</text>
+          <text x="125" y="244" text-anchor="middle" class="d-t-xs">MCP client inside</text>
+
+          <rect x="276" y="148" width="168" height="44" rx="22" class="d-box-2"/>
+          <text x="360" y="170" text-anchor="middle" class="d-mono" style="fill: var(--text); font-weight: 600;">JSON-RPC 2.0</text>
+          <text x="360" y="184" text-anchor="middle" class="d-t-xs">stdio · HTTP · SSE</text>
+
+          <path d="M230,156 L276,156" class="d-edge-ac" marker-end="url(#t3-arr-ac)"/>
+          <path d="M276,184 L230,184" class="d-edge" marker-end="url(#t3-arr)"/>
+          <text x="252" y="150" text-anchor="middle" class="d-t-xs">request</text>
+          <text x="252" y="204" text-anchor="middle" class="d-t-xs">response</text>
+
+          <rect x="476" y="16" width="228" height="312" rx="4" class="d-box-2"/>
+          <rect x="476" y="16" width="228" height="28" rx="4" fill="var(--accent)" opacity="0.14"/>
+          <text x="590" y="35" text-anchor="middle" class="d-t" style="fill: var(--accent);">MCP Server</text>
+
+          <rect x="490" y="58" width="200" height="78" rx="4" class="d-box"/>
+          <text x="502" y="78" class="d-t-xs" style="fill: var(--accent); letter-spacing: 0.14em;">TOOLS · model-controlled</text>
+          <text x="502" y="100" class="d-t">callable functions</text>
+          <text x="502" y="118" class="d-mono">search · write_file · sql</text>
+          <text x="502" y="132" class="d-t-sm">side-effects, actions</text>
+
+          <rect x="490" y="150" width="200" height="78" rx="4" class="d-box"/>
+          <text x="502" y="170" class="d-t-xs" style="fill: var(--accent); letter-spacing: 0.14em;">RESOURCES · app-controlled</text>
+          <text x="502" y="192" class="d-t">readable data</text>
+          <text x="502" y="210" class="d-mono">file://logs · repo://readme</text>
+          <text x="502" y="224" class="d-t-sm">pulled by URI</text>
+
+          <rect x="490" y="242" width="200" height="78" rx="4" class="d-box"/>
+          <text x="502" y="262" class="d-t-xs" style="fill: var(--accent); letter-spacing: 0.14em;">PROMPTS · user-controlled</text>
+          <text x="502" y="284" class="d-t">reusable templates</text>
+          <text x="502" y="302" class="d-mono">/summarize · /triage</text>
+          <text x="502" y="316" class="d-t-sm">invoked by slash</text>
+
+          <path d="M444,97 L490,97" class="d-edge" marker-end="url(#t3-arr)"/>
+          <path d="M444,189 L490,189" class="d-edge" marker-end="url(#t3-arr)"/>
+          <path d="M444,281 L490,281" class="d-edge" marker-end="url(#t3-arr)"/>
+        </svg>
+      </div>
+      <p class="concept-diagram-caption">Three primitives, three control surfaces. <strong style="color: var(--accent);">Tools</strong> are model-controlled — the LLM decides when to invoke. <strong style="color: var(--accent);">Resources</strong> are app-controlled — the host pulls them by URI. <strong style="color: var(--accent);">Prompts</strong> are user-controlled — surfaced as slash commands. Mixing up who controls what is Domain 2's most common exam trap.</p>
+    </div>
+
     <div class="tut-meta">
       <div class="tut-meta-block">
         <div class="tut-meta-label">Prerequisites</div>
@@ -3056,6 +3368,79 @@ if __name__ == "__main__":
       </div>
     </div>
 
+    <div class="concept-diagram" aria-label="Tool description discipline diagram">
+      <div class="concept-diagram-head">
+        <span class="concept-diagram-label">Concept diagram</span>
+        <span class="concept-diagram-title">vague vs. disciplined descriptions · same prompt, different pick</span>
+      </div>
+      <div class="concept-diagram-svg-wrap">
+        <svg class="concept-svg" viewBox="0 0 720 360" role="img" aria-labelledby="t4-dia-title t4-dia-desc">
+          <title id="t4-dia-title">Vague tool descriptions cause wrong tool selection; disciplined descriptions cause correct selection.</title>
+          <desc id="t4-dia-desc">Left: two tools with one-word descriptions cause the model to pick the wrong tool. Right: same two tools with trigger-words, contexts, and non-examples cause the model to pick the right one.</desc>
+          <defs>
+            <marker id="t4-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" class="d-arrow"/>
+            </marker>
+            <marker id="t4-arr-bad" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" class="d-arrow-bad"/>
+            </marker>
+            <marker id="t4-arr-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" class="d-arrow-ok"/>
+            </marker>
+          </defs>
+
+          <rect x="210" y="8" width="300" height="44" rx="22" class="d-box-2"/>
+          <text x="360" y="29" text-anchor="middle" class="d-t-xs">SAME USER PROMPT</text>
+          <text x="360" y="45" text-anchor="middle" class="d-mono">"Find what to wear in Paris today."</text>
+
+          <rect x="10" y="70" width="346" height="284" rx="4" class="d-box-bad"/>
+          <text x="24" y="90" class="d-t-xs" style="fill: var(--bad); letter-spacing: 0.14em;">BEFORE · vague descriptions</text>
+
+          <rect x="24" y="104" width="318" height="62" rx="4" class="d-box"/>
+          <text x="36" y="124" class="d-mono" style="fill: var(--text); font-weight: 600;">search</text>
+          <text x="36" y="142" class="d-mono">"Search."</text>
+          <text x="36" y="158" class="d-t-xs">no trigger-words · no scope · no non-examples</text>
+
+          <rect x="24" y="172" width="318" height="62" rx="4" class="d-box"/>
+          <text x="36" y="192" class="d-mono" style="fill: var(--text); font-weight: 600;">get_weather</text>
+          <text x="36" y="210" class="d-mono">"Weather."</text>
+          <text x="36" y="226" class="d-t-xs">model cannot tell this handles "wear" semantics</text>
+
+          <path d="M183,236 L183,276" class="d-edge-bad" marker-end="url(#t4-arr-bad)"/>
+          <rect x="24" y="284" width="318" height="58" rx="4" class="d-box-bad"/>
+          <text x="40" y="306" class="d-t" style="fill: var(--bad);">Model picks: search()</text>
+          <g transform="translate(320, 304)">
+            <circle r="12" fill="var(--bg)" stroke="var(--bad)" stroke-width="1.6"/>
+            <path d="M-5,-5 L5,5 M-5,5 L5,-5" stroke="var(--bad)" stroke-width="1.8" stroke-linecap="round"/>
+          </g>
+          <text x="40" y="326" class="d-t-sm">burns a round-trip, returns unrelated results</text>
+
+          <rect x="364" y="70" width="346" height="284" rx="4" class="d-box-ok"/>
+          <text x="378" y="90" class="d-t-xs" style="fill: var(--ok); letter-spacing: 0.14em;">AFTER · disciplined descriptions</text>
+
+          <rect x="378" y="104" width="318" height="62" rx="4" class="d-box"/>
+          <text x="390" y="124" class="d-mono" style="fill: var(--text); font-weight: 600;">search</text>
+          <text x="390" y="142" class="d-mono">"Web search for news &amp; docs …"</text>
+          <text x="390" y="158" class="d-t-xs">NOT for weather, prices, or local data</text>
+
+          <rect x="378" y="172" width="318" height="62" rx="4" class="d-box"/>
+          <text x="390" y="192" class="d-mono" style="fill: var(--text); font-weight: 600;">get_weather</text>
+          <text x="390" y="210" class="d-mono">"Temp °C + conditions for a city …"</text>
+          <text x="390" y="226" class="d-t-xs">triggers: weather, temperature, what to wear</text>
+
+          <path d="M537,236 L537,276" class="d-edge-ok" marker-end="url(#t4-arr-ok)"/>
+          <rect x="378" y="284" width="318" height="58" rx="4" class="d-box-ok"/>
+          <text x="394" y="306" class="d-t" style="fill: var(--ok);">Model picks: get_weather()</text>
+          <g transform="translate(674, 304)">
+            <circle r="12" fill="var(--bg)" stroke="var(--ok)" stroke-width="1.6"/>
+            <path d="M-5,0 L-1,4 L5,-4" stroke="var(--ok)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+          </g>
+          <text x="394" y="326" class="d-t-sm">one call, right semantics, exits fast</text>
+        </svg>
+      </div>
+      <p class="concept-diagram-caption">A tool description is a <strong>contract with the router</strong>. The model picks by semantic match, not by function name. Include trigger-words, scope boundaries, and explicit non-examples — e.g. <code>"NOT for weather"</code> — or an adjacent tool will swallow the call.</p>
+    </div>
+
     <div class="tut-meta">
       <div class="tut-meta-block">
         <div class="tut-meta-label">Prerequisites</div>
@@ -3306,6 +3691,81 @@ run(PRECISE, test_prompts, "PRECISE tool description")</pre>
       </div>
     </div>
 
+    <div class="concept-diagram" aria-label="CLAUDE.md hierarchy diagram">
+      <div class="concept-diagram-head">
+        <span class="concept-diagram-label">Concept diagram</span>
+        <span class="concept-diagram-title">three-layer merge · deepest wins</span>
+      </div>
+      <div class="concept-diagram-svg-wrap">
+        <svg class="concept-svg" viewBox="0 0 720 340" role="img" aria-labelledby="t5-dia-title t5-dia-desc">
+          <title id="t5-dia-title">CLAUDE.md hierarchy: user global, project, and nested files merge with precedence from top to bottom.</title>
+          <desc id="t5-dia-desc">Three layers of CLAUDE.md stack: the user global file applies everywhere, the project file applies in the repo, and nested files apply within subdirectories. The deepest file wins on conflicts. All three merge into the effective session context.</desc>
+          <defs>
+            <marker id="t5-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" class="d-arrow"/>
+            </marker>
+            <marker id="t5-arr-ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" class="d-arrow-ac"/>
+            </marker>
+          </defs>
+
+          <rect x="20" y="24" width="340" height="80" rx="4" class="d-box"/>
+          <text x="34" y="44" class="d-t-xs">LAYER 1 · user global</text>
+          <text x="34" y="66" class="d-mono" style="fill: var(--text); font-weight: 600;">~/.claude/CLAUDE.md</text>
+          <text x="34" y="84" class="d-t-sm">applies to every project on this machine</text>
+          <text x="34" y="98" class="d-mono">e.g. "prefer pytest · tabs 2"</text>
+
+          <rect x="20" y="120" width="340" height="80" rx="4" class="d-box-2"/>
+          <text x="34" y="140" class="d-t-xs">LAYER 2 · project</text>
+          <text x="34" y="162" class="d-mono" style="fill: var(--text); font-weight: 600;">&lt;repo&gt;/CLAUDE.md</text>
+          <text x="34" y="180" class="d-t-sm">applies when cwd is inside the repo</text>
+          <text x="34" y="194" class="d-mono">e.g. "output ONE html file"</text>
+
+          <rect x="20" y="216" width="340" height="80" rx="4" class="d-box-ac"/>
+          <text x="34" y="236" class="d-t-xs" style="fill: var(--accent);">LAYER 3 · nested · highest precedence</text>
+          <text x="34" y="258" class="d-mono-ac">&lt;repo&gt;/src/api/CLAUDE.md</text>
+          <text x="34" y="276" class="d-t-sm">applies when cwd is inside src/api/</text>
+          <text x="34" y="290" class="d-mono">e.g. "FastAPI · return Pydantic"</text>
+
+          <path d="M4,24 L4,296" class="d-edge" stroke-dasharray="3 3"/>
+          <text x="10" y="20" class="d-t-xs">BROAD</text>
+          <text x="10" y="316" class="d-t-xs" style="fill: var(--accent);">NARROW</text>
+
+          <g transform="translate(-6, 24)">
+            <path d="M0,0 L0,272" class="d-edge-ac"/>
+            <path d="M-4,268 L0,276 L4,268 z" class="d-arrow-ac"/>
+          </g>
+          <text x="-14" y="160" class="d-t-xs" transform="rotate(-90 -14 160)" text-anchor="middle" style="fill: var(--accent);">deepest wins</text>
+
+          <path d="M364,64 C398,64 412,168 440,168" class="d-edge" marker-end="url(#t5-arr)"/>
+          <path d="M364,160 L440,168" class="d-edge" marker-end="url(#t5-arr)"/>
+          <path d="M364,256 C398,256 412,170 440,168" class="d-edge-ac" marker-end="url(#t5-arr-ac)"/>
+
+          <rect x="440" y="36" width="264" height="264" rx="4" class="d-box"/>
+          <rect x="440" y="36" width="264" height="28" rx="4" fill="var(--accent)" opacity="0.14"/>
+          <text x="572" y="56" text-anchor="middle" class="d-t" style="fill: var(--accent);">Effective session context</text>
+
+          <rect x="452" y="78" width="240" height="38" rx="3" class="d-box-2"/>
+          <text x="462" y="96" class="d-mono">pytest, tabs 2</text>
+          <text x="462" y="110" class="d-t-xs">from user global</text>
+
+          <rect x="452" y="124" width="240" height="38" rx="3" class="d-box-2"/>
+          <text x="462" y="142" class="d-mono">output ONE html file</text>
+          <text x="462" y="156" class="d-t-xs">from project (overrides none above)</text>
+
+          <rect x="452" y="170" width="240" height="38" rx="3" class="d-box-ac"/>
+          <text x="462" y="188" class="d-mono-ac">FastAPI · return Pydantic</text>
+          <text x="462" y="202" class="d-t-xs" style="fill: var(--accent);">from nested (overrides parent)</text>
+
+          <rect x="452" y="224" width="240" height="60" rx="3" class="d-box-ok"/>
+          <text x="462" y="244" class="d-t-xs" style="fill: var(--ok); letter-spacing: 0.14em;">CONFLICT RESOLUTION</text>
+          <text x="462" y="262" class="d-t-sm">if global says "Flask" and</text>
+          <text x="462" y="276" class="d-t-sm">nested says "FastAPI" → <tspan style="fill: var(--accent); font-weight: 600;">FastAPI wins</tspan></text>
+        </svg>
+      </div>
+      <p class="concept-diagram-caption">Claude Code loads all applicable <code>CLAUDE.md</code> files on start-up and merges them. Scope narrows as you descend — global affects every project, project affects the repo, nested affects a subfolder. On conflicts, <strong>the deepest file wins</strong>. Use user global for personal style, project for repo invariants, nested for per-directory overrides.</p>
+    </div>
+
     <div class="tut-meta">
       <div class="tut-meta-block">
         <div class="tut-meta-label">Prerequisites</div>
@@ -3523,6 +3983,86 @@ EOF</pre></div>
         <p class="muted" style="margin-top:var(--s-3); max-width:60ch"><strong style="color:var(--text)">Concept covered.</strong> Claude Code gives you three automation mechanisms, differing by <em>who initiates</em>. <strong>Hooks</strong> fire deterministically on harness events. <strong>Skills</strong> are capabilities the model chooses to use. <strong>Slash commands</strong> are shortcuts the user types. Pick by initiator, not by what you want to do.</p>
         <p class="mono muted" style="font-size:0.82rem">Source: Domain 3 · Flashcards · Quiz Q3 and Q8</p>
       </div>
+    </div>
+
+    <div class="concept-diagram" aria-label="Hooks vs Skills vs Slash Commands diagram">
+      <div class="concept-diagram-head">
+        <span class="concept-diagram-label">Concept diagram</span>
+        <span class="concept-diagram-title">three extension mechanisms · three different triggers</span>
+      </div>
+      <div class="concept-diagram-svg-wrap">
+        <svg class="concept-svg" viewBox="0 0 720 360" role="img" aria-labelledby="t6-dia-title t6-dia-desc">
+          <title id="t6-dia-title">Hooks, Skills, and Slash Commands differ by who triggers them.</title>
+          <desc id="t6-dia-desc">Hooks run on Claude Code events. Skills are loaded when the model invokes the Skill tool. Slash commands run when the user types a slash phrase.</desc>
+          <defs>
+            <marker id="t6-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" class="d-arrow"/>
+            </marker>
+          </defs>
+
+          <rect x="36" y="14" width="180" height="38" rx="19" class="d-box-ac"/>
+          <text x="126" y="32" text-anchor="middle" class="d-t-xs" style="fill: var(--accent);">TRIGGER · EVENT</text>
+          <text x="126" y="46" text-anchor="middle" class="d-mono-ac">tool-use · stop · ...</text>
+
+          <rect x="270" y="14" width="180" height="38" rx="19" class="d-box-ac"/>
+          <text x="360" y="32" text-anchor="middle" class="d-t-xs" style="fill: var(--accent);">TRIGGER · MODEL</text>
+          <text x="360" y="46" text-anchor="middle" class="d-mono-ac">Skill tool invocation</text>
+
+          <rect x="504" y="14" width="180" height="38" rx="19" class="d-box-ac"/>
+          <text x="594" y="32" text-anchor="middle" class="d-t-xs" style="fill: var(--accent);">TRIGGER · USER</text>
+          <text x="594" y="46" text-anchor="middle" class="d-mono-ac">/slash typed in prompt</text>
+
+          <path d="M126,52 L126,88" class="d-edge-ac" marker-end="url(#t6-arr)"/>
+          <path d="M360,52 L360,88" class="d-edge-ac" marker-end="url(#t6-arr)"/>
+          <path d="M594,52 L594,88" class="d-edge-ac" marker-end="url(#t6-arr)"/>
+
+          <rect x="12" y="90" width="228" height="258" rx="4" class="d-box"/>
+          <rect x="12" y="90" width="228" height="30" rx="4" fill="var(--accent)" opacity="0.12"/>
+          <text x="126" y="110" text-anchor="middle" class="d-t" style="fill: var(--accent);">HOOKS</text>
+          <text x="24" y="136" class="d-t-xs">RUNS</text>
+          <text x="24" y="152" class="d-mono">a shell command</text>
+          <text x="24" y="180" class="d-t-xs">WHO DECIDES</text>
+          <text x="24" y="196" class="d-mono">harness / settings.json</text>
+          <text x="24" y="224" class="d-t-xs">GOOD FOR</text>
+          <text x="24" y="240" class="d-t-sm">automation, guardrails,</text>
+          <text x="24" y="254" class="d-t-sm">side-effects after events</text>
+          <text x="24" y="282" class="d-t-xs">EXAMPLE</text>
+          <text x="24" y="298" class="d-mono">run ruff after Edit</text>
+          <text x="24" y="312" class="d-mono">block writes to .env</text>
+          <text x="24" y="336" class="d-t-xs" style="fill: var(--text-faint);">deterministic · non-LLM</text>
+
+          <rect x="246" y="90" width="228" height="258" rx="4" class="d-box"/>
+          <rect x="246" y="90" width="228" height="30" rx="4" fill="var(--accent)" opacity="0.12"/>
+          <text x="360" y="110" text-anchor="middle" class="d-t" style="fill: var(--accent);">SKILLS</text>
+          <text x="258" y="136" class="d-t-xs">RUNS</text>
+          <text x="258" y="152" class="d-mono">a markdown instruction pack</text>
+          <text x="258" y="180" class="d-t-xs">WHO DECIDES</text>
+          <text x="258" y="196" class="d-mono">the MODEL, at runtime</text>
+          <text x="258" y="224" class="d-t-xs">GOOD FOR</text>
+          <text x="258" y="240" class="d-t-sm">domain procedures the</text>
+          <text x="258" y="254" class="d-t-sm">model should follow</text>
+          <text x="258" y="282" class="d-t-xs">EXAMPLE</text>
+          <text x="258" y="298" class="d-mono">frontend-design</text>
+          <text x="258" y="312" class="d-mono">systematic-debugging</text>
+          <text x="258" y="336" class="d-t-xs" style="fill: var(--text-faint);">discretionary · LLM-aware</text>
+
+          <rect x="480" y="90" width="228" height="258" rx="4" class="d-box"/>
+          <rect x="480" y="90" width="228" height="30" rx="4" fill="var(--accent)" opacity="0.12"/>
+          <text x="594" y="110" text-anchor="middle" class="d-t" style="fill: var(--accent);">SLASH COMMANDS</text>
+          <text x="492" y="136" class="d-t-xs">RUNS</text>
+          <text x="492" y="152" class="d-mono">a named prompt</text>
+          <text x="492" y="180" class="d-t-xs">WHO DECIDES</text>
+          <text x="492" y="196" class="d-mono">the USER, by typing /</text>
+          <text x="492" y="224" class="d-t-xs">GOOD FOR</text>
+          <text x="492" y="240" class="d-t-sm">reusable workflows you</text>
+          <text x="492" y="254" class="d-t-sm">want on demand</text>
+          <text x="492" y="282" class="d-t-xs">EXAMPLE</text>
+          <text x="492" y="298" class="d-mono">/review · /commit</text>
+          <text x="492" y="312" class="d-mono">/security-review</text>
+          <text x="492" y="336" class="d-t-xs" style="fill: var(--text-faint);">explicit · user-intent</text>
+        </svg>
+      </div>
+      <p class="concept-diagram-caption">Same outcome, different entry point. If <strong>the harness</strong> should react to something, use a hook. If <strong>the model</strong> should follow a recipe when it recognizes a situation, use a skill. If <strong>the user</strong> should invoke a named workflow, use a slash command. Picking the wrong mechanism is the most frequent Domain 3 exam mistake.</p>
     </div>
 
     <div class="tut-meta">
@@ -3764,6 +4304,78 @@ Report findings as a numbered list with file:line references.</pre></div>
         <p class="muted" style="margin-top:var(--s-3); max-width:60ch"><strong style="color:var(--text)">Concept covered.</strong> The reliable way to get JSON from Claude is to define a tool whose <code class="inline">input_schema</code> is your target JSON shape. When validation fails, return the validator's error to the model and retry — the self-healing loop from the source. Cap retries and fail loudly.</p>
         <p class="mono muted" style="font-size:0.82rem">Source: Domain 4 · JSON Schema Retry mental model · Quiz Q4 and Q14</p>
       </div>
+    </div>
+
+    <div class="concept-diagram" aria-label="Structured output retry loop diagram">
+      <div class="concept-diagram-head">
+        <span class="concept-diagram-label">Concept diagram</span>
+        <span class="concept-diagram-title">schema · tool-use · validate · retry</span>
+      </div>
+      <div class="concept-diagram-svg-wrap">
+        <svg class="concept-svg" viewBox="0 0 720 340" role="img" aria-labelledby="t7-dia-title t7-dia-desc">
+          <title id="t7-dia-title">Structured output: tool-use forces JSON, validator gates the output, invalid responses feed the error back and retry.</title>
+          <desc id="t7-dia-desc">Input prompt plus a JSON Schema are passed to the LLM as a tool definition. The LLM returns a tool_use block with JSON input. A validator checks it against the schema. Valid output is returned. Invalid output's error is appended and the loop retries up to MAX_RETRIES.</desc>
+          <defs>
+            <marker id="t7-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" class="d-arrow"/>
+            </marker>
+            <marker id="t7-arr-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" class="d-arrow-ok"/>
+            </marker>
+            <marker id="t7-arr-bad" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" class="d-arrow-bad"/>
+            </marker>
+          </defs>
+
+          <rect x="10" y="16" width="700" height="240" rx="10" class="d-edge-dash"/>
+          <text x="24" y="34" class="d-t-xs">MAX_RETRIES · loop bound</text>
+
+          <rect x="20" y="118" width="150" height="80" rx="4" class="d-box-2"/>
+          <text x="95" y="140" text-anchor="middle" class="d-t">Input</text>
+          <text x="95" y="158" text-anchor="middle" class="d-mono">prompt</text>
+          <text x="95" y="174" text-anchor="middle" class="d-mono">+ JSON Schema</text>
+          <text x="95" y="190" text-anchor="middle" class="d-t-sm">passed as a tool</text>
+
+          <rect x="196" y="118" width="150" height="80" rx="4" class="d-box-ac"/>
+          <text x="271" y="140" text-anchor="middle" class="d-t">LLM call</text>
+          <text x="271" y="158" text-anchor="middle" class="d-mono-ac">messages.create</text>
+          <text x="271" y="174" text-anchor="middle" class="d-mono-ac">tools=[schema]</text>
+          <text x="271" y="190" text-anchor="middle" class="d-t-sm">tool_choice = forced</text>
+
+          <rect x="372" y="118" width="140" height="80" rx="4" class="d-box"/>
+          <text x="442" y="140" text-anchor="middle" class="d-t">tool_use</text>
+          <text x="442" y="158" text-anchor="middle" class="d-mono">block.input</text>
+          <text x="442" y="174" text-anchor="middle" class="d-t-sm">raw JSON from</text>
+          <text x="442" y="190" text-anchor="middle" class="d-t-sm">the model</text>
+
+          <rect x="538" y="118" width="162" height="80" rx="4" class="d-box-2"/>
+          <text x="619" y="140" text-anchor="middle" class="d-t">Validate</text>
+          <text x="619" y="158" text-anchor="middle" class="d-mono">jsonschema.validate()</text>
+          <text x="619" y="176" text-anchor="middle" class="d-t-sm">types · required</text>
+          <text x="619" y="190" text-anchor="middle" class="d-t-sm">enums · nested shape</text>
+
+          <path d="M170,158 L196,158" class="d-edge" marker-end="url(#t7-arr)"/>
+          <path d="M346,158 L372,158" class="d-edge" marker-end="url(#t7-arr)"/>
+          <path d="M512,158 L538,158" class="d-edge" marker-end="url(#t7-arr)"/>
+
+          <path d="M619,198 L619,226" class="d-edge-ok" marker-end="url(#t7-arr-ok)"/>
+          <rect x="538" y="228" width="162" height="28" rx="4" class="d-box-ok"/>
+          <text x="619" y="248" text-anchor="middle" class="d-t" style="fill: var(--ok);">valid → return</text>
+
+          <path d="M619,118 C619,70 619,46 512,46 L390,46" class="d-edge-bad" marker-end="url(#t7-arr-bad)"/>
+          <path d="M390,46 C330,46 290,58 271,118" class="d-edge-bad" marker-end="url(#t7-arr-bad)"/>
+          <rect x="390" y="32" width="120" height="28" rx="14" class="d-box-bad"/>
+          <text x="450" y="51" text-anchor="middle" class="d-mono" style="fill: var(--bad); font-weight: 600;">invalid · error</text>
+
+          <text x="270" y="80" text-anchor="middle" class="d-t-xs" style="fill: var(--bad);">"field X: expected int, got str"</text>
+          <text x="270" y="96" text-anchor="middle" class="d-t-xs" style="fill: var(--bad);">appended to messages, retry</text>
+
+          <rect x="20" y="282" width="680" height="44" rx="4" class="d-box"/>
+          <text x="34" y="302" class="d-t-xs">RULE · exit after N rounds</text>
+          <text x="34" y="318" class="d-t-sm">If the model can't satisfy the schema within <tspan class="d-mono">MAX_RETRIES</tspan>, raise — don't loop forever.</text>
+        </svg>
+      </div>
+      <p class="concept-diagram-caption">Tool-use + JSON Schema is the durable way to force structured output. The validator is not optional — it's the contract. When it fails, feed the <strong>exact error string back to the model</strong> so the next turn can correct, not guess. Cap retries; structured output without a loop bound is a spend bomb.</p>
     </div>
 
     <div class="tut-meta">
@@ -4046,6 +4658,82 @@ data = json.loads(raw)   # this often fails</pre></div>
         <p class="muted" style="margin-top:var(--s-3); max-width:60ch"><strong style="color:var(--text)">Concept covered.</strong> Two independent techniques for long-context reliability. <strong>Prompt caching</strong> marks stable prefix tokens with <code class="inline">cache_control</code> so repeated calls cost ~10% of uncached. <strong>Lost in the middle</strong> — attention is strongest at start and end; critical rules belong at both anchors, never buried mid-context.</p>
         <p class="mono muted" style="font-size:0.82rem">Source: Domain 5 · Attention Curve · Quiz Q5 and Q10</p>
       </div>
+    </div>
+
+    <div class="concept-diagram" aria-label="Prompt caching and lost in the middle diagram">
+      <div class="concept-diagram-head">
+        <span class="concept-diagram-label">Concept diagram</span>
+        <span class="concept-diagram-title">cache layout + attention curve</span>
+      </div>
+      <div class="concept-diagram-svg-wrap">
+        <svg class="concept-svg" viewBox="0 0 720 340" role="img" aria-labelledby="t8-dia-title t8-dia-desc">
+          <title id="t8-dia-title">Prompt caching splits the context into a reusable prefix and a dynamic suffix; attention dips through the middle of long contexts.</title>
+          <desc id="t8-dia-desc">Left panel: a long cached prefix (system, tools, history) charged at roughly ten percent is followed by a small new-tokens suffix charged at full price. A cache_control breakpoint marks the boundary; TTL is about five minutes. Right panel: attention is high at the start and end of the context and dips in the middle; put rules and schemas at start or end.</desc>
+
+          <rect x="10" y="14" width="340" height="312" rx="4" class="d-box"/>
+          <text x="180" y="34" text-anchor="middle" class="d-t">Prompt caching</text>
+          <text x="180" y="50" text-anchor="middle" class="d-t-sm">reuse a prefix · pay ~10% on hits</text>
+
+          <rect x="30" y="76" width="300" height="40" rx="3" fill="var(--ccaf-stripe)" opacity="0.18"/>
+          <rect x="30" y="76" width="228" height="40" fill="var(--ccaf-stripe)" opacity="0.12"/>
+          <rect x="30" y="76" width="300" height="40" rx="3" fill="none" stroke="var(--border-strong)" stroke-width="1"/>
+          <rect x="258" y="76" width="72" height="40" fill="var(--accent)" opacity="0.22"/>
+          <rect x="258" y="76" width="72" height="40" fill="none" stroke="var(--accent)" stroke-width="1.2"/>
+
+          <text x="144" y="98" text-anchor="middle" class="d-mono" style="fill: var(--ccaf-stripe); font-weight: 600;">CACHED PREFIX</text>
+          <text x="144" y="112" text-anchor="middle" class="d-t-xs" style="fill: var(--ccaf-stripe);">system · tools · long context</text>
+          <text x="294" y="98" text-anchor="middle" class="d-mono-ac">NEW</text>
+          <text x="294" y="112" text-anchor="middle" class="d-t-xs" style="fill: var(--accent);">user turn</text>
+
+          <path d="M258,66 L258,124" stroke="var(--accent)" stroke-width="2"/>
+          <text x="258" y="60" text-anchor="middle" class="d-t-xs" style="fill: var(--accent);">cache_control ▼</text>
+
+          <text x="30" y="138" class="d-t-xs">~10% cost on cache hit</text>
+          <text x="330" y="138" text-anchor="end" class="d-t-xs" style="fill: var(--accent);">full cost</text>
+
+          <rect x="30" y="156" width="300" height="62" rx="3" class="d-box-2"/>
+          <text x="40" y="174" class="d-mono">system = [{</text>
+          <text x="40" y="188" class="d-mono">  "text": long_docs,</text>
+          <text x="40" y="202" class="d-mono">  "cache_control":</text>
+          <text x="40" y="214" class="d-mono">    {"type": "ephemeral"} }]</text>
+
+          <text x="30" y="238" class="d-t-xs">TTL</text>
+          <text x="30" y="254" class="d-t-sm">~5 min since last hit · expires silently</text>
+          <text x="30" y="278" class="d-t-xs" style="fill: var(--bad);">GOTCHAS</text>
+          <text x="30" y="294" class="d-t-sm">• one token change in prefix → cache miss</text>
+          <text x="30" y="310" class="d-t-sm">• order must be static → dynamic</text>
+          <text x="30" y="322" class="d-t-sm" style="fill: var(--text-faint);"></text>
+
+          <rect x="370" y="14" width="340" height="312" rx="4" class="d-box"/>
+          <text x="540" y="34" text-anchor="middle" class="d-t">Lost in the middle</text>
+          <text x="540" y="50" text-anchor="middle" class="d-t-sm">attention dips in long contexts</text>
+
+          <rect x="408" y="82" width="66" height="158" fill="var(--ok)" opacity="0.08"/>
+          <rect x="608" y="82" width="66" height="158" fill="var(--ok)" opacity="0.08"/>
+          <rect x="474" y="82" width="134" height="158" fill="var(--bad)" opacity="0.06"/>
+
+          <path d="M408,240 L680,240" stroke="var(--border-strong)" stroke-width="1"/>
+          <path d="M408,82 L408,240" stroke="var(--border-strong)" stroke-width="1"/>
+          <text x="400" y="78" text-anchor="end" class="d-t-xs">attn</text>
+          <text x="688" y="252" class="d-t-xs">pos</text>
+
+          <path d="M408,94 C440,120 470,220 540,226 C608,220 640,120 680,94" class="d-edge-ac"/>
+
+          <circle cx="408" cy="94" r="4" class="d-fill-ok"/>
+          <circle cx="540" cy="226" r="4" class="d-fill-bad"/>
+          <circle cx="680" cy="94" r="4" class="d-fill-ok"/>
+
+          <text x="441" y="258" text-anchor="middle" class="d-t-xs" style="fill: var(--ok);">START</text>
+          <text x="541" y="258" text-anchor="middle" class="d-t-xs" style="fill: var(--bad);">MIDDLE</text>
+          <text x="641" y="258" text-anchor="middle" class="d-t-xs" style="fill: var(--ok);">END</text>
+
+          <text x="385" y="282" class="d-t-xs">TACTICS</text>
+          <text x="385" y="298" class="d-t-sm">• put rules &amp; schemas at start OR end</text>
+          <text x="385" y="314" class="d-t-sm">• repeat critical instructions at both</text>
+          <text x="385" y="326" class="d-t-sm">• don't bury key info in the middle</text>
+        </svg>
+      </div>
+      <p class="concept-diagram-caption">Caching pays you for discipline: freeze the static prefix, put the variable bits last, mark the boundary with <code>cache_control</code>. Separately — the model's attention is not uniform across the window. The middle is the memory black hole; put your instructions where attention lives.</p>
     </div>
 
     <div class="tut-meta">
