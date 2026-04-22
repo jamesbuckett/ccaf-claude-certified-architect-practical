@@ -76,18 +76,13 @@
     },
     {
       "@type": "Question",
-      "name": "How is this different from the study guide?",
-      "acceptedAnswer": { "@type": "Answer", "text": "The study guide is the theory — visual maps of the five exam domains. This workbook is the hands-on half: every domain concept as runnable code, with a deliberate failure to trigger." }
-    },
-    {
-      "@type": "Question",
       "name": "What do I need before I start?",
       "acceptedAnswer": { "@type": "Answer", "text": "Python 3.11+, Node 20 LTS (for Claude Code), an exported ANTHROPIC_API_KEY, and comfort with a terminal. Full tooling list is in the wrap-up." }
     },
     {
       "@type": "Question",
       "name": "Will this alone make me pass the exam?",
-      "acceptedAnswer": { "@type": "Answer", "text": "No single resource will. Work through the study guide for the theory, this workbook for the muscle memory, then reserve the final week for the scenarios and the 15-question mock in the study guide." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Probably not on its own — exam prep benefits from broader theoretical context too. This workbook builds the muscle memory for every CCA-F domain, so pair it with your preferred theory resource and practice questions." }
     }
   ]
 }
@@ -1765,7 +1760,7 @@ details.trace-inline > :last-child { padding-bottom: var(--s-4); }
   <div class="page">
     <div class="hero-stamp"><span class="hero-stamp-dot"></span> LAB MANUAL · CCA-F EXAM PREP · v2026.04</div>
     <h1>Pass Anthropic's Claude Architect exam by <em>building</em> every concept yourself.</h1>
-    <p class="hero-lede">Every CCA-F domain as runnable code — with a deliberate failure to trigger and a checklist you can only tick after you've seen it on your own terminal. Companion to the <a href="study-guide.html">visual study guide</a>.</p>
+    <p class="hero-lede">Every CCA-F domain as runnable code — with a deliberate failure to trigger and a checklist you can only tick after you've seen it on your own terminal.</p>
 
     <div class="hero-friction">
       <span>Free &amp; open source</span>
@@ -1780,7 +1775,6 @@ details.trace-inline > :last-child { padding-bottom: var(--s-4); }
         Start Tutorial 01 — The Agentic Loop
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
-      <a class="btn btn-ghost" href="study-guide.html">Read the study guide first</a>
     </div>
 
     <div class="hero-outcome">
@@ -1818,7 +1812,7 @@ details.trace-inline > :last-child { padding-bottom: var(--s-4); }
       </div>
     </div>
 
-    <p class="hero-note">This is the <strong style="color:var(--text)">practical half</strong> of a two-part CCA-F prep kit — the <a href="study-guide.html">visual study guide</a> is the theory. Independent, not affiliated with or endorsed by Anthropic. All code runs on a clean laptop with an <code class="inline">ANTHROPIC_API_KEY</code> exported.</p>
+    <p class="hero-note">A <strong style="color:var(--text)">hands-on</strong> CCA-F prep workbook. Independent, not affiliated with or endorsed by Anthropic. All code runs on a clean laptop with an <code class="inline">ANTHROPIC_API_KEY</code> exported.</p>
 
     <div class="freshness" role="note">
       <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -1847,7 +1841,6 @@ details.trace-inline > :last-child { padding-bottom: var(--s-4); }
         </h3>
         <ul>
           <li>You're preparing for Anthropic's CCA-F certification and want <strong>muscle memory</strong>, not just notes.</li>
-          <li>You've read (or are actively using) the <a href="study-guide.html">visual study guide</a> and want to make the concepts concrete.</li>
           <li>You're comfortable reading Python and using a terminal.</li>
           <li>You learn better by <em>breaking</em> code and watching the failure than by reading specs.</li>
         </ul>
@@ -1858,7 +1851,6 @@ details.trace-inline > :last-child { padding-bottom: var(--s-4); }
           Skip this if…
         </h3>
         <ul>
-          <li>You haven't touched any CCA-F material — start with the <a href="study-guide.html">study guide</a> first, not here.</li>
           <li>You don't have (or can't get) an Anthropic API key.</li>
           <li>You want passive reading without running code — the tutorials are verification-gated on observed behaviour.</li>
         </ul>
@@ -1968,13 +1960,6 @@ source .venv/bin/activate     # re-enter, no re-install needed</pre>
         </div>
       </details>
       <details class="faq-item">
-        <summary>How is this different from the study guide?</summary>
-        <div class="faq-body">
-          <p>The <a href="study-guide.html">study guide</a> is the theory — visual maps of the five exam domains, a glossary, a 15-question mock, and six scenario walkthroughs. This workbook is the hands-on half: every domain concept translated into runnable code, with a deliberate failure to trigger so the behaviour is remembered, not memorised.</p>
-          <p>Use both. The study guide tells you <em>what</em>; this workbook shows you <em>how it actually behaves</em>.</p>
-        </div>
-      </details>
-      <details class="faq-item">
         <summary>What do I need before I start?</summary>
         <div class="faq-body">
           <p>Python 3.11+, Node 20 LTS (for Claude Code), an exported <code class="inline">ANTHROPIC_API_KEY</code>, and comfort with a terminal. The full tooling table with minimum versions is in the <a href="#wrapup">wrap-up</a>. No Docker, no cloud accounts, no cluster — everything runs locally.</p>
@@ -1983,7 +1968,7 @@ source .venv/bin/activate     # re-enter, no re-install needed</pre>
       <details class="faq-item">
         <summary>Will this workbook alone make me pass the exam?</summary>
         <div class="faq-body">
-          <p>Honestly? No single resource will. The recipe that works: (1) read the <a href="study-guide.html">study guide</a> for the theory, (2) work through this workbook for the muscle memory, (3) reserve the final week before the exam for the six scenarios and the 15-question mock in the study guide — <em>not</em> more tutorials.</p>
+          <p>Honestly? Probably not on its own. Exam prep benefits from broader theoretical context alongside hands-on work. This workbook's job is the muscle memory half — every CCA-F domain translated into runnable code with a deliberate failure to trigger, so when you see a scenario on the exam you've already watched the behaviour on your own terminal. Pair it with your preferred theory resource and practice questions, and reserve the final week for revision rather than more tutorials.</p>
         </div>
       </details>
       <details class="faq-item">
@@ -2444,7 +2429,6 @@ else:
       <ul>
         <li>Add a <code class="inline">stop_sequences=["TASK_COMPLETE"]</code> parameter and watch how <code class="inline">stop_reason</code> changes.</li>
         <li>Wire in streaming (<code class="inline">client.messages.stream(...)</code>) and see tool-use blocks arrive incrementally.</li>
-        <li>Read Scenario 01 (Customer Support) in the study guide — identify which step is "Think," which is "Act."</li>
       </ul>
     </div>
 
@@ -2772,7 +2756,6 @@ if __name__ == "__main__":
       <ul>
         <li>Wrap the three spawn calls in <code class="inline">asyncio.gather</code> using the async client — parallelize for wall-clock savings.</li>
         <li>Add a <code class="inline">max_subagents</code> guard and a circuit-breaker for failing sub-agents.</li>
-        <li>Re-read Scenario 03 in the study guide and identify: "Where is the hub? Where are the spokes?"</li>
       </ul>
     </div>
 
@@ -3505,7 +3488,6 @@ EOF</pre></div>
       <ul>
         <li>Use <code class="inline">/memory</code> in Claude Code to see which CLAUDE.md files are currently loaded.</li>
         <li>Add a fourth tier via a <code class="inline">CLAUDE.local.md</code> file (untracked personal overrides per repo).</li>
-        <li>Re-read Quiz Q13 in the study guide and answer it from memory.</li>
       </ul>
     </div>
 
@@ -4024,7 +4006,6 @@ data = json.loads(raw)   # this often fails</pre></div>
       <ul>
         <li>Add <code class="inline">strict: true</code> to a more complex schema with <code class="inline">oneOf</code> and see how retry-count changes.</li>
         <li>Compare total tokens: tool-use vs prose+parse-then-repair.</li>
-        <li>Read Scenario 06 (Structured Data Extraction) in the study guide and map each diagram box to code.</li>
       </ul>
     </div>
 
@@ -4877,7 +4858,7 @@ python3 server.py  # Ctrl-C once it reports "ready" or prints a traceback</pre>
     <div class="wrap-grid">
       <div>
         <h3 style="margin-top: var(--s-6); margin-bottom: var(--s-3)">Suggested learning path</h3>
-        <p>Follow the numbered order. It matches the study guide's domain weights but front-loads the Agentic Loop (Tutorial 01) because every subsequent tutorial depends on understanding it.</p>
+        <p>Follow the numbered order. It front-loads the Agentic Loop (Tutorial 01) because every subsequent tutorial depends on understanding it, then works outward through the remaining CCA-F domains.</p>
         <ol>
           <li><strong>T01 Agentic Loop</strong> — foundation for every API call.</li>
           <li><strong>T02 Hub-and-Spoke</strong> — builds on T01; heaviest exam domain's core pattern.</li>
@@ -4886,7 +4867,7 @@ python3 server.py  # Ctrl-C once it reports "ready" or prints a traceback</pre>
           <li><strong>T07 Structured Output</strong> — applies tool-use from D2, schemas from D4, retry discipline from D5.</li>
           <li><strong>T08 Caching + Lost-in-Middle</strong> — observable phenomena you'd otherwise only read about.</li>
         </ol>
-        <p>Reserve the final week before the exam for the six scenarios and the 15-question mock in the <a href="study-guide.html">study guide</a> — not more tutorials.</p>
+        <p>Reserve the final week before the exam for revision and practice questions — not more tutorials.</p>
       </div>
 
       <div>
@@ -4975,7 +4956,7 @@ export ANTHROPIC_API_KEY="sk-ant-…"</pre>
         </ul>
       </div>
     </div>
-    <div class="foot-meta">v2026.04 · practical companion to the CCA-F visual study guide · built by James Buckett</div>
+    <div class="foot-meta">v2026.04 · hands-on CCA-F prep workbook · built by James Buckett</div>
   </div>
 </footer>
 
