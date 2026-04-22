@@ -1828,6 +1828,66 @@ details.trace-inline > :last-child { padding-bottom: var(--s-4); }
       <div>sudo npm i -g @anthropic-ai/claude-code</div>
       <div>export ANTHROPIC_API_KEY="sk-ant-…"</div>
     </div>
+    <p class="muted" style="margin-top: var(--s-4); font-size: 0.9rem">Never set up a Python virtualenv before? Walk through the <a href="#venv-setup">venv setup section</a> below — it covers the activate / install / deactivate cycle every tutorial assumes.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     ENABLING VENV
+     ============================================================ -->
+<section class="block" id="venv-setup" aria-labelledby="venv-heading">
+  <div class="page">
+    <div class="eyebrow">
+      <span class="eyebrow-num">00 /</span>
+      <span class="eyebrow-label">Virtual environments</span>
+    </div>
+    <h2 id="venv-heading">Enabling <code class="inline">venv</code> to run the tutorials.</h2>
+    <p class="muted" style="max-width:62ch; margin-top: var(--s-3)">Every tutorial installs its Python packages into a throwaway virtualenv under <code class="inline">.venv</code>. That keeps each tutorial's SDK version isolated, avoids polluting your system Python, and sidesteps <a href="https://peps.python.org/pep-0668/" target="_blank" rel="noopener noreferrer">PEP 668</a> errors on Ubuntu 23.04+ and current Homebrew. If you've never set one up before, this is the whole dance — do it once on Tutorial 01, then repeat the short version for every later tutorial.</p>
+
+    <h3 style="margin-top: var(--s-6); margin-bottom: var(--s-3)">1. Install the <code class="inline">venv</code> package (Ubuntu / Debian only)</h3>
+    <p>macOS and most other Linux distros ship the <code class="inline">venv</code> module with Python. Ubuntu and Debian split it into a separate apt package that has to be installed once:</p>
+    <div class="codeblock">
+      <div class="codeblock-head"><span class="codeblock-lang">bash · one-time</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>sudo apt update &amp;&amp; sudo apt install -y python3 python3-venv python3-pip</pre>
+    </div>
+
+    <h3 style="margin-top: var(--s-6); margin-bottom: var(--s-3)">2. Create and activate a venv inside the tutorial directory</h3>
+    <p>From the project directory (e.g. <code class="inline">agentic-loop</code> for Tutorial 01), create the <code class="inline">.venv</code> folder and activate it. After activation, your shell prompt gains a <code class="inline">(.venv)</code> prefix — that's the signal the venv is live:</p>
+    <div class="codeblock">
+      <div class="codeblock-head"><span class="codeblock-lang">bash · macOS / Linux</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>python3 -m venv .venv
+source .venv/bin/activate</pre>
+    </div>
+    <p class="muted" style="font-size:0.88rem; margin-top: var(--s-3)"><strong style="color:var(--text)">Windows PowerShell:</strong> activate with <code class="inline">.\.venv\Scripts\Activate.ps1</code> instead. If PowerShell blocks it on "execution policy", run <code class="inline">Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass</code> in that shell first.</p>
+
+    <h3 style="margin-top: var(--s-6); margin-bottom: var(--s-3)">3. Install the tutorial's Python packages</h3>
+    <p>With the venv active, <code class="inline">pip install</code> writes into <code class="inline">.venv/</code> — not your system Python, no <code class="inline">sudo</code> needed. Each tutorial's setup block lists exactly what it needs:</p>
+    <div class="codeblock">
+      <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>pip install "anthropic&gt;=0.40"</pre>
+    </div>
+
+    <h3 style="margin-top: var(--s-6); margin-bottom: var(--s-3)">4. Verify you're actually inside the venv</h3>
+    <p>Both <code class="inline">python3</code> and <code class="inline">pip</code> should resolve to paths inside <code class="inline">.venv</code>. If <code class="inline">which</code> points to <code class="inline">/usr/bin/</code>, activation silently didn't run — re-source the activate script and re-install:</p>
+    <div class="codeblock">
+      <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>which python3 pip
+# &rarr; /path/to/tutorial/.venv/bin/python3
+# &rarr; /path/to/tutorial/.venv/bin/pip
+python3 -c "import anthropic; print(anthropic.__version__)"</pre>
+    </div>
+
+    <h3 style="margin-top: var(--s-6); margin-bottom: var(--s-3)">5. Deactivate and re-enter in a fresh shell</h3>
+    <p>Activation lives only in the current shell. Close the terminal and it's gone — but the <code class="inline">.venv</code> folder persists on disk. The next time you come back to a tutorial, <code class="inline">cd</code> into it and re-run the activate line; you don't need to re-create the venv or re-install packages. Explicit <code class="inline">deactivate</code> drops an active shell back to system Python without closing it.</p>
+    <div class="codeblock">
+      <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>deactivate                    # leaves the venv; .venv/ stays on disk
+# &mdash; later, in a new shell &mdash;
+cd ~/agentic-loop
+source .venv/bin/activate     # re-enter, no re-install needed</pre>
+    </div>
+
+    <p class="muted" style="margin-top: var(--s-5); font-size: 0.9rem">Hit an error? <code class="inline">ensurepip is not available</code>, <code class="inline">externally-managed-environment</code>, and <code class="inline">ModuleNotFoundError</code> on an already-installed package all have dedicated entries in <a href="#troubleshooting">troubleshooting</a> — every symptom has a fix and a short reason.</p>
   </div>
 </section>
 
@@ -4680,6 +4740,7 @@ export ANTHROPIC_API_KEY="sk-ant-…"</pre>
         <ul>
           <li><a href="study-guide.html">Visual study guide</a></li>
           <li><a href="#index">Tutorial index</a></li>
+          <li><a href="#venv-setup">Virtual environments</a></li>
           <li><a href="#glossary">Glossary · 33 terms</a></li>
           <li><a href="#troubleshooting">Troubleshooting</a></li>
           <li><a href="#wrapup">Learning path & tooling</a></li>
