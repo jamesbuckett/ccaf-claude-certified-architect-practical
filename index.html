@@ -2842,12 +2842,12 @@ pip install "mcp&gt;=1.0"</pre>
       <p>Create <code class="inline">server.py</code>:</p>
       <div class="codeblock">
         <div class="codeblock-head"><span class="codeblock-lang">python · server.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>from mcp.server.fastmcp import FastMCP
+<pre><span class="ccaf-line">from mcp.server.fastmcp import FastMCP</span>
 
-mcp = FastMCP("triangle-demo")
+<span class="ccaf-line">mcp = FastMCP("triangle-demo")</span>
 
 # --- TOOL: model decides to call ------------------------------------------
-@mcp.tool()
+<span class="ccaf-line">@mcp.tool()</span>
 def lookup_order(order_id: str) -&gt; dict:
     """Fetch current status of a customer order. Call only when the user
     references an order ID or asks 'where is my order'. Do not call for
@@ -2856,20 +2856,20 @@ def lookup_order(order_id: str) -&gt; dict:
     return fake.get(order_id, {"status": "not_found"})
 
 # --- RESOURCE: app preloads, model reads -----------------------------------
-@mcp.resource("docs://shipping-policy")
+<span class="ccaf-line">@mcp.resource("docs://shipping-policy")</span>
 def shipping_policy() -&gt; str:
     """Our shipping policy document. Read when explaining delivery times."""
     return "Orders ship in 2 business days. International adds 5–7 days."
 
 # --- PROMPT: user types /refund ------------------------------------------
-@mcp.prompt("refund-flow")
+<span class="ccaf-line">@mcp.prompt("refund-flow")</span>
 def refund_flow(order_id: str) -&gt; str:
     """Walk the user through a refund for a specific order."""
     return (f"Start a refund flow for order {order_id}. Verify eligibility, "
             "confirm with the user, then call lookup_order to get status.")
 
 if __name__ == "__main__":
-    mcp.run()   # defaults to stdio transport</pre>
+<span class="ccaf-line">    mcp.run()   # defaults to stdio transport</span></pre>
       </div>
       <p>Wire it into Claude Code. Create <code class="inline">.mcp.json</code> in the project root:</p>
       <div class="codeblock">
@@ -3092,31 +3092,31 @@ if __name__ == "__main__":
       <p>Reuse Tutorial 01's environment. Create <code class="inline">describe.py</code>:</p>
       <div class="codeblock">
         <div class="codeblock-head"><span class="codeblock-lang">python · describe.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>import anthropic, json
-client = anthropic.Anthropic()
-MODEL = "claude-sonnet-4-6"
+<pre><span class="ccaf-line">import anthropic, json</span>
+<span class="ccaf-line">client = anthropic.Anthropic()</span>
+<span class="ccaf-line">MODEL = "claude-sonnet-4-6"</span>
 
-VAGUE = [{
-    "name": "get_data",
-    "description": "Gets data.",
-    "input_schema": {"type": "object", "properties": {}},
-}]
+<span class="ccaf-line">VAGUE = [{</span>
+<span class="ccaf-line">    "name": "get_data",</span>
+<span class="ccaf-line">    "description": "Gets data.",</span>
+<span class="ccaf-line">    "input_schema": {"type": "object", "properties": {}},</span>
+<span class="ccaf-line">}]</span>
 
-PRECISE = [{
-    "name": "get_latest_order_status",
-    "description": (
-        "Fetch the current shipping status of a CUSTOMER ORDER from the orders "
-        "database. Use ONLY when the user asks about a specific order by ID or "
-        "says 'where is my package'. DO NOT use for returns, refunds, account "
-        "info, or general product questions. Returns: {order_id, status, eta}."
-    ),
-    "input_schema": {
-        "type": "object",
-        "properties": {"order_id": {"type": "string",
-                                    "description": "Order ID, e.g. 'A-100'"}},
-        "required": ["order_id"],
-    },
-}]
+<span class="ccaf-line">PRECISE = [{</span>
+<span class="ccaf-line">    "name": "get_latest_order_status",</span>
+<span class="ccaf-line">    "description": (</span>
+<span class="ccaf-line">        "Fetch the current shipping status of a CUSTOMER ORDER from the orders "</span>
+<span class="ccaf-line">        "database. Use ONLY when the user asks about a specific order by ID or "</span>
+<span class="ccaf-line">        "says 'where is my package'. DO NOT use for returns, refunds, account "</span>
+<span class="ccaf-line">        "info, or general product questions. Returns: {order_id, status, eta}."</span>
+<span class="ccaf-line">    ),</span>
+<span class="ccaf-line">    "input_schema": {</span>
+<span class="ccaf-line">        "type": "object",</span>
+<span class="ccaf-line">        "properties": {"order_id": {"type": "string",</span>
+<span class="ccaf-line">                                    "description": "Order ID, e.g. 'A-100'"}},</span>
+<span class="ccaf-line">        "required": ["order_id"],</span>
+<span class="ccaf-line">    },</span>
+<span class="ccaf-line">}]</span>
 
 test_prompts = [
     "Where is my order A-100?",           # should call
@@ -3128,12 +3128,12 @@ test_prompts = [
 def run(tools, prompts, label):
     print(f"\n=== {label} ===")
     for p in prompts:
-        resp = client.messages.create(
-            model=MODEL, max_tokens=256, tools=tools,
-            messages=[{"role": "user", "content": p}],
-        )
-        called = [b.name for b in resp.content if b.type == "tool_use"]
-        print(f"  prompt: {p!r:50s} → tool_calls={called}")
+<span class="ccaf-line">        resp = client.messages.create(</span>
+<span class="ccaf-line">            model=MODEL, max_tokens=256, tools=tools,</span>
+<span class="ccaf-line">            messages=[{"role": "user", "content": p}],</span>
+<span class="ccaf-line">        )</span>
+<span class="ccaf-line">        called = [b.name for b in resp.content if b.type == "tool_use"]</span>
+<span class="ccaf-line">        print(f"  prompt: {p!r:50s} → tool_calls={called}")</span>
 
 run(VAGUE,   test_prompts, "VAGUE tool description")
 run(PRECISE, test_prompts, "PRECISE tool description")</pre>
@@ -3275,7 +3275,7 @@ run(PRECISE, test_prompts, "PRECISE tool description")</pre>
         <p><strong style="color:var(--text)">Optional in-code tally.</strong> Drop this line after each <code class="inline">client.messages.create(&hellip;)</code> call to see per-request token counts in your terminal:</p>
         <div class="codeblock">
           <div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>print(f"[usage] in={resp.usage.input_tokens} out={resp.usage.output_tokens}")</pre>
+<pre><span class="ccaf-line">print(f"[usage] in={resp.usage.input_tokens} out={resp.usage.output_tokens}")</span></pre>
         </div>
       </div>
     </div>
