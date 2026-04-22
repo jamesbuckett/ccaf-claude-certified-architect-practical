@@ -117,6 +117,8 @@
   --accent-ink: #FFFFFF;
   --accent-soft:#FEF3EC;
 
+  --ccaf-stripe: #6366F1;
+
   --ok:   #15803D;
   --warn: #B45309;
   --bad:  #B91C1C;
@@ -142,6 +144,7 @@
   --accent:      #F97316;
   --accent-ink:  #0A0A0A;
   --accent-soft: rgba(249,115,22,0.10);
+  --ccaf-stripe: #818CF8;
 }
 
 /* ============================================================
@@ -866,6 +869,27 @@ section.block { padding: var(--s-8) 0; border-bottom: 1px solid var(--border); }
   box-shadow: inset 2px 0 0 var(--accent);
   padding-left: var(--s-2);
   margin-left: calc(-1 * var(--s-2));
+}
+
+.codeblock pre .ccaf-line {
+  display: block;
+  box-shadow: inset 2px 0 0 var(--ccaf-stripe);
+  padding-left: var(--s-2);
+  margin-left: calc(-1 * var(--s-2));
+}
+
+.codeblock-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-faint);
+  margin-left: var(--s-2);
 }
 
 code.inline {
