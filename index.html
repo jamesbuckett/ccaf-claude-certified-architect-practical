@@ -1001,37 +1001,6 @@ code.inline {
 .mark-done svg { width: 14px; height: 14px; }
 
 /* ============================================================
-   WRAPUP
-   ============================================================ */
-.wrap-grid {
-  display: grid; gap: var(--s-6);
-  margin-top: var(--s-5);
-}
-@media (min-width: 880px) { .wrap-grid { grid-template-columns: 1fr 1fr; } }
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-  margin: var(--s-4) 0;
-}
-th, td { text-align: left; padding: var(--s-3) var(--s-3); border-bottom: 1px solid var(--border); }
-th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); font-weight: 600; }
-tr:last-child td { border-bottom: 0; }
-td.mono-cell { font-size: 0.82rem; }
-
-.gap-card {
-  padding: var(--s-4);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  margin-bottom: var(--s-3);
-  background: var(--surface);
-}
-.gap-card h4 { margin-bottom: var(--s-1); display: flex; align-items: center; gap: var(--s-2); }
-.gap-card h4 .caps { background: var(--surface-2); padding: 2px 6px; border-radius: 3px; font-size: 0.65rem; }
-.gap-card p { margin: 0; font-size: 0.9rem; color: var(--text-dim); }
-
-/* ============================================================
    FOOTER
    ============================================================ */
 footer.site-foot {
@@ -1963,7 +1932,7 @@ source .venv/bin/activate     # re-enter, no re-install needed</pre>
       <details class="faq-item">
         <summary>What do I need before I start?</summary>
         <div class="faq-body">
-          <p>Python 3.11+, Node 20 LTS (for Claude Code), an exported <code class="inline">ANTHROPIC_API_KEY</code>, and comfort with a terminal. The full tooling table with minimum versions is in the <a href="#wrapup">wrap-up</a>. No Docker, no cloud accounts, no cluster — everything runs locally.</p>
+          <p>Python 3.11+, Node 20 LTS (for Claude Code), an exported <code class="inline">ANTHROPIC_API_KEY</code>, and comfort with a terminal. Everything you need is in the <a href="#before-you-start">pre-start install block</a> above — no Docker, no cloud accounts, no cluster, everything runs locally.</p>
         </div>
       </details>
       <details class="faq-item">
@@ -4958,87 +4927,6 @@ claude-opus-4-7                           13   $0.00020    $0.07500</pre>
   </div>
 </section>
 
-<!-- ============================================================
-     WRAPUP
-     ============================================================ -->
-<section class="block" id="wrapup">
-  <div class="page">
-    <div class="eyebrow">
-      <span class="eyebrow-num">02 /</span>
-      <span class="eyebrow-label">Wrap-up</span>
-    </div>
-    <h2>Learning path, gaps, and tooling</h2>
-
-    <div class="wrap-grid">
-      <div>
-        <h3 style="margin-top: var(--s-6); margin-bottom: var(--s-3)">Suggested learning path</h3>
-        <p>Follow the numbered order. It front-loads the Agentic Loop (Tutorial 01) because every subsequent tutorial depends on understanding it, then works outward through the remaining CCA-F domains.</p>
-        <ol>
-          <li><strong>T01 Agentic Loop</strong> — foundation for every API call.</li>
-          <li><strong>T02 Hub-and-Spoke</strong> — builds on T01; heaviest exam domain's core pattern.</li>
-          <li><strong>T03 + T04 MCP &amp; Tool Descriptions</strong> — pair them; T03 gives you the server, T04 makes descriptions that actually work.</li>
-          <li><strong>T05 + T06 Claude Code primitives</strong> — reinforces "who initiates?" which also underpins D2.</li>
-          <li><strong>T07 Structured Output</strong> — applies tool-use from D2, schemas from D4, retry discipline from D5.</li>
-          <li><strong>T08 Caching + Lost-in-Middle</strong> — observable phenomena you'd otherwise only read about.</li>
-        </ol>
-        <p>Reserve the final week before the exam for revision and practice questions — not more tutorials.</p>
-      </div>
-
-      <div>
-        <h3 style="margin-top: var(--s-6); margin-bottom: var(--s-3)">Gaps flagged</h3>
-        <div class="gap-card">
-          <h4>Scenarios 1–6 as full tutorials <span class="caps">skipped</span></h4>
-          <p>Source describes them in one-liners with diagrams but lacks the specification to build end-to-end without inventing APIs. They map cleanly onto combinations of T01–T08.</p>
-        </div>
-        <div class="gap-card">
-          <h4>Compaction / summarisation mechanics <span class="caps">ambiguous</span></h4>
-          <p>Source mentions compaction but gives no concrete API surface. Managed conversation features aren't deterministic the way caching is.</p>
-        </div>
-        <div class="gap-card">
-          <h4>Memory tool <span class="caps">beta</span></h4>
-          <p>Referenced in Quiz Q15 but currently beta; exact API surface may shift. A tutorial here would rot fast.</p>
-        </div>
-        <div class="gap-card">
-          <h4>Remote MCP transport with auth <span class="caps">under-specified</span></h4>
-          <p>Domain 2 mentions HTTP/SSE but source doesn't specify auth mechanisms. Stdio approach in T03 is safe; HTTP with OAuth would require stack choices the source doesn't make.</p>
-        </div>
-      </div>
-    </div>
-
-    <h3 style="margin-top: var(--s-7); margin-bottom: var(--s-3)">Assumed tooling</h3>
-    <p>Install these once before starting:</p>
-    <div style="overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius);">
-      <table>
-        <thead>
-          <tr><th>Tool</th><th>Minimum version</th><th>Used by</th></tr>
-        </thead>
-        <tbody>
-          <tr><td class="mono-cell">Python</td><td class="mono-cell">3.11</td><td>T01, T02, T03, T04, T07, T08</td></tr>
-          <tr><td class="mono-cell">anthropic (Python SDK)</td><td class="mono-cell">≥ 0.40</td><td>T01, T02, T04, T07, T08</td></tr>
-          <tr><td class="mono-cell">mcp (Python SDK)</td><td class="mono-cell">≥ 1.0</td><td>T03</td></tr>
-          <tr><td class="mono-cell">jsonschema</td><td class="mono-cell">4.x</td><td>T07</td></tr>
-          <tr><td class="mono-cell">requests</td><td class="mono-cell">2.x</td><td>T08</td></tr>
-          <tr><td class="mono-cell">Claude Code CLI</td><td class="mono-cell">latest</td><td>T03, T05, T06</td></tr>
-          <tr><td class="mono-cell">Node.js + npm</td><td class="mono-cell">20 LTS</td><td>Claude Code install</td></tr>
-          <tr><td class="mono-cell">jq</td><td class="mono-cell">1.6+</td><td>T06</td></tr>
-          <tr><td class="mono-cell">Anthropic API key</td><td>—</td><td>T01, T02, T04, T07, T08</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p style="margin-top: var(--s-5)">One-time install — each tutorial creates its own <code class="inline">.venv</code> and installs the Python packages from the table above. Only the system tooling, the Claude Code CLI, and the API key export are genuinely global:</p>
-    <div class="codeblock">
-      <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre># Ubuntu / Debian only — skip if you have python3-venv already:
-sudo apt update &amp;&amp; sudo apt install -y python3 python3-venv python3-pip
-
-# All platforms:
-sudo npm i -g @anthropic-ai/claude-code
-export ANTHROPIC_API_KEY="sk-ant-…"</pre>
-    </div>
-    <p class="muted" style="margin-top: var(--s-4)">Budget ~$2–4 of API spend on Sonnet 4.6 with the retry caps set as shown.</p>
-  </div>
-</section>
 
 </main>
 
