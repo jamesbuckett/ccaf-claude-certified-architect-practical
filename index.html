@@ -4845,6 +4845,119 @@ python3 server.py  # Ctrl-C once it reports "ready" or prints a traceback</pre>
 </section>
 
 <!-- ============================================================
+     UTILITIES
+     ============================================================ -->
+<section class="block" id="utilities" aria-labelledby="utilities-heading">
+  <div class="page">
+    <div class="eyebrow">
+      <span class="eyebrow-num">04 /</span>
+      <span class="eyebrow-label">Utilities</span>
+    </div>
+    <h2 id="utilities-heading">Helper scripts for the workbook.</h2>
+    <p class="muted" style="max-width:62ch; margin-top: var(--s-3)">Small, self-contained scripts you can drop alongside any tutorial. One file each, no dependencies beyond the <code class="inline">anthropic</code> SDK the pre-start block already installs.</p>
+
+    <h3 style="margin-top: var(--s-6); margin-bottom: var(--s-3)"><code class="inline">usage.py</code> &mdash; API smoke test and pre-flight cost estimator</h3>
+    <p>Two questions students run into early: <em>does my key actually work?</em> and <em>roughly what will this prompt cost?</em> <code class="inline">usage.py</code> answers both in one file. With no arguments it makes an 8-token smoke call against Sonnet 4.6 and prints the full <code class="inline">response.usage</code> block plus a dollar figure. With <code class="inline">--prompt</code> or <code class="inline">--file</code> it uses the Anthropic <code class="inline">count_tokens</code> endpoint to report per-model input tokens and estimated cost &mdash; no completion is run in that path, so pre-flight estimation is free.</p>
+
+    <p>Drop it in the root of your workbook directory, then <code class="inline">python3 usage.py</code> from any tutorial folder. The API key is read from <code class="inline">ANTHROPIC_API_KEY</code> exactly like every tutorial in the workbook.</p>
+
+    <div class="codeblock">
+      <div class="codeblock-head"><span class="codeblock-lang">python · usage.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>"""usage.py &mdash; API smoke test + pre-flight token / cost estimator.
+
+Reads ANTHROPIC_API_KEY from the environment, same as every tutorial.
+
+    python3 usage.py                          # 8-token smoke call
+    python3 usage.py --prompt "your text"     # estimate input cost
+    python3 usage.py --file prompt.txt        # estimate from a file
+"""
+import argparse, anthropic
+
+# (input $ per 1M tokens, output $ per 1M tokens) &mdash; verify on the
+# Anthropic pricing page before you trust the cost column.
+PRICING = {
+    "claude-sonnet-4-6":         ( 3.00, 15.00),
+    "claude-haiku-4-5-20251001": ( 1.00,  5.00),
+    "claude-opus-4-7":           (15.00, 75.00),
+}
+
+def estimate(text: str) -&gt; None:
+    """Report per-model input tokens + estimated input cost. Free."""
+    client = anthropic.Anthropic()
+    header = f"{'model':&lt;30}{'input tokens':&gt;14}{'input $':&gt;12}{'$/1k out':&gt;12}"
+    print(header)
+    print("-" * len(header))
+    for model, (in_p, out_p) in PRICING.items():
+        c = client.messages.count_tokens(
+            model=model,
+            messages=[{"role": "user", "content": text}],
+        )
+        in_cost = c.input_tokens / 1_000_000 * in_p
+        print(f"{model:&lt;30}{c.input_tokens:&gt;14,}{'$' + format(in_cost, '.5f'):&gt;12}{'$' + format(out_p/1000, '.5f'):&gt;12}")
+
+def smoke_test() -&gt; None:
+    """Make one tiny real call so you see live .usage fields."""
+    client = anthropic.Anthropic()
+    resp = client.messages.create(
+        model="claude-sonnet-4-6",
+        max_tokens=8,
+        messages=[{"role": "user", "content": "Say exactly: OK"}],
+    )
+    u = resp.usage
+    in_p, out_p = PRICING["claude-sonnet-4-6"]
+    cost = u.input_tokens / 1_000_000 * in_p + u.output_tokens / 1_000_000 * out_p
+    print(f"[ok] API key works &mdash; model={resp.model}")
+    print(f"     response={resp.content[0].text!r}")
+    print(f"     usage: input={u.input_tokens} output={u.output_tokens}")
+    print(f"            cache_read={u.cache_read_input_tokens or 0} cache_create={u.cache_creation_input_tokens or 0}")
+    print(f"     cost=${cost:.6f}")
+
+def main() -&gt; None:
+    ap = argparse.ArgumentParser(description="Claude API smoke test + pre-flight token counter")
+    g = ap.add_mutually_exclusive_group()
+    g.add_argument("--prompt", help="estimate cost of a literal prompt string")
+    g.add_argument("--file",   help="estimate cost of a prompt read from a file")
+    args = ap.parse_args()
+    if args.prompt:
+        estimate(args.prompt)
+    elif args.file:
+        with open(args.file) as f:
+            estimate(f.read())
+    else:
+        smoke_test()
+
+if __name__ == "__main__":
+    main()
+</pre>
+    </div>
+
+    <p style="margin-top: var(--s-5)"><strong style="color:var(--text)">Smoke test &mdash; confirm the key works and see real <code class="inline">.usage</code> fields:</strong></p>
+    <div class="codeblock">
+      <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>$ python3 usage.py
+[ok] API key works &mdash; model=claude-sonnet-4-6
+     response='OK'
+     usage: input=12 output=3
+            cache_read=0 cache_create=0
+     cost=$0.000081</pre>
+    </div>
+
+    <p style="margin-top: var(--s-4)"><strong style="color:var(--text)">Pre-flight &mdash; what will this prompt cost on each model?</strong></p>
+    <div class="codeblock">
+      <div class="codeblock-head"><span class="codeblock-lang">bash</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
+<pre>$ python3 usage.py --prompt "Summarise this repository in one sentence."
+model                           input tokens     input $    $/1k out
+--------------------------------------------------------------------
+claude-sonnet-4-6                         13   $0.00004    $0.01500
+claude-haiku-4-5-20251001                 13   $0.00001    $0.00500
+claude-opus-4-7                           13   $0.00020    $0.07500</pre>
+    </div>
+
+    <p class="muted" style="margin-top: var(--s-5); font-size: 0.9rem">The <code class="inline">count_tokens</code> path doesn't draw from your balance — it's a free-of-charge preview. The smoke test does draw (around a tenth of a cent on Sonnet 4.6), but that's the whole point: you want to see real <code class="inline">.usage</code> fields come back before spending six hours on tutorials. Keep the <code class="inline">PRICING</code> table aligned with the official <a href="https://www.anthropic.com/pricing" target="_blank" rel="noopener noreferrer">Anthropic pricing page</a> — the numbers here match the workbook's tested date but can drift.</p>
+  </div>
+</section>
+
+<!-- ============================================================
      WRAPUP
      ============================================================ -->
 <section class="block" id="wrapup">
@@ -4938,6 +5051,7 @@ export ANTHROPIC_API_KEY="sk-ant-…"</pre>
           <li><a href="#venv-setup">Virtual environments</a></li>
           <li><a href="#glossary">Glossary · 33 terms</a></li>
           <li><a href="#troubleshooting">Troubleshooting</a></li>
+          <li><a href="#utilities">Utilities</a></li>
         </ul>
       </div>
       <div class="foot-col">
