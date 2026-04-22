@@ -4107,28 +4107,28 @@ print(f"saved {len(body)} chars")</pre></div>
       </div>
       <p>Create <code class="inline">cache.py</code>:</p>
       <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python · cache.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>import anthropic, pathlib, time
-client = anthropic.Anthropic()
-MODEL = "claude-sonnet-4-6"
+<pre><span class="ccaf-line">import anthropic, pathlib, time</span>
+<span class="ccaf-line">client = anthropic.Anthropic()</span>
+<span class="ccaf-line">MODEL = "claude-sonnet-4-6"</span>
 doc = pathlib.Path("moby.txt").read_text()
 
 def ask(question, use_cache):
-    system = [
-        {"type": "text", "text": "You are a literary analyst."},
-        {"type": "text", "text": f"&lt;doc&gt;{doc}&lt;/doc&gt;",
-         **({"cache_control": {"type": "ephemeral"}} if use_cache else {})},
-    ]
+<span class="ccaf-line">    system = [</span>
+<span class="ccaf-line">        {"type": "text", "text": "You are a literary analyst."},</span>
+<span class="ccaf-line">        {"type": "text", "text": f"&lt;doc&gt;{doc}&lt;/doc&gt;",</span>
+<span class="ccaf-line">         **({"cache_control": {"type": "ephemeral"}} if use_cache else {})},</span>
+<span class="ccaf-line">    ]</span>
     t = time.time()
-    resp = client.messages.create(
-        model=MODEL, max_tokens=256, system=system,
-        messages=[{"role": "user", "content": question}],
-    )
+<span class="ccaf-line">    resp = client.messages.create(</span>
+<span class="ccaf-line">        model=MODEL, max_tokens=256, system=system,</span>
+<span class="ccaf-line">        messages=[{"role": "user", "content": question}],</span>
+<span class="ccaf-line">    )</span>
     dt = time.time() - t
-    u = resp.usage
-    print(f"[{'cached' if use_cache else 'plain '}] "
-          f"in={u.input_tokens} cache_read={getattr(u,'cache_read_input_tokens',0)} "
-          f"cache_write={getattr(u,'cache_creation_input_tokens',0)} "
-          f"out={u.output_tokens} · {dt:.2f}s")
+<span class="ccaf-line">    u = resp.usage</span>
+<span class="ccaf-line">    print(f"[{'cached' if use_cache else 'plain '}] "</span>
+<span class="ccaf-line">          f"in={u.input_tokens} cache_read={getattr(u,'cache_read_input_tokens',0)} "</span>
+<span class="ccaf-line">          f"cache_write={getattr(u,'cache_creation_input_tokens',0)} "</span>
+<span class="ccaf-line">          f"out={u.output_tokens} · {dt:.2f}s")</span>
 
 print("--- first call (cache miss) ---")
 ask("What does Ishmael do when he feels spleen?", use_cache=True)
@@ -4170,28 +4170,28 @@ ask("What does Ishmael do when he feels spleen?", use_cache=False)</pre></div>
           <p>At the bottom of <code class="inline">cache.py</code>, insert one <code class="inline">time.sleep(310)</code> between the first and second calls. Full file with the change highlighted — save over your existing <code class="inline">cache.py</code>:</p>
           <div class="codeblock">
             <div class="codeblock-head"><span class="codeblock-lang">python · cache.py · TTL variant</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>import anthropic, pathlib, time
-client = anthropic.Anthropic()
-MODEL = "claude-sonnet-4-6"
+<pre><span class="ccaf-line">import anthropic, pathlib, time</span>
+<span class="ccaf-line">client = anthropic.Anthropic()</span>
+<span class="ccaf-line">MODEL = "claude-sonnet-4-6"</span>
 doc = pathlib.Path("moby.txt").read_text()
 
 def ask(question, use_cache):
-    system = [
-        {"type": "text", "text": "You are a literary analyst."},
-        {"type": "text", "text": f"&lt;doc&gt;{doc}&lt;/doc&gt;",
-         **({"cache_control": {"type": "ephemeral"}} if use_cache else {})},
-    ]
+<span class="ccaf-line">    system = [</span>
+<span class="ccaf-line">        {"type": "text", "text": "You are a literary analyst."},</span>
+<span class="ccaf-line">        {"type": "text", "text": f"&lt;doc&gt;{doc}&lt;/doc&gt;",</span>
+<span class="ccaf-line">         **({"cache_control": {"type": "ephemeral"}} if use_cache else {})},</span>
+<span class="ccaf-line">    ]</span>
     t = time.time()
-    resp = client.messages.create(
-        model=MODEL, max_tokens=256, system=system,
-        messages=[{"role": "user", "content": question}],
-    )
+<span class="ccaf-line">    resp = client.messages.create(</span>
+<span class="ccaf-line">        model=MODEL, max_tokens=256, system=system,</span>
+<span class="ccaf-line">        messages=[{"role": "user", "content": question}],</span>
+<span class="ccaf-line">    )</span>
     dt = time.time() - t
-    u = resp.usage
-    print(f"[{'cached' if use_cache else 'plain '}] "
-          f"in={u.input_tokens} cache_read={getattr(u,'cache_read_input_tokens',0)} "
-          f"cache_write={getattr(u,'cache_creation_input_tokens',0)} "
-          f"out={u.output_tokens} · {dt:.2f}s")
+<span class="ccaf-line">    u = resp.usage</span>
+<span class="ccaf-line">    print(f"[{'cached' if use_cache else 'plain '}] "</span>
+<span class="ccaf-line">          f"in={u.input_tokens} cache_read={getattr(u,'cache_read_input_tokens',0)} "</span>
+<span class="ccaf-line">          f"cache_write={getattr(u,'cache_creation_input_tokens',0)} "</span>
+<span class="ccaf-line">          f"out={u.output_tokens} · {dt:.2f}s")</span>
 
 print("--- first call (cache miss) ---")
 ask("What does Ishmael do when he feels spleen?", use_cache=True)
@@ -4214,9 +4214,9 @@ ask("What does Ishmael do when he feels spleen?", use_cache=False)</pre>
       </div>
       <p>Create <code class="inline">middle.py</code>:</p>
       <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python · middle.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>import anthropic, pathlib
-client = anthropic.Anthropic()
-MODEL = "claude-sonnet-4-6"
+<pre><span class="ccaf-line">import anthropic, pathlib</span>
+<span class="ccaf-line">client = anthropic.Anthropic()</span>
+<span class="ccaf-line">MODEL = "claude-sonnet-4-6"</span>
 doc = pathlib.Path("moby.txt").read_text()
 
 SECRET_FACT = "The secret passphrase is SPERMACETI-7."
@@ -4230,19 +4230,19 @@ def ask_with_placement(placement):
     else:  # start
         body = f"{SECRET_FACT}\n\n" + doc
 
-    resp = client.messages.create(
-        model=MODEL, max_tokens=100,
-        system=f"You have been given a document. A secret passphrase is hidden "
-               f"in it. Quote the full passphrase exactly.\n\n&lt;doc&gt;{body}&lt;/doc&gt;",
-        messages=[{"role": "user", "content": "What is the secret passphrase?"}],
-    )
-    answer = resp.content[0].text
+<span class="ccaf-line">    resp = client.messages.create(</span>
+<span class="ccaf-line">        model=MODEL, max_tokens=100,</span>
+<span class="ccaf-line">        system=f"You have been given a document. A secret passphrase is hidden "</span>
+<span class="ccaf-line">               f"in it. Quote the full passphrase exactly.\n\n&lt;doc&gt;{body}&lt;/doc&gt;",</span>
+<span class="ccaf-line">        messages=[{"role": "user", "content": "What is the secret passphrase?"}],</span>
+<span class="ccaf-line">    )</span>
+<span class="ccaf-line">    answer = resp.content[0].text</span>
     hit = "SPERMACETI-7" in answer
     print(f"[{placement:6s}] {'✓' if hit else '✗'} → {answer[:80]}")
 
-for placement in ["start", "middle", "end"]:
-    for trial in range(3):
-        ask_with_placement(placement)</pre></div>
+<span class="ccaf-line">for placement in ["start", "middle", "end"]:</span>
+<span class="ccaf-line">    for trial in range(3):</span>
+<span class="ccaf-line">        ask_with_placement(placement)</span></pre></div>
 
       <details class="trace-inline">
         <summary>
@@ -4334,8 +4334,8 @@ for placement in ["start", "middle", "end"]:
         <p><strong style="color:var(--text)">In-code tally with cache fields.</strong> Caching splits <code class="inline">input_tokens</code> across three counters &mdash; print all four to see what the cache actually paid for:</p>
         <div class="codeblock">
           <div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>u = resp.usage
-print(f"[usage] in={u.input_tokens} cache_read={u.cache_read_input_tokens} cache_create={u.cache_creation_input_tokens} out={u.output_tokens}")</pre>
+<pre><span class="ccaf-line">u = resp.usage</span>
+<span class="ccaf-line">print(f"[usage] in={u.input_tokens} cache_read={u.cache_read_input_tokens} cache_create={u.cache_creation_input_tokens} out={u.output_tokens}")</span></pre>
         </div>
       </div>
     </div>
