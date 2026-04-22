@@ -2508,22 +2508,22 @@ def run_tool(name, args):
       <p>Reuse the <code class="inline">.venv</code> from Tutorial 01. Create <code class="inline">orchestrator.py</code>:</p>
       <div class="codeblock">
         <div class="codeblock-head"><span class="codeblock-lang">python · orchestrator.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>import anthropic
-client = anthropic.Anthropic()
-MODEL = "claude-sonnet-4-6"
+<pre><span class="ccaf-line">import anthropic</span>
+<span class="ccaf-line">client = anthropic.Anthropic()</span>
+<span class="ccaf-line">MODEL = "claude-sonnet-4-6"</span>
 
 def spawn_subagent(task_brief: str, subagent_name: str) -&gt; str:
     """Run an isolated sub-agent; return a summary string only."""
     print(f"  [spawn] {subagent_name}: {task_brief[:60]}…")
-    resp = client.messages.create(
-        model=MODEL, max_tokens=512,
-        system=(f"You are a {subagent_name} sub-agent. Do the task briefly and "
-                "return ONE paragraph of findings. Do not narrate your process."),
-        messages=[{"role": "user", "content": task_brief}],
-    )
-    summary = resp.content[0].text
-    print(f"  [done]  {subagent_name}: {len(summary)} chars, "
-          f"{resp.usage.output_tokens} tokens")
+<span class="ccaf-line">    resp = client.messages.create(</span>
+<span class="ccaf-line">        model=MODEL, max_tokens=512,</span>
+<span class="ccaf-line">        system=(f"You are a {subagent_name} sub-agent. Do the task briefly and "</span>
+<span class="ccaf-line">                "return ONE paragraph of findings. Do not narrate your process."),</span>
+<span class="ccaf-line">        messages=[{"role": "user", "content": task_brief}],</span>
+<span class="ccaf-line">    )</span>
+<span class="ccaf-line">    summary = resp.content[0].text</span>
+<span class="ccaf-line">    print(f"  [done]  {subagent_name}: {len(summary)} chars, "</span>
+<span class="ccaf-line">          f"{resp.usage.output_tokens} tokens")</span>
     return summary
 
 def orchestrate(user_goal: str) -&gt; str:
@@ -2534,16 +2534,16 @@ def orchestrate(user_goal: str) -&gt; str:
     ]
     findings = {name: spawn_subagent(brief, name) for name, brief in plan}
 
-    resp = client.messages.create(
-        model=MODEL, max_tokens=512,
-        system="You are an orchestrator. Combine sub-agent findings into a brief.",
-        messages=[{"role": "user",
-                   "content": f"Goal: {user_goal}\n\n"
-                              + "\n\n".join(f"[{k}]\n{v}" for k,v in findings.items())}],
-    )
-    print(f"[orchestrator] {resp.usage.input_tokens} in, "
-          f"{resp.usage.output_tokens} out")
-    return resp.content[0].text
+<span class="ccaf-line">    resp = client.messages.create(</span>
+<span class="ccaf-line">        model=MODEL, max_tokens=512,</span>
+<span class="ccaf-line">        system="You are an orchestrator. Combine sub-agent findings into a brief.",</span>
+<span class="ccaf-line">        messages=[{"role": "user",</span>
+<span class="ccaf-line">                   "content": f"Goal: {user_goal}\n\n"</span>
+<span class="ccaf-line">                              + "\n\n".join(f"[{k}]\n{v}" for k,v in findings.items())}],</span>
+<span class="ccaf-line">    )</span>
+<span class="ccaf-line">    print(f"[orchestrator] {resp.usage.input_tokens} in, "</span>
+<span class="ccaf-line">          f"{resp.usage.output_tokens} out")</span>
+<span class="ccaf-line">    return resp.content[0].text</span>
 
 if __name__ == "__main__":
     print(orchestrate("Should a startup adopt Kubernetes on day one?"))</pre>
@@ -2608,22 +2608,22 @@ if __name__ == "__main__":
           <p>Extend the existing <code class="inline">[done]</code> line inside <code class="inline">spawn_subagent</code> so it also reports <code class="inline">input_tokens</code>. Full file with the change highlighted:</p>
           <div class="codeblock">
             <div class="codeblock-head"><span class="codeblock-lang">python · orchestrator.py</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>import anthropic
-client = anthropic.Anthropic()
-MODEL = "claude-sonnet-4-6"
+<pre><span class="ccaf-line">import anthropic</span>
+<span class="ccaf-line">client = anthropic.Anthropic()</span>
+<span class="ccaf-line">MODEL = "claude-sonnet-4-6"</span>
 
 def spawn_subagent(task_brief: str, subagent_name: str) -&gt; str:
     """Run an isolated sub-agent; return a summary string only."""
     print(f"  [spawn] {subagent_name}: {task_brief[:60]}…")
-    resp = client.messages.create(
-        model=MODEL, max_tokens=512,
-        system=(f"You are a {subagent_name} sub-agent. Do the task briefly and "
-                "return ONE paragraph of findings. Do not narrate your process."),
-        messages=[{"role": "user", "content": task_brief}],
-    )
-    summary = resp.content[0].text
-    print(f"  [done]  {subagent_name}: {len(summary)} chars, "
-<span class="added">          f"in={resp.usage.input_tokens} out={resp.usage.output_tokens} tokens")   # ← added in=</span>
+<span class="ccaf-line">    resp = client.messages.create(</span>
+<span class="ccaf-line">        model=MODEL, max_tokens=512,</span>
+<span class="ccaf-line">        system=(f"You are a {subagent_name} sub-agent. Do the task briefly and "</span>
+<span class="ccaf-line">                "return ONE paragraph of findings. Do not narrate your process."),</span>
+<span class="ccaf-line">        messages=[{"role": "user", "content": task_brief}],</span>
+<span class="ccaf-line">    )</span>
+<span class="ccaf-line">    summary = resp.content[0].text</span>
+<span class="ccaf-line">    print(f"  [done]  {subagent_name}: {len(summary)} chars, "</span>
+<span class="ccaf-line"><span class="added">          f"in={resp.usage.input_tokens} out={resp.usage.output_tokens} tokens")   # ← added in=</span></span>
     return summary
 
 def orchestrate(user_goal: str) -&gt; str:
@@ -2634,16 +2634,16 @@ def orchestrate(user_goal: str) -&gt; str:
     ]
     findings = {name: spawn_subagent(brief, name) for name, brief in plan}
 
-    resp = client.messages.create(
-        model=MODEL, max_tokens=512,
-        system="You are an orchestrator. Combine sub-agent findings into a brief.",
-        messages=[{"role": "user",
-                   "content": f"Goal: {user_goal}\n\n"
-                              + "\n\n".join(f"[{k}]\n{v}" for k,v in findings.items())}],
-    )
-    print(f"[orchestrator] {resp.usage.input_tokens} in, "
-          f"{resp.usage.output_tokens} out")
-    return resp.content[0].text
+<span class="ccaf-line">    resp = client.messages.create(</span>
+<span class="ccaf-line">        model=MODEL, max_tokens=512,</span>
+<span class="ccaf-line">        system="You are an orchestrator. Combine sub-agent findings into a brief.",</span>
+<span class="ccaf-line">        messages=[{"role": "user",</span>
+<span class="ccaf-line">                   "content": f"Goal: {user_goal}\n\n"</span>
+<span class="ccaf-line">                              + "\n\n".join(f"[{k}]\n{v}" for k,v in findings.items())}],</span>
+<span class="ccaf-line">    )</span>
+<span class="ccaf-line">    print(f"[orchestrator] {resp.usage.input_tokens} in, "</span>
+<span class="ccaf-line">          f"{resp.usage.output_tokens} out")</span>
+<span class="ccaf-line">    return resp.content[0].text</span>
 
 if __name__ == "__main__":
     print(orchestrate("Should a startup adopt Kubernetes on day one?"))</pre>
@@ -2671,32 +2671,32 @@ if __name__ == "__main__":
         </div>
         <h4>Forward the full child transcript up to the parent</h4>
         <p>Two edits to <code class="inline">orchestrator.py</code>: add a leaky variant of <code class="inline">spawn_subagent</code>, then swap the orchestrator's <code class="inline">findings</code> line to use it and flatten transcripts into the parent's history. Full file with both edits highlighted — save over your existing <code class="inline">orchestrator.py</code>:</p>
-        <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python · orchestrator.py · build-and-break variant</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre>import anthropic
-client = anthropic.Anthropic()
-MODEL = "claude-sonnet-4-6"
+        <div class="codeblock"><div class="codeblock-head"><span class="codeblock-lang">python · orchestrator.py · build-and-break variant</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div><pre><span class="ccaf-line">import anthropic</span>
+<span class="ccaf-line">client = anthropic.Anthropic()</span>
+<span class="ccaf-line">MODEL = "claude-sonnet-4-6"</span>
 
 def spawn_subagent(task_brief: str, subagent_name: str) -&gt; str:
     """Run an isolated sub-agent; return a summary string only."""
     print(f"  [spawn] {subagent_name}: {task_brief[:60]}…")
-    resp = client.messages.create(
-        model=MODEL, max_tokens=512,
-        system=(f"You are a {subagent_name} sub-agent. Do the task briefly and "
-                "return ONE paragraph of findings. Do not narrate your process."),
-        messages=[{"role": "user", "content": task_brief}],
-    )
-    summary = resp.content[0].text
-    print(f"  [done]  {subagent_name}: {len(summary)} chars, "
-          f"{resp.usage.output_tokens} tokens")
+<span class="ccaf-line">    resp = client.messages.create(</span>
+<span class="ccaf-line">        model=MODEL, max_tokens=512,</span>
+<span class="ccaf-line">        system=(f"You are a {subagent_name} sub-agent. Do the task briefly and "</span>
+<span class="ccaf-line">                "return ONE paragraph of findings. Do not narrate your process."),</span>
+<span class="ccaf-line">        messages=[{"role": "user", "content": task_brief}],</span>
+<span class="ccaf-line">    )</span>
+<span class="ccaf-line">    summary = resp.content[0].text</span>
+<span class="ccaf-line">    print(f"  [done]  {subagent_name}: {len(summary)} chars, "</span>
+<span class="ccaf-line">          f"{resp.usage.output_tokens} tokens")</span>
     return summary
 
 <span class="added">def spawn_subagent_LEAKY(task_brief, subagent_name):                              # ← new leaky function</span>
-<span class="added">    resp = client.messages.create(</span>
-<span class="added">        model=MODEL, max_tokens=512,</span>
-<span class="added">        system=f"You are a {subagent_name} sub-agent. Do the task briefly.",</span>
-<span class="added">        messages=[{"role": "user", "content": task_brief}],</span>
-<span class="added">    )</span>
-<span class="added">    return {"messages": [{"role": "user", "content": task_brief},</span>
-<span class="added">                         {"role": "assistant", "content": resp.content[0].text}]}</span>
+<span class="ccaf-line"><span class="added">    resp = client.messages.create(</span></span>
+<span class="ccaf-line"><span class="added">        model=MODEL, max_tokens=512,</span></span>
+<span class="ccaf-line"><span class="added">        system=f"You are a {subagent_name} sub-agent. Do the task briefly.",</span></span>
+<span class="ccaf-line"><span class="added">        messages=[{"role": "user", "content": task_brief}],</span></span>
+<span class="ccaf-line"><span class="added">    )</span></span>
+<span class="ccaf-line"><span class="added">    return {"messages": [{"role": "user", "content": task_brief},</span></span>
+<span class="ccaf-line"><span class="added">                         {"role": "assistant", "content": resp.content[0].text}]}</span></span>
 
 def orchestrate(user_goal: str) -&gt; str:
     plan = [
@@ -2708,14 +2708,14 @@ def orchestrate(user_goal: str) -&gt; str:
 <span class="added">    findings = [spawn_subagent_LEAKY(brief, name) for name, brief in plan]        # ← new (leaky)</span>
 <span class="added">    flattened = sum((f["messages"] for f in findings), [])                        # ← new</span>
 
-    resp = client.messages.create(
-        model=MODEL, max_tokens=512,
-        system="You are an orchestrator. Combine sub-agent findings into a brief.",
-<span class="added">        messages=flattened,                                                       # ← was the findings dict</span>
-    )
-    print(f"[orchestrator] {resp.usage.input_tokens} in, "
-          f"{resp.usage.output_tokens} out")
-    return resp.content[0].text
+<span class="ccaf-line">    resp = client.messages.create(</span>
+<span class="ccaf-line">        model=MODEL, max_tokens=512,</span>
+<span class="ccaf-line">        system="You are an orchestrator. Combine sub-agent findings into a brief.",</span>
+<span class="ccaf-line"><span class="added">        messages=flattened,                                                       # ← was the findings dict</span></span>
+<span class="ccaf-line">    )</span>
+<span class="ccaf-line">    print(f"[orchestrator] {resp.usage.input_tokens} in, "</span>
+<span class="ccaf-line">          f"{resp.usage.output_tokens} out")</span>
+<span class="ccaf-line">    return resp.content[0].text</span>
 
 if __name__ == "__main__":
     print(orchestrate("Should a startup adopt Kubernetes on day one?"))</pre></div>
@@ -2767,7 +2767,7 @@ if __name__ == "__main__":
         <p><strong style="color:var(--text)">Optional in-code tally.</strong> Drop this line after each <code class="inline">client.messages.create(&hellip;)</code> call to see per-request token counts in your terminal:</p>
         <div class="codeblock">
           <div class="codeblock-head"><span class="codeblock-lang">python</span><button class="copy-btn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="copy-label">copy</span></button></div>
-<pre>print(f"[usage] in={resp.usage.input_tokens} out={resp.usage.output_tokens}")</pre>
+<pre><span class="ccaf-line">print(f"[usage] in={resp.usage.input_tokens} out={resp.usage.output_tokens}")</span></pre>
         </div>
       </div>
     </div>
